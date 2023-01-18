@@ -210,6 +210,7 @@ def products():
         return final_response + "New Products added: " + str(new) + "\n Products Updated: " + str(updates) + "\n Missing Features: " + str(missing_features) + "\n Failures due to database:" + str(failure)
 
 
+
 #This will be the part of the API that will be able to add/update the category table. We will be expecting data 
 #to be given in the following format. {"catLevel1":["List of all"] "catlevel2:["List of all"]}
 @app.route('/category',methods = (['POST']))
@@ -237,6 +238,7 @@ def category():
 @app.route('/trending',methods = (['POST']))
 def trending():
     pass
+
 
 app.run()
 
