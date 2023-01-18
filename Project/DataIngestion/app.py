@@ -79,6 +79,41 @@ def write(product,field,table,update):
         return 200
     
 
+#This will be able to add a level 1 category to the database
+def writeCategoryLevel1(category,table,field):
+    tablepresent = check_table(table)
+    present = False
+    category = str(category)
+    if tablepresent:
+        present = CategoryPresent(category,table)
+    if present[0][0] == False:
+        conn = db_connection('data')
+        cur = conn.cursor()
+        cur.execute('CREATE TABLE IF NOT EXISTS ' + table + '(catlevel1 varchar(10000) PRIMARY KEY)')
+        cur.execute('INSERT INTO ' + table + ' (catlevel1) VALUES (\'{0}\'); '.format(str(category)))
+        conn.commit()
+        cur.close()
+        conn.close()
+        return 200
+    else:
+        return 200
+    
+
+
+#This will be able to add a level 2 category to the database
+def writeCategoryLevel2(category1,subCategory,table):
+    present = CategoryLevel2Present(category1,subCategory,table)
+    if present[0][0] == False:
+        conn = db_connection('data')
+        cur = conn.cursor()
+        cur.execute('CREATE TABLE IF NOT EXISTS ' + table + '( catlevel1 varchar(10000),' 
+                                                        ' catlevel2 varchar(10000),'
+                                                        'PRIMARY KEY (catlevel1,catlevel2) )')
+        cur.execute('INSERT INTO ' + table + ' (catlevel1,catlevel2) VALUES (%s,%s)',(category1,subCategory))
+        conn.commit()
+        cur.close()
+        conn.close()
+    return 200
 
 
 #This will be able to check if a table that is meant to be in the database exists or not. 
@@ -109,6 +144,28 @@ def checkID(productId,table):
         return 400
 
 
+
+#This function will be able to check if the category level 1 is present in the table or not
+def CategoryPresent(category,table):
+    conn = db_connection('data')
+    cur = conn.cursor()
+    cur.execute('select exists ( select * from '+ table + ' Where catlevel1 = \'' + category + '\');')
+    exists = cur.fetchall()
+    cur.close()
+    conn.close()
+    return exists
+
+
+
+#This function will be able to check if the category level 2 is present in the table or not 
+def CategoryLevel2Present(category1,subCategory,table):
+    conn = db_connection('data')
+    cur = conn.cursor()
+    cur.execute('select exists (select * from '+ table + ' Where catlevel1 = \'' + category1 + '\' AND catlevel2 = \'' + subCategory + '\');')
+    exists = cur.fetchall()
+    cur.close()
+    conn.close()
+    return exists
 
 
 #This is the main API function that will be called with a POST HTTP request when needed to add products into the database
@@ -151,6 +208,35 @@ def products():
             else:
                 final_response += product['uniqueId'] + " had an unknown error \n"
         return final_response + "New Products added: " + str(new) + "\n Products Updated: " + str(updates) + "\n Missing Features: " + str(missing_features) + "\n Failures due to database:" + str(failure)
+
+
+#This will be the part of the API that will be able to add/update the category table. We will be expecting data 
+#to be given in the following format. {"catLevel1":["List of all"] "catlevel2:["List of all"]}
+@app.route('/category',methods = (['POST']))
+def category():
+    if request.method == "POST":
+        data = request.get_json()
+        final_response = ""
+        for category in data:
+            level1status  = writeCategoryLevel1(list(category.keys())[0],"CategoryLevel1",[])
+            if(level1status == 200):
+                final_response += "The category " + list(category.keys())[0] + " has been added \n"
+                for categories in category[list(category.keys())[0]]:
+                    level2status = writeCategoryLevel2(list(category.keys())[0],categories,"CategoryLevel2")
+                    if(level2status != 200):
+                        final_response += "The category " + list(category.keys())[0] + " Sub-category " + categories + " Failed due to database error. Please retry.\n"
+                    else:
+                        final_response += "The category " + list(category.keys())[0] + " Sub-category " + categories + " Has been added.\n"
+            else:
+                final_response += "The " + list(category.keys())[0] + " has failed due to database error. \n"
+        return final_response
+    
+
+# This will be part of the API that will be able to load the trending items that are meant to be shown when 
+# the user visits the website 
+@app.route('/trending',methods = (['POST']))
+def trending():
+    pass
 
 app.run()
 
