@@ -25,7 +25,7 @@ with open('out.json', 'r') as fcc_file:
             gender.add(j)
         if('size' in i.keys()):
             for j in i['size']:
-                size.add(j)
+                size.add(j);
         else:
             #print(i['name'])
             y = 0
