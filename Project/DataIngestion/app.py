@@ -4,6 +4,10 @@ from flask import Flask, request,url_for,redirect
 
 app = Flask(__name__)
 
+
+
+#This function will be able to create a connection to the database. It will be called everytime a connection 
+# is asked for and should return a connection to the database as and when requested. 
 def db_connection(db_name):
     conn = psycopg2.connect(host='localhost',
                             database=db_name,
@@ -12,29 +16,42 @@ def db_connection(db_name):
     return conn
 
 
+
+#This function will be able to validate any product that comes as input to the catalog. It will check if all the 
+# necessary features are provided and if these features are valid or not. It will also check if the product is 
+# being updated or a new one.
 def validate(product):
-    if(all(x in list(product.keys()) for x in ['uniqueId','name','price','productDescription','catlevel1Name','catlevel2Name','productImage'])):
+    string = "<class 'str'>"
+    required = ['uniqueId','name','price','productDescription','catlevel1Name','catlevel2Name','productImage']
+    if(all(x in list(product.keys()) for x in required)):
         pass
     else:
-        return 301
+        missingFeatures = set(required) - set(list(product.keys()))
+        error  = ""
+        for i in missingFeatures:
+            error += " " + i
+        return [301,error]
     if(str(type(product['price'])) not in ["<class 'float'>","<class 'int'>","<class 'double'>"]) :
-        return 302
-    if(str(type(product['name'])) != "<class 'str'>"):
-        return 300
-    if(str(type(product['uniqueId'])) != "<class 'str'>"):
-        return 300
-    if(str(type(product['productDescription'])) != "<class 'str'>"):
-        return 300
-    if(str(type(product['productImage'])) != "<class 'str'>"):
-        return 300
-    if(str(type(product['catlevel1Name'])) != "<class 'str'>"):
-        return 300
-    if(str(type(product['catlevel2Name'])) != "<class 'str'>"):
-        return 300
+        return [302,"Price feature is wrong"]
+    if(str(type(product['name'])) != string):
+        return [303,"Name feature is wrong"]
+    if(str(type(product['uniqueId'])) != string):
+        return [304,"Unique Id is specified wrongly"]
+    if(str(type(product['productDescription'])) != string):
+        return [305,"Product Description is wrong"]
+    if(str(type(product['productImage'])) != string):
+        return [306,"Product Image is wrong"]
+    if(str(type(product['catlevel1Name'])) != string):
+        return [307,"Category Level 1 is wrong"]
+    if(str(type(product['catlevel2Name'])) != string):
+        return [308,"Category Level 2 is wrong"]
     flag = checkID(product['uniqueId'],"products")
-    return flag 
+    return [flag,"Good for database"] 
 
-# Add the product details with the fields to the table
+
+
+
+# This function will be capable of writing to a table present in the database. 
 def write(product,field,table,update):
     conn = db_connection('data')
     cur = conn.cursor()
@@ -64,7 +81,7 @@ def write(product,field,table,update):
 
 
 
-# Check if a table exists in the database
+#This will be able to check if a table that is meant to be in the database exists or not. 
 def check_table(table):
     conn = db_connection('data')
     cur = conn.cursor()
@@ -75,7 +92,7 @@ def check_table(table):
     return exists
 
 
-# Check if the particular productID is already existing in the database
+#This will be able to check if the particular productID is already existing in the database
 def checkID(productId,table):
     if check_table(table):
         conn = db_connection('data')
@@ -94,36 +111,46 @@ def checkID(productId,table):
 
 
 
+#This is the main API function that will be called with a POST HTTP request when needed to add products into the database
 @app.route('/products',methods = (['POST']))
 def products():
     if request.method == 'POST':
+        new = 0
+        failure = 0
+        updates = 0 
+        missing_features = 0
+        missing = []
         data = request.get_json()
         final_response = ""
         for product in data:
             status = validate(product)
+            message = status[1]
+            status = status[0]
             if(status == 200):
                 databasestatus = write(product,['uniqueId','name','price','productDescription','catlevel1Name','catlevel2Name','productImage'],"products",False)
                 if(databasestatus != 200):
                     final_response += product['uniqueId'] + "could not be added due to database error \n"
+                    failure += 1
                 else:
-                    final_response += product['uniqueId'] + "added successfully \n"
+                    #final_response += product['uniqueId'] + "added successfully \n"
+                    new += 1
             elif(status == 201):
                 databasestatus = write(product,['uniqueId','name','price','productDescription','catlevel1Name','catlevel2Name','productImage'],"products",True)
                 if(databasestatus != 200):
                     final_response += product['uniqueId'] + "could not be added due to database error \n"
+                    failure += 1
                 else:
-                    final_response += product['uniqueId'] + "updated successfully \n"
-            elif(status == 300):
-                final_response += product['uniqueId'] + " the features of the product was not valid. Please recheck the features \n"
-            elif(status == 301):
-                final_response += product['uniqueId'] + "Features are missing \n"
-            elif(status == 302):
-                final_response += product['uniqueId'] + "Price feature is wrong \n"
+                    #final_response += product['uniqueId'] + "updated successfully \n"
+                    updates += 1
+            elif(status > 300 and status < 400):
+                final_response += product['uniqueId'] + " " + message + "\n"
+                missing_features += 1
             elif(status == 400):
                 final_response += " Table doesnt exist \n"
+                failure += 1
             else:
                 final_response += product['uniqueId'] + " had an unknown error \n"
-        return final_response
+        return final_response + "New Products added: " + str(new) + "\n Products Updated: " + str(updates) + "\n Missing Features: " + str(missing_features) + "\n Failures due to database:" + str(failure)
 
 app.run()
 
