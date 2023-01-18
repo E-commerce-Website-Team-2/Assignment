@@ -25,7 +25,7 @@ with open('out.json', 'r') as fcc_file:
             gender.add(j)
         if('size' in i.keys()):
             for j in i['size']:
-                size.add(j)
+                size.add(j);
         else:
             #print(i['name'])
             y = 0
@@ -73,4 +73,4 @@ with open('out.json', 'r') as fcc_file:
     # print(catlevelexp)
     # print("Cateogries that is an intersection between men and women ")
     # print(catlevelmen.intersection(catlevelwomen))"
-    print(type(fcc_data[3]['price']))
+    # print(type(fcc_data[3]['price']))
