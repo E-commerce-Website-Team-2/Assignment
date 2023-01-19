@@ -29,6 +29,8 @@ def check_table(table):
     conn.close()
     return exists
 
+
+
 # This function is able to perform a read request from the database. It will be able to do a Select From Where command
 def readDB(table,fields,condition = False):
     checkTable = check_table(table)
@@ -68,13 +70,32 @@ def query():
     unbxdsearchAPI = "https://search.unbxd.io/fb853e3332f2645fac9d71dc63e09ec1/demo-unbxd700181503576558/search?q="
     finalquery = unbxdsearchAPI + searchquery + "&start=" + str(start) + "&rows=" + str(rows) + "&fields=" + "uniqueId,price,productDescription,productImage"
     responseFromSearch = (requests.get(finalquery).content)
-    responseFromSearch = json.loads(responseFromSearch);
+    responseFromSearch = json.loads(responseFromSearch)
+    #Pagination will be carried out by using a page number as a variable in the URL 
     return responseFromSearch["response"]["products"]
 
 
 @app.route('/products/category', methods=["GET"])
 def category():
-    pass
+    catlevel1 = request.args.get('cat1')
+    catlevel2 = request.args.get('cat2')
+    if(catlevel1 == None):
+        if(catlevel2 == None):
+            return "There is no such filter possible"
+            #This means that both were null. There is no way for me to filter from the database. 
+        else:
+            #This means only catlevel2 was given
+            return "Only cat level 2 is given to me"
+            pass
+    elif(catlevel2 == None):
+        #This means that only catlevel1 was given
+        return "Only cat level 1 is given to me"
+    else:
+        #this means that both were given
+        return "Both have been given to me"
+
+
+
 
 
 
@@ -102,9 +123,10 @@ def getcategory():
 
 
 
-@app.route('/products/details/<productid>', methods=["GET"])
+@app.route('/products/details/<productId>', methods=["GET"])
 def details(productId):
-    pass
+    response = readDB("products",["product_description"],{"uniqueId":productId})
+    return response[1] 
 
 
 app.run()
