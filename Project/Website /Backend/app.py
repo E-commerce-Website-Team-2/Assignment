@@ -1,6 +1,6 @@
 from flask import Flask ,request, jsonify, request
 from flask_cors import CORS
-import psycopg2
+import psycopg2,requests,json
 
 
 app = Flask(__name__)
@@ -63,10 +63,13 @@ def readDB(table,fields,condition = False):
 @app.route('/products/search', methods=["GET"])
 def query():
     searchquery = request.args.get('query')
+    start = 0   #(pagenumber - 1)*9
+    rows = 9
     unbxdsearchAPI = "https://search.unbxd.io/fb853e3332f2645fac9d71dc63e09ec1/demo-unbxd700181503576558/search?q="
-    finalquery = unbxdsearchAPI + searchquery
-    responseFromSearch = request.get(finalquery).content
-    return responseFromSearch
+    finalquery = unbxdsearchAPI + searchquery + "&start=" + str(start) + "&rows=" + str(rows) + "&fields=" + "uniqueId,price,productDescription,productImage"
+    responseFromSearch = (requests.get(finalquery).content)
+    responseFromSearch = json.loads(responseFromSearch)
+    return responseFromSearch["response"]["products"]
 
 
 @app.route('/products/category', methods=["GET"])
