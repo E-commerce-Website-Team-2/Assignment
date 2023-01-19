@@ -109,7 +109,7 @@
     transition-duration: 1s;
     background-color: rgb(243, 168, 7);
   }
-  #input {
+  #search {
     height: 30px;
     width: 300px;
     text-decoration: none;
@@ -399,7 +399,7 @@
       background-color: black;
       color: white;
     }
-    #input {
+    #search {
       width: 200px;
       flex-shrink: 2;
     }
@@ -423,7 +423,7 @@
       display: flex;
       flex-direction: column;
     }
-    #input {
+    #search {
       width: 150px;
     }
     .close {
