@@ -68,7 +68,7 @@ def query():
     unbxdsearchAPI = "https://search.unbxd.io/fb853e3332f2645fac9d71dc63e09ec1/demo-unbxd700181503576558/search?q="
     finalquery = unbxdsearchAPI + searchquery + "&start=" + str(start) + "&rows=" + str(rows) + "&fields=" + "uniqueId,price,productDescription,productImage"
     responseFromSearch = (requests.get(finalquery).content)
-    responseFromSearch = json.loads(responseFromSearch)
+    responseFromSearch = json.loads(responseFromSearch);
     return responseFromSearch["response"]["products"]
 
 
