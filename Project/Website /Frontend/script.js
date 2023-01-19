@@ -44,6 +44,72 @@ function myFunctionCat2() {
 
 //   }
 
+
+
+
+// Fetch data from the API
+// fetch("https://thejsway-server.herokuapp.com/api/articles")
+//   .then(response => response.json()) // Translate JSON into JavaScript
+//   .then(articles => {
+//     articles.forEach(article => {
+//       // Create title element
+//       const titleElement = document.createElement("h3");
+//       titleElement.textContent = article.title;
+//       // Create content element
+//       const contentElement = document.createElement("p");
+//       contentElement.textContent = article.content;
+//       // Add title and content to the page
+//       const articlesElement = document.getElementById("articles");
+//       articlesElement.appendChild(titleElement);
+//       articlesElement.appendChild(contentElement);
+//     });
+//   })
+//   .catch(err => {
+//     console.error(err.message);
+//   });
+
+
+
+
+fetch("http://localhost:5000/products/getcategory",{
+  headers:{
+    "Content-Type": "application/json",
+    "Access-Control-Allow-Origin": "*",
+    "Acess-Control-Allow-Methods": "GET",
+
+  }
+}
+)
+  .then((response) => response.json())
+  .then((data) => {
+    const category1 = document.getElementById("myDropdown1");
+    var subcategory = document.createElement("a");
+    subcategory.setAttribute("href", "#");
+    subcategory.innerHTML = "Subcategory1";
+    category1.appendChild(subcategory);
+    
+    var subcategory2 = document.createElement("a");
+    subcategory2.setAttribute("href", "#");
+    subcategory2.innerHTML = "Subcategory2";
+    category1.appendChild(subcategory2);
+    console.log(data,category1);
+  })
+  .catch((error) => {
+    console.log(error);
+  });
+
+
+
+
+
+
+
+
+
+
+
+
+
 //   var xhr = null;
 //   getXmlHttpRequestObject = function () {
 //       if (!xhr) {

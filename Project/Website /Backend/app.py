@@ -1,6 +1,9 @@
+import json
 from flask import Flask ,request, jsonify, request
-app = Flask(__name__)
+from flask_cors import CORS
 
+app = Flask(__name__)
+CORS(app)
 
 @app.route('/products/search', methods=["GET"])
 def query():
@@ -25,10 +28,14 @@ def trending():
 
 @app.route('/products/getcategory', methods = ["GET"])
 def getcategory():
-    pass
+    return json.dumps({'category':'hello world'},indent = 4)
+    
 
 
 
-@app.route('/products/details/</product-id>', methods=["GET"])
+@app.route("/products/details/<product_id>", methods=["GET"])
 def details(productId):
     pass
+
+if __name__ == "__main__":
+    app.run(debug=True)
