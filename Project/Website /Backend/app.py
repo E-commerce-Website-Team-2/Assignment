@@ -1,5 +1,63 @@
 from flask import Flask ,request, jsonify, request
+from flask_cors import CORS
+import psycopg2
+
+
 app = Flask(__name__)
+CORS(app)
+
+
+
+#This function will be able to create a connection to the database. It will be called everytime a connection 
+# is asked for and should return a connection to the database as and when requested. 
+def db_connection(db_name):
+    conn = psycopg2.connect(host='localhost',
+                            database=db_name,
+                            user='gourav' ,    #os.environ['DB_USERNAME'],
+                            password='gourav')         #os.environ['DB_PASSWORD'])
+    return conn
+
+
+
+#This will be able to check if a table that is meant to be in the database exists or not. 
+def check_table(table):
+    conn = db_connection('data')
+    cur = conn.cursor()
+    cur.execute('select exists ( select * from '+ table + ");")
+    exists = cur.fetchall()
+    cur.close()
+    conn.close()
+    return exists
+
+# This function is able to perform a read request from the database. It will be able to do a Select From Where command
+def readDB(table,fields,condition = False):
+    checkTable = check_table(table)
+    numberOfFields = len(fields)
+    if(checkTable):
+        query = "Select "
+        if(fields == "*"):
+            query += "* "
+        else:
+            for field in range(numberOfFields):
+                if(field == numberOfFields-1):
+                    query += fields[field] + " "
+                else:
+                    query += fields[field] + ","
+        query += " From " + table + " "
+        if(condition != False):
+            query += "Where "
+            for field in condition:
+                query += field + " = \'" + condition[field] + "\'"
+        #With this the query is complete. We will now open a connection to the database and get the request from there. 
+        conn = db_connection('data')
+        cur = conn.cursor()    
+        cur.execute(query)
+        data = cur.fetchall()
+        return [200,data]
+    else:
+        return [400,"Table Doesnt Exist"]
+    
+
 
 
 @app.route('/products/search', methods=["GET"])
@@ -8,7 +66,7 @@ def query():
     unbxdsearchAPI = "https://search.unbxd.io/fb853e3332f2645fac9d71dc63e09ec1/demo-unbxd700181503576558/search?q="
     finalquery = unbxdsearchAPI + searchquery
     responseFromSearch = request.get(finalquery).content
-    
+    return responseFromSearch
 
 
 @app.route('/products/category', methods=["GET"])
@@ -23,12 +81,27 @@ def trending():
     pass
 
 
+
+#Will be able to load the entire category tree and send back a JSON to the front-end
 @app.route('/products/getcategory', methods = ["GET"])
 def getcategory():
-    pass
+    final = {}
+    table1 = readDB('categorylevel1',"*")
+    if(table1[0] == 200):
+        for level1 in table1[1]:
+            catlevel1 = level1[0]
+            table2 = readDB("categorylevel2",["catlevel2"],{"catlevel1":catlevel1})
+            catlevel2 = table2[1]
+            for i in range(len(catlevel2)):
+                catlevel2[i] = catlevel2[i][0]
+            final[catlevel1] = catlevel2
+    return final
 
 
 
-@app.route('/products/details/</product-id>', methods=["GET"])
+@app.route('/products/details/<productid>', methods=["GET"])
 def details(productId):
     pass
+
+
+app.run()
