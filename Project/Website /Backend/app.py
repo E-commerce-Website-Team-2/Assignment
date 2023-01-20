@@ -99,7 +99,10 @@ def category():
             if(response[1] != []):
                 #This means that the category 2 is valid. Then we can query the products and return first 9. 
                 response = readDB("products",["uniqueID","name","price","productimage"],{"catlevel2name":catlevel2})
-                return response[1][start:start+rows] 
+                finalresponse = []
+                for product in response[1][start:start+rows]:
+                    finalresponse.append({"uniqueID":product[0],"name":product[1],"price":product[2],"productimage":product[3]})
+                return finalresponse
             else:
                 return {"Error":"The category chosen does not exist. "}
     elif(catlevel2 == None):
@@ -108,7 +111,10 @@ def category():
         if(response[1] != []):
             #This means that the category 1 is valid. Then we can query the products and return first 9.
             response = readDB("products",["uniqueID","name","price","productimage"],{"catlevel1name":catlevel1})
-            return response[1][start:start+rows]  
+            finalresponse = []
+            for product in response[1][start:start+rows]:
+                finalresponse.append({"uniqueID":product[0],"name":product[1],"price":product[2],"productimage":product[3]})
+            return finalresponse 
         else:
             return {"Error":"The category chosen does not exist. "} 
     else:
@@ -117,7 +123,10 @@ def category():
         if(response[1] != [] ):
             ##This means that both level of categories that have been given are correct. Therefore, we can query the products and return ther first 9. 
             response = readDB("products",["uniqueID","name","price","productimage"],{"catlevel1name":catlevel1 , "catlevel2name":catlevel2})
-            return response[1][start:start+rows] 
+            finalresponse = []
+            for product in response[1][start:start+rows]:
+                finalresponse.append({"uniqueID":product[0],"name":product[1],"price":product[2],"productimage":product[3]})
+            return finalresponse
         else:
             return {"Error":"The categories that have been selected are invalid."}
 
