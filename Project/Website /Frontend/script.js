@@ -1,3 +1,4 @@
+// const withQuery = require('with-query');
 /* Function to display the sub items in a dropdown list for button category 1*/
 function myFunctionCat1() {
     document.getElementById("myDropdown1").classList.toggle("show");
@@ -36,12 +37,13 @@ function myFunctionCat2() {
     }
   }
 
-// FUnction on searching an item
+// Function on searching an item - Get response from backend and add the response products to the forntend page
   function search(ele){
     if (event.key === 'Enter'){
       const inputelement = document.getElementById("search");
       const query = inputelement.value;
       inputelement.value = "";
+      
       fetch(`http://localhost:5000/products/search?query=${query}`,{
         headers:{
           "Content-Type": "application/json",
@@ -83,8 +85,8 @@ function myFunctionCat2() {
 
             
             product_element.appendChild(div_element);
-            console.log(product_element);
-            console.log(data[ind]["name"]);
+            // console.log(product_element);
+            // console.log(data[ind]["name"]);
           }
         })
         .catch((error) => {
@@ -94,6 +96,75 @@ function myFunctionCat2() {
 
   }
 
+
+// This function is used to return the products when a subcategory is selected. It asks backend for the products with subcategories.
+
+function Category(cat1,cat2){
+  console.log(cat1,cat2);
+  let params = {
+    "cat1": cat1,
+    "cat2": cat2
+  };
+  
+  let query = Object.keys(params)
+               .map(k => encodeURIComponent(k) + '=' + encodeURIComponent(params[k]))
+               .join('&');
+  
+  let url = 'http://localhost:5000/products/category?' + query;
+  fetch(url,{
+        headers:{
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+          "Acess-Control-Allow-Methods": "GET",
+      
+        }
+      }
+      )
+        .then((response) => response.json())
+        .then((data) => {
+          
+          product_element = document.getElementById("subsection");
+          product_element.innerHTML = "";
+          for (ind in data) {
+            console.log(data[ind]);
+            div_element = document.createElement("div");
+            div_element.setAttribute("class", "items");
+
+            div_sub = document.createElement("div");
+            div_sub.setAttribute("class", "img img1");
+
+            img_element = document.createElement("img");
+            img_element.setAttribute("src",data[ind]["productimage"]);
+
+            div_sub.appendChild(img_element);
+
+            div_name = document.createElement("div");
+            div_name.setAttribute("class","name");
+            div_name.innerHTML = data[ind]["name"];
+
+            div_price = document.createElement("div");
+            div_price.setAttribute("class","price");
+            div_price.innerHTML = data[ind]["price"];
+
+            div_element.appendChild(div_sub);
+            div_element.appendChild(div_name);
+            div_element.appendChild(div_price);
+
+            
+            product_element.appendChild(div_element);
+            // console.log(product_element);
+            // console.log(data[ind]["name"]);
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+
+
+
+
+// This is used fetch subcategories from the database and update thhe dropdown menu in the forntend.
 fetch("http://localhost:5000/products/getcategory",{
   headers:{
     "Content-Type": "application/json",
@@ -105,16 +176,25 @@ fetch("http://localhost:5000/products/getcategory",{
 )
   .then((response) => response.json())
   .then((data) => {
-      category_call = `http://localhost:5000/products/category?cat1="men"&cat2=${data.men[subcategory]}`
+      
       for (var subcategory in data.men){
-        var subcategory1 = document.createElement("a");
-        subcategory1.setAttribute("href", '');
+        
+        var subcategory1 = document.createElement("button");
+        var cat1 = 'men';
+        var cat2 = data.men[subcategory];
+        subcategory1.setAttribute("onclick",`Category('${cat1}','${cat2}')`);
+        console.log(subcategory1);
         subcategory1.innerHTML = data.men[subcategory];
         document.getElementById("myDropdown1").appendChild(subcategory1);
       }
+
+
       for (var subcategory in data.women){
-        var subcategory2 = document.createElement("a");
-        subcategory2.setAttribute("href", '');
+        var subcategory2 = document.createElement("button");
+        var cat1 = 'women';
+        var cat2 = data.women[subcategory];
+        subcategory2.setAttribute("onclick",`Category('${cat1}','${cat2}')`);
+        // subcategory2.setAttribute("href", '');
         subcategory2.innerHTML = data.women[subcategory];
         document.getElementById("myDropdown2").appendChild(subcategory2);
       }

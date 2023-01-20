@@ -30,7 +30,7 @@
   }
   
   /* Links inside the dropdown */
-  .dropdown-content1 a , .dropdown-content2 a{
+  .dropdown-content1 button , .dropdown-content2 button{
     color: rgb(0, 0 , 0);
     padding: 12px 16px;
     text-decoration: none;
@@ -38,10 +38,11 @@
   }
   
   /* Change color of dropdown links on hover */
-  .dropdown-content1 a:hover, .dropdown-content2 a:hover{background-color: rgba(5, 1, 16, 0.012);}
+  .dropdown-content1 button:hover, .dropdown-content2 button:hover{background-color: rgba(5, 1, 16, 0.012);}
   
   /* Show the dropdown menu (use JS to add this class to the .dropdown-content container when the user clicks on the dropdown button) */
   .show {display:block;}
+
 
   * {
     margin: 0;
