@@ -179,7 +179,7 @@ fetch("http://localhost:5000/products/getcategory",{
       
       for (var subcategory in data.men){
         
-        var subcategory1 = document.createElement("button");
+        var subcategory1 = document.createElement("a");
         var cat1 = 'men';
         var cat2 = data.men[subcategory];
         subcategory1.setAttribute("onclick",`Category('${cat1}','${cat2}')`);
@@ -190,7 +190,7 @@ fetch("http://localhost:5000/products/getcategory",{
 
 
       for (var subcategory in data.women){
-        var subcategory2 = document.createElement("button");
+        var subcategory2 = document.createElement("a");
         var cat1 = 'women';
         var cat2 = data.women[subcategory];
         subcategory2.setAttribute("onclick",`Category('${cat1}','${cat2}')`);
