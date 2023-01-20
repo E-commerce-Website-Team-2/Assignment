@@ -71,7 +71,7 @@ function myFunctionCat2() {
 
             div_name = document.createElement("div");
             div_name.setAttribute("class","name");
-            div_name.innerHTML = "Product1";
+            div_name.innerHTML = data[ind]["name"];
 
             div_price = document.createElement("div");
             div_price.setAttribute("class","price");
@@ -84,7 +84,7 @@ function myFunctionCat2() {
             
             product_element.appendChild(div_element);
             console.log(product_element);
-            console.log(data[ind]);
+            console.log(data[ind]["name"]);
           }
         })
         .catch((error) => {
