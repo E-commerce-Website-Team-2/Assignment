@@ -32,7 +32,7 @@ def check_table(table):
 
 
 # This function is able to perform a read request from the database. It will be able to do a Select From Where command
-def readDB(table,fields,condition = False):
+def readDB(table ,fields ,condition = False ):
     checkTable = check_table(table)
     numberOfFields = len(fields)
     if(checkTable):
