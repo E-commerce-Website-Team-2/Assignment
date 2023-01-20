@@ -48,8 +48,14 @@ def readDB(table,fields,condition = False):
         query += " From " + table + " "
         if(condition != False):
             query += "Where "
+            numberOfConditions = len(condition)
+            passed = 0
             for field in condition:
-                query += field + " = \'" + condition[field] + "\'"
+                passed += 1
+                if(passed != numberOfConditions):
+                    query += field + " = \'" + condition[field] + "\'" + " AND "
+                else:
+                    query += field + " = \'" + condition[field] + "\'"
         #With this the query is complete. We will now open a connection to the database and get the request from there. 
         conn = db_connection('data')
         cur = conn.cursor()    
@@ -61,7 +67,7 @@ def readDB(table,fields,condition = False):
     
 
 
-
+#This will be able to search for products that have been passed as a query and will be re-routed to the Unbxd Search API. 
 @app.route('/products/search', methods=["GET"])
 def query():
     searchquery = request.args.get('query')
@@ -75,25 +81,45 @@ def query():
     return responseFromSearch["response"]["products"]
 
 
+
+#This will be able perform category filtering and will return products with an exact match. 
 @app.route('/products/category', methods=["GET"])
 def category():
     catlevel1 = request.args.get('cat1')
     catlevel2 = request.args.get('cat2')
+    start = 0    #(pagenumber - 1)*9
+    rows = 9
     if(catlevel1 == None):
         if(catlevel2 == None):
             return "There is no such filter possible"
             #This means that both were null. There is no way for me to filter from the database. 
         else:
             #This means only catlevel2 was given
-            return "Only cat level 2 is given to me"
-            pass
+            response = readDB("CategoryLevel2","*",{"catlevel2":catlevel2})
+            if(response[1] != []):
+                #This means that the category 2 is valid. Then we can query the products and return first 9. 
+                response = readDB("products",["uniqueID","name","price","productimage"],{"catlevel2name":catlevel2})
+                return response[1][start:start+rows] 
+            else:
+                return {"Error":"The category chosen does not exist. "}
     elif(catlevel2 == None):
         #This means that only catlevel1 was given
-        return "Only cat level 1 is given to me"
+        response = readDB("CategoryLevel1","*",{"catlevel1":catlevel1})
+        if(response[1] != []):
+            #This means that the category 1 is valid. Then we can query the products and return first 9.
+            response = readDB("products",["uniqueID","name","price","productimage"],{"catlevel1name":catlevel1})
+            return response[1][start:start+rows]  
+        else:
+            return {"Error":"The category chosen does not exist. "} 
     else:
-        #this means that both were given
-        return "Both have been given to me"
-
+        #This means that both were given
+        response = readDB("CategoryLevel2","*",{"catlevel1":catlevel1 , "catlevel2":catlevel2})
+        if(response[1] != [] ):
+            ##This means that both level of categories that have been given are correct. Therefore, we can query the products and return ther first 9. 
+            response = readDB("products",["uniqueID","name","price","productimage"],{"catlevel1name":catlevel1 , "catlevel2name":catlevel2})
+            return response[1][start:start+rows] 
+        else:
+            return {"Error":"The categories that have been selected are invalid."}
 
 
 
@@ -103,6 +129,8 @@ def category():
 @app.route('/products/trending', methods=["GET"])
 def trending():
     pass
+
+
 
 
 
@@ -123,6 +151,8 @@ def getcategory():
 
 
 
+
+#Will be able to send the extra details that need to be sent when the product itself is clicked. 
 @app.route('/products/details/<productId>', methods=["GET"])
 def details(productId):
     response = readDB("products",["product_description"],{"uniqueId":productId})
