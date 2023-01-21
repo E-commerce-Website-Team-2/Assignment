@@ -67,27 +67,50 @@ def readDB(table ,fields ,condition = False ):
     
 
 
+#This will put the products that we have in the right format and also check if the page number given is valid or not 
+def checkResponse(response,start,rows):
+    numberofProducts = len(response[1])
+    finalresponse = []
+    finalresponse.append(numberofProducts)
+    #This means that the page number given is invalid
+    if(numberofProducts < start):
+        return "Really sorry. There are no more products to show you."
+    #This means that the products left to show are not more then 9.
+    elif(numberofProducts < start + rows):
+        for product in response[1][start:start+rows]:
+            finalresponse.append({"uniqueID":product[0],"name":product[1],"price":product[2],"productimage":product[3]})
+        return finalresponse
+    #This means that there are all products in the page that was given
+    else:
+        for product in response[1][start:start+rows]:
+            finalresponse.append({"uniqueID":product[0],"name":product[1],"price":product[2],"productimage":product[3]})
+        return finalresponse
+
+
+
+
+
 #This will be able to search for products that have been passed as a query and will be re-routed to the Unbxd Search API. 
-@app.route('/products/search', methods=["GET"])
-def query():
+@app.route('/products/search/<pagenumber>', methods=["GET"])
+def query(pagenumber:int):
     searchquery = request.args.get('query')
-    start = 0   #(pagenumber - 1)*9
+    start = (int(pagenumber) - 1)*9
     rows = 9
     unbxdsearchAPI = "https://search.unbxd.io/fb853e3332f2645fac9d71dc63e09ec1/demo-unbxd700181503576558/search?q="
     finalquery = unbxdsearchAPI + searchquery + "&start=" + str(start) + "&rows=" + str(rows) + "&fields=" + "uniqueId,name,price,productImage"
     responseFromSearch = (requests.get(finalquery).content)
     responseFromSearch = json.loads(responseFromSearch)
-    #Pagination will be carried out by using a page number as a variable in the URL 
+    #Pagination has been carried out by using a page number as a variable in the URL 
     return responseFromSearch["response"]["products"]
 
 
 
 #This will be able perform category filtering and will return products with an exact match. 
-@app.route('/products/category', methods=["GET"])
-def category():
+@app.route('/products/category/<pagenumber>', methods=["GET"])
+def category(pagenumber):
     catlevel1 = request.args.get('cat1')
     catlevel2 = request.args.get('cat2')
-    start = 0    #(pagenumber - 1)*9
+    start = (int(pagenumber) - 1)*9
     rows = 9
     if(catlevel1 == None):
         if(catlevel2 == None):
@@ -99,9 +122,7 @@ def category():
             if(response[1] != []):
                 #This means that the category 2 is valid. Then we can query the products and return first 9. 
                 response = readDB("products",["uniqueID","name","price","productimage"],{"catlevel2name":catlevel2})
-                finalresponse = []
-                for product in response[1][start:start+rows]:
-                    finalresponse.append({"uniqueID":product[0],"name":product[1],"price":product[2],"productimage":product[3]})
+                finalresponse = checkResponse(response,start,rows)
                 return finalresponse
             else:
                 return {"Error":"The category chosen does not exist. "}
@@ -111,10 +132,9 @@ def category():
         if(response[1] != []):
             #This means that the category 1 is valid. Then we can query the products and return first 9.
             response = readDB("products",["uniqueID","name","price","productimage"],{"catlevel1name":catlevel1})
-            finalresponse = []
-            for product in response[1][start:start+rows]:
-                finalresponse.append({"uniqueID":product[0],"name":product[1],"price":product[2],"productimage":product[3]})
-            return finalresponse 
+            print(response[1][0])
+            finalresponse = checkResponse(response,start,rows)
+            return finalresponse
         else:
             return {"Error":"The category chosen does not exist. "} 
     else:
@@ -123,9 +143,7 @@ def category():
         if(response[1] != [] ):
             ##This means that both level of categories that have been given are correct. Therefore, we can query the products and return ther first 9. 
             response = readDB("products",["uniqueID","name","price","productimage"],{"catlevel1name":catlevel1 , "catlevel2name":catlevel2})
-            finalresponse = []
-            for product in response[1][start:start+rows]:
-                finalresponse.append({"uniqueID":product[0],"name":product[1],"price":product[2],"productimage":product[3]})
+            finalresponse = checkResponse(response,start,rows)
             return finalresponse
         else:
             return {"Error":"The categories that have been selected are invalid."}
@@ -134,10 +152,15 @@ def category():
 
 
 
+#This would be what is shown on the start when the page is loaded. At the moment its a call to get all the products in the database. 
+@app.route('/products/trending/<pagenumber>', methods=["GET"])
+def trending(pagenumber):
+    start = (int(pagenumber) - 1)*9
+    rows = 9
+    response = readDB("products",["uniqueID","name","price","productimage"])
+    finalresponse = checkResponse(response,start,rows)
+    return finalresponse
 
-@app.route('/products/trending', methods=["GET"])
-def trending():
-    pass
 
 
 
@@ -148,6 +171,7 @@ def trending():
 def getcategory():
     final = {}
     table1 = readDB('categorylevel1',"*")
+    #This would have read the table that stores category level 1. 
     if(table1[0] == 200):
         for level1 in table1[1]:
             catlevel1 = level1[0]

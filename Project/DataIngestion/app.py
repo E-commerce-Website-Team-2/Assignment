@@ -19,7 +19,7 @@ def db_connection(db_name):
 
 #This function will be able to validate any product that comes as input to the catalog. It will check if all the 
 # necessary features are provided and if these features are valid or not. It will also check if the product is 
-# being updated or a new one.
+# being updated or a new one. The documentation explaining the meaning behind each error code will be given
 def validate(product):
     string = "<class 'str'>"
     required = ['uniqueId','name','price','productDescription','catlevel1Name','catlevel2Name','productImage']
@@ -51,7 +51,7 @@ def validate(product):
 
 
 
-# This function will be capable of writing to a table present in the database. 
+# This function will be capable of writing to the products table present in the database. 
 def write(product,field,table,update):
     conn = db_connection('data')
     cur = conn.cursor()
@@ -234,7 +234,7 @@ def category():
     
 
 # This will be part of the API that will be able to load the trending items that are meant to be shown when 
-# the user visits the website 
+# the user visits the website. Has not been implemeneted in either side. 
 @app.route('/trending',methods = (['POST']))
 def trending():
     pass

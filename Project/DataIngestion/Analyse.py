@@ -1,3 +1,5 @@
+#This file has been created in the start of the project to study the many different 
+#attributes that we have receieved as part of the search API and the out.json file that we received as data
 import json 
 with open('out.json', 'r') as fcc_file:
     fcc_data = json.load(fcc_file)
