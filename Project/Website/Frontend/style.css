@@ -215,3 +215,8 @@ body {
 #proddetails .single-pro-details span{
   line-height: 50px;
 }
+
+/* Pagination Section */
+.pagination nav{ 
+  justify-content: center;
+}
