@@ -101,7 +101,9 @@ def query(pagenumber:int):
     responseFromSearch = (requests.get(finalquery).content)
     responseFromSearch = json.loads(responseFromSearch)
     #Pagination has been carried out by using a page number as a variable in the URL 
-    return responseFromSearch["response"]["products"]
+    final = [responseFromSearch["response"]["numberOfProducts"]]
+    final.append(responseFromSearch["response"]["products"])
+    return final
 
 
 
@@ -189,7 +191,15 @@ def getcategory():
 @app.route('/products/details/<productId>', methods=["GET"])
 def details(productId):
     response = readDB("products",["product_description"],{"uniqueId":productId})
-    return response[1] 
+    if response[1] == []:
+        unbxdsearchAPI = "https://search.unbxd.io/fb853e3332f2645fac9d71dc63e09ec1/demo-unbxd700181503576558/search?q="
+        finalquery = unbxdsearchAPI + str(productId) + "&fields=" + "productDescription"
+        responseFromSearch = (requests.get(finalquery).content)
+        responseFromSearch = json.loads(responseFromSearch) 
+        print(responseFromSearch["response"]["products"][0])
+        return [str(responseFromSearch["response"]["products"][0]["productDescription"])]
+    else:
+        return response[1] 
 
 
 app.run()
