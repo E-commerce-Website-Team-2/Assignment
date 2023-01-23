@@ -59,10 +59,10 @@ function fill_products(query,pageno){
       product_element = document.getElementsByClassName("pro-container")[0];
       product_element.innerHTML = "";
       for ( ind in data) {
-        // console.log( data[ind])
+        console.log( data[ind])
         div_element = document.createElement("div");
         div_element.setAttribute("class", "pro");
-        div_element.setAttribute("onclick",`DetailedProduct(${data[ind]["uniqueID"]},'${data[ind]["name"]}',${data[ind]["price"]},'${data[ind]["productImage"]}')`);
+        div_element.setAttribute("onclick",`DetailedProduct('${data[ind]["uniqueId"]}','${data[ind]["name"]}',${data[ind]["price"]},'${data[ind]["productImage"]}')`);
 
 
         img_element = document.createElement("img");
