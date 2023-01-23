@@ -55,10 +55,16 @@ function fill_products(query,pageno){
   )
     .then((response) => response.json())
     .then((data) => {
-        
+      no_of_products = data[0];
+      no_of_pages = Math.ceil(no_of_products/9);
+
+      ul_element = document.getElementsByClassName("pagination")[0];
+      ul_element.innerHTML = "";
+
       product_element = document.getElementsByClassName("pro-container")[0];
       product_element.innerHTML = "";
-      for ( ind in data) {
+
+      for (let ind = 1; ind<data.length; ind++ ) {
         console.log( data[ind])
         div_element = document.createElement("div");
         div_element.setAttribute("class", "pro");
@@ -85,6 +91,10 @@ function fill_products(query,pageno){
         
         product_element.appendChild(div_element);
 
+        if (!document.getElementsByClassName("pagination")[0].hasChildNodes()){
+          createPagination(query,no_of_pages);
+        }
+
         // console.log(product_element);
         // console.log(data[ind]["name"]);
       }
@@ -103,7 +113,6 @@ function search(ele){
     inputelement.value = "";
     
     fill_products(query,1);
-    createPagination(query,5);
       }
   }
 
