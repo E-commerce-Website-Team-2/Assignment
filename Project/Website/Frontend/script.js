@@ -15,8 +15,20 @@ fetch("http://localhost:5000/products/getcategory",{
     var subcategory1 = document.createElement("a");
     var cat1 = 'men';
     var cat2 = data.men[subcategory];
+
+    let params = {
+      "cat1": cat1,
+      "cat2": cat2,
+      "pageno":1
+      };
+    
+    let query = Object.keys(params)
+               .map(k => encodeURIComponent(k) + '=' + encodeURIComponent(params[k]))
+               .join('&');
+    let url = `http://localhost:8000/index.html?` + query;
+
     subcategory1.setAttribute("class","dropdown-item");
-    subcategory1.setAttribute("onclick",`Category('${cat1}','${cat2}',1)`);
+    subcategory1.setAttribute("href",url);
     // console.log(subcategory1);
     subcategory1.innerHTML = data.men[subcategory];
     list_element.appendChild(subcategory1)
@@ -29,8 +41,20 @@ fetch("http://localhost:5000/products/getcategory",{
     var subcategory1 = document.createElement("a");
     var cat1 = 'women';
     var cat2 = data.women[subcategory];
+
+    let params = {
+      "cat1": cat1,
+      "cat2": cat2,
+      "pageno":1
+      };
+    
+    let query = Object.keys(params)
+               .map(k => encodeURIComponent(k) + '=' + encodeURIComponent(params[k]))
+               .join('&');
+    let url = `http://localhost:8000/index.html?` + query;
+
     subcategory1.setAttribute("class","dropdown-item");
-    subcategory1.setAttribute("onclick",`Category('${cat1}','${cat2}',1)`);
+    subcategory1.setAttribute("href",url);
     // console.log(subcategory1);
     subcategory1.innerHTML = data.women[subcategory];
     list_element.appendChild(subcategory1)
@@ -40,6 +64,23 @@ fetch("http://localhost:5000/products/getcategory",{
 .catch((error) => {
 console.log(error);
 });
+
+
+// Below code is used to redirect to home page on searching or selecting a category
+const queryString = window.location.search;
+const urlParams = new URLSearchParams(queryString);
+if (urlParams.has('search')&urlParams.has('pageno')){
+  var query = urlParams.get('search');
+  var pageno = urlParams.get('pageno');
+  fill_products(query,pageno);
+}
+if (urlParams.has('cat1') && urlParams.has('cat2') && urlParams.has('pageno')){
+  var cat1 = urlParams.get('cat1');
+  var cat2 = urlParams.get('cat2');
+  var pageno = urlParams.get('pageno');
+  console.log(cat1,cat2,pageno);
+  Category(cat1,cat2,pageno);
+}
 
 
 // Function to fill the home page with products sent from the backend for thhe particular search query and page number
@@ -107,18 +148,18 @@ function fill_products(query,pageno){
 function search(ele){
   
   if (event.key === 'Enter'){
-    // window.location.href = 'http://localhost:8000/index.html';
+    
     const inputelement = document.getElementById("search");
     const query = inputelement.value;
     inputelement.value = "";
+    window.location.href = `http://localhost:8000/index.html?search=${query}&pageno=1`;
     
-    fill_products(query,1);
       }
   }
 
 // This function is used to return the products when a subcategory is selected. It asks backend for the products with subcategories.
 function Category(cat1,cat2,pageno){
-  // console.log(cat1,cat2);
+  console.log(cat1,cat2);
   let params = {
     "cat1": cat1,
     "cat2": cat2
@@ -140,6 +181,7 @@ function Category(cat1,cat2,pageno){
     )
       .then((response) => response.json())
       .then((data) => {
+        console.log(data);
         no_of_products = data[0];
         no_of_pages = Math.ceil(no_of_products/9);
         ul_element = document.getElementsByClassName("pagination")[0];
@@ -228,7 +270,7 @@ function createPagination(searchText,pages){
 
     anchor_element = document.createElement("a");
     anchor_element.setAttribute("class","page-link");
-    anchor_element.setAttribute("onclick",`fill_products('${searchText}',${i})`);
+    anchor_element.setAttribute("href",`http://localhost:8000/index.html?search=${searchText}&pageno=${i}`);
 
     anchor_element.innerHTML = i;
     list_element.appendChild(anchor_element);
@@ -270,7 +312,18 @@ function createPaginationCategory(cat1,cat2,pages){
 
     anchor_element = document.createElement("a");
     anchor_element.setAttribute("class","page-link");
-    anchor_element.setAttribute("onclick",`Category('${cat1}','${cat2}',${i})`);
+    let params = {
+      "cat1": cat1,
+      "cat2": cat2,
+      "pageno":i
+      };
+    
+    let query = Object.keys(params)
+               .map(k => encodeURIComponent(k) + '=' + encodeURIComponent(params[k]))
+               .join('&');
+    
+    let url = `http://localhost:8000/index.html?` + query;
+    anchor_element.setAttribute("href",url);
 
     anchor_element.innerHTML = i;
     list_element.appendChild(anchor_element);
