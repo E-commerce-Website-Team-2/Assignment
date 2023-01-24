@@ -105,9 +105,10 @@ function fill_products(query,pageno){
       product_element.innerHTML = "";
 
       for (let ind = 1; ind<data.length; ind++ ) {
-        console.log( data[ind])
+        // console.log( data[ind])
         div_element = document.createElement("div");
         div_element.setAttribute("class", "pro");
+        console.log(typeof data[ind]["name"]);
         div_element.setAttribute("onclick",`DetailedProduct('${data[ind]["uniqueId"]}','${data[ind]["name"]}',${data[ind]["price"]},'${data[ind]["productImage"]}')`);
 
 
@@ -180,7 +181,7 @@ function Category(cat1,cat2,pageno){
     )
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
+        // console.log(data);
         no_of_products = data[0];
         no_of_pages = Math.ceil(no_of_products/9);
         ul_element = document.getElementsByClassName("pagination")[0];
@@ -188,10 +189,11 @@ function Category(cat1,cat2,pageno){
         product_element = document.getElementsByClassName("pro-container")[0];
         product_element.innerHTML = "";
         for ( let ind = 1; ind<data.length; ind++ ) {
-          console.log(1,data[ind]["uniqueID"])
+          // console.log(1,data[ind]["uniqueID"])
           div_element = document.createElement("div");
           div_element.setAttribute("class", "pro");
-          div_element.setAttribute("onclick",`DetailedProduct('${data[ind]["uniqueID"]}','${data[ind]["name"]}',${data[ind]["price"]},'${data[ind]["productimage"]}')`);
+          console.log(typeof data[ind]["name"]);
+          div_element.setAttribute("onclick",`DetailedProduct('${data[ind]["uniqueID"]}',"${data[ind]["name"]}",${data[ind]["price"]},'${data[ind]["productimage"]}')`);
   
   
           img_element = document.createElement("img");
