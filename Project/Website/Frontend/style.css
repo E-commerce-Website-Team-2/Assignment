@@ -218,5 +218,8 @@ body {
 
 /* Pagination Section */
 .pagination nav{ 
-  justify-content: center;
+  text-align: center;
+}
+.page-item{
+  cursor: pointer;
 }
