@@ -1,5 +1,5 @@
 // This is used fetch subcategories from the backend via database and update thhe dropdown menu in the forntend.
-fetch("http://localhost:5000/products/getcategory",{
+window.onload = fetch("http://localhost:5000/products/getcategory",{
     headers:{
         "Content-Type": "application/json",
         "Access-Control-Allow-Origin": "*",
@@ -145,12 +145,12 @@ function fill_products(query,pageno){
 
 // Function on searching an item - Get response from backend and add the response products to the forntend page
 function search(ele){
-  
   if (event.key === 'Enter'){
     
     const inputelement = document.getElementById("search");
-    const query = inputelement.value;
+    let query = inputelement.value;
     inputelement.value = "";
+    query = encodeURIComponent(query);
     window.location.href = `http://localhost:8000/index.html?search=${query}&pageno=1`;
     
       }
