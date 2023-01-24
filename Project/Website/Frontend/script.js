@@ -8,62 +8,62 @@ fetch("http://localhost:5000/products/getcategory",{
       }
     }
   )
-.then((response) => response.json())
-.then((data) => {
-  for (var subcategory in data.men){
-    var list_element = document.createElement("li");
-    var subcategory1 = document.createElement("a");
-    var cat1 = 'men';
-    var cat2 = data.men[subcategory];
+  .then((response) => response.json())
+  .then((data) => {
+    for (var subcategory in data.men){
+      var list_element = document.createElement("li");
+      var subcategory1 = document.createElement("a");
+      var cat1 = 'men';
+      var cat2 = data.men[subcategory];
 
-    let params = {
-      "cat1": cat1,
-      "cat2": cat2,
-      "pageno":1
-      };
-    
-    let query = Object.keys(params)
-               .map(k => encodeURIComponent(k) + '=' + encodeURIComponent(params[k]))
-               .join('&');
-    let url = `http://localhost:8000/index.html?` + query;
+      let params = {
+        "cat1": cat1,
+        "cat2": cat2,
+        "pageno":1
+        };
+      
+      let query = Object.keys(params)
+                .map(k => encodeURIComponent(k) + '=' + encodeURIComponent(params[k]))
+                .join('&');
+      let url = `http://localhost:8000/index.html?` + query;
 
-    subcategory1.setAttribute("class","dropdown-item");
-    subcategory1.setAttribute("href",url);
-    // console.log(subcategory1);
-    subcategory1.innerHTML = data.men[subcategory];
-    list_element.appendChild(subcategory1)
-    document.getElementsByClassName("cat1")[0].appendChild(list_element);
-  }
+      subcategory1.setAttribute("class","dropdown-item");
+      subcategory1.setAttribute("href",url);
+      // console.log(subcategory1);
+      subcategory1.innerHTML = data.men[subcategory];
+      list_element.appendChild(subcategory1)
+      document.getElementsByClassName("cat1")[0].appendChild(list_element);
+    }
 
 
-  for (var subcategory in data.women){
-    var list_element = document.createElement("li");
-    var subcategory1 = document.createElement("a");
-    var cat1 = 'women';
-    var cat2 = data.women[subcategory];
+    for (var subcategory in data.women){
+      var list_element = document.createElement("li");
+      var subcategory1 = document.createElement("a");
+      var cat1 = 'women';
+      var cat2 = data.women[subcategory];
 
-    let params = {
-      "cat1": cat1,
-      "cat2": cat2,
-      "pageno":1
-      };
-    
-    let query = Object.keys(params)
-               .map(k => encodeURIComponent(k) + '=' + encodeURIComponent(params[k]))
-               .join('&');
-    let url = `http://localhost:8000/index.html?` + query;
+      let params = {
+        "cat1": cat1,
+        "cat2": cat2,
+        "pageno":1
+        };
+      
+      let query = Object.keys(params)
+                .map(k => encodeURIComponent(k) + '=' + encodeURIComponent(params[k]))
+                .join('&');
+      let url = `http://localhost:8000/index.html?` + query;
 
-    subcategory1.setAttribute("class","dropdown-item");
-    subcategory1.setAttribute("href",url);
-    // console.log(subcategory1);
-    subcategory1.innerHTML = data.women[subcategory];
-    list_element.appendChild(subcategory1)
-    document.getElementsByClassName("cat2")[0].appendChild(list_element);
-  }
-})
-.catch((error) => {
-console.log(error);
-});
+      subcategory1.setAttribute("class","dropdown-item");
+      subcategory1.setAttribute("href",url);
+      // console.log(subcategory1);
+      subcategory1.innerHTML = data.women[subcategory];
+      list_element.appendChild(subcategory1)
+      document.getElementsByClassName("cat2")[0].appendChild(list_element);
+    }
+  })
+  .catch((error) => {
+  console.log(error);
+  });
 
 
 // Below code is used to redirect to home page on searching or selecting a category
@@ -78,7 +78,6 @@ if (urlParams.has('cat1') && urlParams.has('cat2') && urlParams.has('pageno')){
   var cat1 = urlParams.get('cat1');
   var cat2 = urlParams.get('cat2');
   var pageno = urlParams.get('pageno');
-  console.log(cat1,cat2,pageno);
   Category(cat1,cat2,pageno);
 }
 
@@ -133,7 +132,7 @@ function fill_products(query,pageno){
         product_element.appendChild(div_element);
 
         if (!document.getElementsByClassName("pagination")[0].hasChildNodes()){
-          createPagination(query,no_of_pages);
+          createPagination(query,no_of_pages,pageno);
         }
 
         // console.log(product_element);
@@ -220,7 +219,7 @@ function Category(cat1,cat2,pageno){
 
         }
         if (!document.getElementsByClassName("pagination")[0].hasChildNodes()){
-            createPaginationCategory(cat1,cat2,no_of_pages);
+            createPaginationCategory(cat1,cat2,no_of_pages,pageno);
           }
       })
       .catch((error) => {
@@ -248,11 +247,26 @@ function DetailedProduct(id,name,price,image){
 
 }
 
-// Function to create Pagination.
-function createPagination(searchText,pages){
+
+// Function to change the css of pageno on clicking a page 
+function SelectPage(el)
+{
+    $('.page-item').removeClass('active');
+    $(el).parent().addClass('active');
+} 
+
+// Function to create Pagination for searching.
+function createPagination(searchText,pages,pageno){
   ul_element = document.getElementsByClassName("pagination")[0];
   list_element = document.createElement("li");
-  list_element.setAttribute("class","page-item");
+  if (pageno == 1){
+    list_element.setAttribute("class","page-item disabled");
+  }
+  else{
+    list_element.setAttribute("class","page-item");
+    list_element.setAttribute("onclick",`window.location.href='http://localhost:8000/index.html?search=${searchText}&pageno=${pageno-1}'`);
+  }
+  
 
   anchor_element = document.createElement("a");
   anchor_element.setAttribute("class","page-link");
@@ -261,25 +275,48 @@ function createPagination(searchText,pages){
   list_element.appendChild(anchor_element);
   ul_element.appendChild(list_element);
 
+  pageno = Number(pageno);
+  if(pageno - 5 <= 0){
+    min_index = 1;
+  }else{
+    min_index = pageno - 5;
+  }
 
+  if(pageno + 5 >= pages){
+    max_index = pages;
+  }else{
+    max_index = pageno + 5;
+  }
 
-
-  for (i = 1; i<=pages;i++){
+  console.log(min_index,max_index,pages);
+  for (var i = min_index; i<=max_index;i++){
     list_element = document.createElement("li");
-    list_element.setAttribute("class","page-item");
+    if (i === pageno){
+      list_element.setAttribute("class","page-item active");
+    }else{
+      list_element.setAttribute("class","page-item");
+    }
+
 
     anchor_element = document.createElement("a");
     anchor_element.setAttribute("class","page-link");
     anchor_element.setAttribute("href",`http://localhost:8000/index.html?search=${searchText}&pageno=${i}`);
+    anchor_element.setAttribute("onclick",'SelectPage(this)');
 
     anchor_element.innerHTML = i;
     list_element.appendChild(anchor_element);
     ul_element.appendChild(list_element);
   }
 
-  list_element = document.createElement("li");
-  list_element.setAttribute("class","page-item");
 
+  list_element = document.createElement("li");
+  if (pageno === pages){
+  list_element.setAttribute("class","page-item disabled");
+  }
+  else{
+  list_element.setAttribute("class","page-item");
+  list_element.setAttribute("onclick",`window.location.href='http://localhost:8000/index.html?search=${searchText}&pageno=${pageno+1}'`);
+  }
   anchor_element = document.createElement("a");
   anchor_element.setAttribute("class","page-link");
 
@@ -291,10 +328,29 @@ function createPagination(searchText,pages){
 
 
 // Function to create Pagination when a category button is selected.
-function createPaginationCategory(cat1,cat2,pages){
+function createPaginationCategory(cat1,cat2,pages,pageno){
   ul_element = document.getElementsByClassName("pagination")[0];
+
+  let params = {
+    "cat1": cat1,
+    "cat2": cat2,
+    "pageno":pageno-1
+    };
+  let query = Object.keys(params)
+         .map(k => encodeURIComponent(k) + '=' + encodeURIComponent(params[k]))
+         .join('&');
+
+  let url = `http://localhost:8000/index.html?` + query;
+
   list_element = document.createElement("li");
-  list_element.setAttribute("class","page-item");
+  if (pageno == 1){
+    list_element.setAttribute("class","page-item disabled");
+  }
+  else{
+    list_element.setAttribute("class","page-item");
+    list_element.setAttribute("onclick",`window.location.href='${url}'`);
+  }
+  
 
   anchor_element = document.createElement("a");
   anchor_element.setAttribute("class","page-link");
@@ -303,36 +359,68 @@ function createPaginationCategory(cat1,cat2,pages){
   list_element.appendChild(anchor_element);
   ul_element.appendChild(list_element);
 
+  pageno = Number(pageno);
+  if(pageno - 5 <= 0){
+    min_index = 1;
+  }else{
+    min_index = pageno - 5;
+  }
 
+  if(pageno + 5 >= pages){
+    max_index = pages;
+  }else{
+    max_index = pageno + 5;
+  }
 
-
-  for (i = 1; i<=pages;i++){
+  console.log(min_index,max_index,pages);
+  for (var i = min_index; i<=max_index;i++){
     list_element = document.createElement("li");
-    list_element.setAttribute("class","page-item");
+    if (i === pageno){
+      list_element.setAttribute("class","page-item active");
+    }else{
+      list_element.setAttribute("class","page-item");
+    }
 
-    anchor_element = document.createElement("a");
-    anchor_element.setAttribute("class","page-link");
-    let params = {
+    params = {
       "cat1": cat1,
       "cat2": cat2,
       "pageno":i
       };
-    
-    let query = Object.keys(params)
-               .map(k => encodeURIComponent(k) + '=' + encodeURIComponent(params[k]))
-               .join('&');
-    
-    let url = `http://localhost:8000/index.html?` + query;
+    query = Object.keys(params)
+           .map(k => encodeURIComponent(k) + '=' + encodeURIComponent(params[k]))
+           .join('&');
+
+    url = `http://localhost:8000/index.html?` + query;
+
+    anchor_element = document.createElement("a");
+    anchor_element.setAttribute("class","page-link");
     anchor_element.setAttribute("href",url);
+    anchor_element.setAttribute("onclick",'SelectPage(this)');
 
     anchor_element.innerHTML = i;
     list_element.appendChild(anchor_element);
     ul_element.appendChild(list_element);
   }
 
-  list_element = document.createElement("li");
-  list_element.setAttribute("class","page-item");
 
+  params = {
+    "cat1": cat1,
+    "cat2": cat2,
+    "pageno":pageno+1
+    };
+  query = Object.keys(params)
+         .map(k => encodeURIComponent(k) + '=' + encodeURIComponent(params[k]))
+         .join('&');
+
+  url = `http://localhost:8000/index.html?` + query;
+  list_element = document.createElement("li");
+  if (pageno === pages){
+  list_element.setAttribute("class","page-item disabled");
+  }
+  else{
+  list_element.setAttribute("class","page-item");
+  list_element.setAttribute("onclick",`window.location.href='${url}'`);
+  }
   anchor_element = document.createElement("a");
   anchor_element.setAttribute("class","page-link");
 
@@ -341,3 +429,7 @@ function createPaginationCategory(cat1,cat2,pages){
   ul_element.appendChild(list_element);
   
 }
+
+
+
+
