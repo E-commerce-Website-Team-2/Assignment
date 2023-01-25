@@ -1,11 +1,16 @@
-import psycopg2
+from psycopg2 import sql
 from Database.DBmain import *
 
 #This will be able to check if a table that is meant to be in the database exists or not. 
 def check_table(table):
     conn = db_connection('data')
     cur = conn.cursor()
-    cur.execute('select exists ( select * from '+ table + ");")
+    stmt = sql.SQL("""
+            Select Exists 
+            ( Select * 
+            From  
+            {table} ) """).format(table = sql.Identifier(table))
+    cur.execute(stmt)
     exists = cur.fetchall()
     cur.close()
     conn.close()
@@ -19,7 +24,11 @@ def checkID(productId,table):
     if check_table(table):
         conn = db_connection('data')
         cur = conn.cursor()
-        cur.execute('select * from ' + table + ' where uniqueid= \'' + productId + "';")
+        query = sql.SQL(""" 
+        Select * 
+        From  products  
+        Where uniqueid= {productId} """).format(productId = sql.Literal(productId))
+        cur.execute(query)
         products = cur.fetchall()
         cur.close()
         conn.close()
@@ -38,7 +47,12 @@ def checkID(productId,table):
 def CategoryPresent(category,table):
     conn = db_connection('data')
     cur = conn.cursor()
-    cur.execute('select exists ( select * from '+ table + ' Where catlevel1 = \'' + category + '\');')
+    stmt = sql.SQL("""
+    Select Exists 
+    ( Select * 
+    From {table} 
+    Where catlevel1 = {category} """).format(table = sql.Identifier(table) , category = sql.Literal(category))
+    cur.execute(stmt)
     exists = cur.fetchall()
     cur.close()
     conn.close()
@@ -50,7 +64,12 @@ def CategoryPresent(category,table):
 def CategoryLevel2Present(category1,subCategory,table):
     conn = db_connection('data')
     cur = conn.cursor()
-    cur.execute('select exists (select * from '+ table + ' Where catlevel1 = \'' + category1 + '\' AND catlevel2 = \'' + subCategory + '\');')
+    stmt = sql.SQL("""
+    Select Exists 
+    ( Select * 
+    From {table} 
+    Where catlevel1 = {category} AND catlevel2 = {subCategory}""").format(table = sql.Identifier(table) , category = sql.Literal(category1) , subCategory = sql.Literal(subCategory))
+    cur.execute(stmt)
     exists = cur.fetchall()
     cur.close()
     conn.close()
