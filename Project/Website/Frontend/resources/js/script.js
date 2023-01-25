@@ -96,50 +96,57 @@ function fill_products(query,pageno){
   )
     .then((response) => response.json())
     .then((data) => {
-      // 2.  Get the number of products sent in the response from the backend and calculate the no of pages
-      no_of_products = data[0];
-      no_of_pages = Math.ceil(no_of_products/9);
+      console.log(data);
+      if (data[0] == 200){
+        // 2.  Get the number of products sent in the response from the backend and calculate the no of pages
+        no_of_products = data[1];
+        no_of_pages = Math.ceil(no_of_products/9);
 
-      //3. Get the pagination section where the pagination with given pages is created
-      ul_element = document.getElementsByClassName("pagination")[0];
-      ul_element.innerHTML = "";
+        //3. Get the pagination section where the pagination with given pages is created
+        ul_element = document.getElementsByClassName("pagination")[0];
+        ul_element.innerHTML = "";
 
-      //4. Get the product section where the products is going to be added
-      product_element = document.getElementsByClassName("pro-container")[0];
-      product_element.innerHTML = "";
+        //4. Get the product section where the products is going to be added
+        product_element = document.getElementsByClassName("pro-container")[0];
+        product_element.innerHTML = "";
 
-      //5. Iterate through the response data containing a list of products and append it to the html page under the product section
-      for (let ind = 1; ind<data.length; ind++ ) {
+        //5. Iterate through the response data containing a list of products and append it to the html page under the product section
+        for (let ind = 2; ind<data.length; ind++ ) {
 
-        div_element = document.createElement("div");
-        div_element.setAttribute("class", "pro");
-        div_element.setAttribute("onclick",`DetailedProduct("${data[ind]["uniqueId"]}","${data[ind]["name"]}",${data[ind]["price"]},"${data[ind]["productImage"]}")`);
+          div_element = document.createElement("div");
+          div_element.setAttribute("class", "pro");
+          div_element.setAttribute("onclick",`DetailedProduct("${data[ind]["uniqueId"]}","${data[ind]["name"]}",${data[ind]["price"]},"${data[ind]["productImage"]}")`);
 
 
-        img_element = document.createElement("img");
-        img_element.setAttribute("src",data[ind]["productImage"]);
+          img_element = document.createElement("img");
+          img_element.setAttribute("src",data[ind]["productImage"]);
 
-        div_element.appendChild(img_element);
+          div_element.appendChild(img_element);
 
-        div_name = document.createElement("div");
-        div_name.setAttribute("class","des");
+          div_name = document.createElement("div");
+          div_name.setAttribute("class","des");
 
-        h5_element = document.createElement("h5");
-        h5_element.innerHTML = data[ind]["name"];
+          h5_element = document.createElement("h5");
+          h5_element.innerHTML = data[ind]["name"];
 
-        h4_element = document.createElement("h4");
-        h4_element.innerHTML = data[ind]["price"];
+          h4_element = document.createElement("h4");
+          h4_element.innerHTML = data[ind]["price"];
 
-        div_name.appendChild(h5_element);
-        div_name.appendChild(h4_element);
-        div_element.appendChild(div_name);
-        
-        product_element.appendChild(div_element);
+          div_name.appendChild(h5_element);
+          div_name.appendChild(h4_element);
+          div_element.appendChild(div_name);
+          
+          product_element.appendChild(div_element);
 
-        //6. Add the pagination section with the particular pageno and query text
-        if (!document.getElementsByClassName("pagination")[0].hasChildNodes()){
-          createPagination(query,no_of_pages,pageno);
+          //6. Add the pagination section with the particular pageno and query text
+          if (!document.getElementsByClassName("pagination")[0].hasChildNodes()){
+            createPagination(query,no_of_pages,pageno);
+          }
         }
+
+      }
+      else{
+        document.getElementsByClassName("pro-container")[0].innerHTML = "<h2>404 Not Found</h2>";
       }
     })   .catch((error) => {
       console.log(error);
@@ -188,54 +195,60 @@ function Category(cat1,cat2,pageno){
     )
       .then((response) => response.json())
       .then((data) => {
-        // Get the number of products sent in the response from the backend and calculate the no of pages
-        no_of_products = data[0];
-        no_of_pages = Math.ceil(no_of_products/9);
+        if(data[0] == 200){
+          // Get the number of products sent in the response from the backend and calculate the no of pages
+          no_of_products = data[1];
+          no_of_pages = Math.ceil(no_of_products/9);
 
-        // Get the pagination section where the pagination with given pages is created
-        ul_element = document.getElementsByClassName("pagination")[0];
-        ul_element.innerHTML = "";
+          // Get the pagination section where the pagination with given pages is created
+          ul_element = document.getElementsByClassName("pagination")[0];
+          ul_element.innerHTML = "";
 
-        // Get the product section where the products is going to be added
-        product_element = document.getElementsByClassName("pro-container")[0];
-        product_element.innerHTML = "";
+          // Get the product section where the products is going to be added
+          product_element = document.getElementsByClassName("pro-container")[0];
+          product_element.innerHTML = "";
 
 
-        //Iterate through the response data containing a list of products and append it to the html page under the product section
-        for ( let ind = 1; ind<data.length; ind++ ) {
+          //Iterate through the response data containing a list of products and append it to the html page under the product section
+          for ( let ind = 2; ind<data.length; ind++ ) {
 
-          div_element = document.createElement("div");
-          div_element.setAttribute("class", "pro");
-          console.log(typeof data[ind]["name"]);
-          div_element.setAttribute("onclick",`DetailedProduct('${data[ind]["uniqueID"]}',"${data[ind]["name"]}",${data[ind]["price"]},'${data[ind]["productimage"]}')`);
-  
-  
-          img_element = document.createElement("img");
-          img_element.setAttribute("src",data[ind]["productimage"]);
-  
-          div_element.appendChild(img_element);
-  
-          div_name = document.createElement("div");
-          div_name.setAttribute("class","des");
-  
-          h5_element = document.createElement("h5");
-          h5_element.innerHTML = data[ind]["name"];
-  
-          h4_element = document.createElement("h4");
-          h4_element.innerHTML = data[ind]["price"];
-  
-          div_name.appendChild(h5_element);
-          div_name.appendChild(h4_element);
-          div_element.appendChild(div_name);
-  
-          
-          product_element.appendChild(div_element);
+            div_element = document.createElement("div");
+            div_element.setAttribute("class", "pro");
+            console.log(typeof data[ind]["name"]);
+            div_element.setAttribute("onclick",`DetailedProduct('${data[ind]["uniqueID"]}',"${data[ind]["name"]}",${data[ind]["price"]},'${data[ind]["productimage"]}')`);
+    
+    
+            img_element = document.createElement("img");
+            img_element.setAttribute("src",data[ind]["productimage"]);
+    
+            div_element.appendChild(img_element);
+    
+            div_name = document.createElement("div");
+            div_name.setAttribute("class","des");
+    
+            h5_element = document.createElement("h5");
+            h5_element.innerHTML = data[ind]["name"];
+    
+            h4_element = document.createElement("h4");
+            h4_element.innerHTML = data[ind]["price"];
+    
+            div_name.appendChild(h5_element);
+            div_name.appendChild(h4_element);
+            div_element.appendChild(div_name);
+    
+            
+            product_element.appendChild(div_element);
+          }
+
+          // Add the pagination section with the particular pageno and query text
+          if (!document.getElementsByClassName("pagination")[0].hasChildNodes()){
+              createPaginationCategory(cat1,cat2,no_of_pages,pageno);
+            }
+          }
+        else{
+          document.getElementsByClassName("pro-container")[0].innerHTML = "<h2>404 Not Found</h2>";
         }
 
-        // Add the pagination section with the particular pageno and query text
-        if (!document.getElementsByClassName("pagination")[0].hasChildNodes()){
-            createPaginationCategory(cat1,cat2,no_of_pages,pageno);
-          }
       })
       .catch((error) => {
         console.log(error);
