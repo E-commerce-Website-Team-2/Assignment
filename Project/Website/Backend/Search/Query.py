@@ -15,7 +15,9 @@ def query(pagenumber:int):
     responseFromSearch = json.loads(responseFromSearch)
     #Pagination has been carried out by using a page number as a variable in the URL 
     final = [responseFromSearch["response"]["numberOfProducts"]]
-    if(final == 0):
+    if(start > final[0]):
+        return [400,0,{}]
+    if(final[0] == 0):
         return [400,0,{}]
     final = [200] + final + responseFromSearch["response"]["products"]
     return final

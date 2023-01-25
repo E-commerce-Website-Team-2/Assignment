@@ -1,4 +1,4 @@
-import psycopg2
+from psycopg2 import sql
 from Database.DBmain import *
 from Database.DBcheck import *
 
@@ -17,14 +17,14 @@ def write(product,field,table,update):
                                  )
     if update == False:
         cur.execute('INSERT INTO products (uniqueid, name, price, product_description, catlevel1name, catlevel2name, productImage)'
-                'VALUES (%s,%s, %s, %s, %s, %s, %s)',
-                (product['uniqueId'],product['name'],product['price'],product['productDescription'],product['catlevel1Name'],product['catlevel2Name'],product['productImage']))
+                'VALUES ({uniqueId},{name}, {price}, {productDescription}, {catlevel1Name}, {catlevel2Name}, {productImage})').format(uniqueId = sql.Literal(product['uniqueId']),name = sql.Literal(product['name']),price = sql.Literal(product['price']),productDescription = sql.Literal(product['productDescription']),catlevel1Name = sql.Literal(product['catlevel1Name']),catlevel2Name = sql.Literal(product['catlevel2Name']),productImage = sql.Literal(product['productImage']))
         conn.commit()
         cur.close()
         conn.close()
         return 200
     else:
-        cur.execute("UPDATE products SET name = $$\'" + product['name'] + "\'$$ ,price =\'" + str(product['price']) + '\', product_description = $$\'' + product['productDescription'] + '\'$$ ,catlevel1name =\'' + product['catlevel1Name'] + '\' ,catlevel2name =\'' + product['catlevel2Name'] + '\' ,productImage =\'' + product['productImage'] + '\' WHERE uniqueid = \'' + str(product['uniqueId']) + '\'')  
+        stmt = sql.SQL("UPDATE products SET name = {name},price = {price},product_description = {productDescription} ,catlevel1name = {catlevel1Name} ,catlevel2name = {catlevel2Name} ,productImage ={productImage} WHERE uniqueid = {uniqueId}").format(uniqueId = sql.Literal(product['uniqueId']),name = sql.Literal(product['name']),price = sql.Literal(product['price']),productDescription = sql.Literal(product['productDescription']),catlevel1Name = sql.Literal(product['catlevel1Name']),catlevel2Name = sql.Literal(product['catlevel2Name']),productImage = sql.Literal(product['productImage']))
+        cur.execute(stmt)  
         conn.commit()
         cur.close()
         conn.close()
@@ -64,7 +64,7 @@ def writeCategoryLevel2(category1,subCategory,table):
         cur.execute('CREATE TABLE IF NOT EXISTS ' + table + '( catlevel1 varchar(10000),' 
                                                         ' catlevel2 varchar(10000),'
                                                         'PRIMARY KEY (catlevel1,catlevel2) )')
-        cur.execute('INSERT INTO ' + table + ' (catlevel1,catlevel2) VALUES (%s,%s)',(category1,subCategory))
+        cur.execute('INSERT INTO ' + table + ' (catlevel1,catlevel2) VALUES (\'{0}\',\'{1}\')'.format(category1,subCategory))
         conn.commit()
         cur.close()
         conn.close()
