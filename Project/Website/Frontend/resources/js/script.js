@@ -146,7 +146,8 @@ function fill_products(query,pageno){
 
       }
       else{
-        document.getElementsByClassName("pro-container")[0].innerHTML = "<h2>404 Not Found</h2>";
+        document.getElementsByClassName("pro-container")[0].innerHTML = "<img src = './resources/images/404.jpeg' width = 100% height = auto>"
+
       }
     })   .catch((error) => {
       console.log(error);
