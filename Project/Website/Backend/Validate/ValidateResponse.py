@@ -2,17 +2,20 @@
 def checkResponse(response,start,rows):
     numberofProducts = len(response[1])
     finalresponse = []
-    finalresponse.append(numberofProducts)
     #This means that the page number given is invalid
     if(numberofProducts < start):
-        return "Really sorry. There are no more products to show you."
+        return [400,0]
     #This means that the products left to show are not more then 9.
     elif(numberofProducts < start + rows):
+        finalresponse.append(200)
+        finalresponse.append(numberofProducts)
         for product in response[1][start:start+rows]:
             finalresponse.append({"uniqueID":product[0],"name":product[1],"price":product[2],"productimage":product[3]})
         return finalresponse
     #This means that there are all products in the page that was given
     else:
+        finalresponse.append(200)
+        finalresponse.append(numberofProducts)
         for product in response[1][start:start+rows]:
             finalresponse.append({"uniqueID":product[0],"name":product[1],"price":product[2],"productimage":product[3]})
         return finalresponse
