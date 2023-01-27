@@ -5,7 +5,7 @@ from Database.DBcheck import *
 
 
 # This function is able to perform a read request from the database. It will be able to do a Select From Where command
-def readDB(table ,fields ,condition = False ):
+def readDB(table ,fields ,condition = {} , order = 0 ):
     checkTable = check_table(table)
     numberOfFields = len(fields)
     if(checkTable):
@@ -19,7 +19,7 @@ def readDB(table ,fields ,condition = False ):
                 else:
                     query += fields[field] + ","
         query += " From " + table + " "
-        if(condition != False):
+        if(condition != {}):
             query += "Where "
             numberOfConditions = len(condition)
             passed = 0
@@ -29,6 +29,11 @@ def readDB(table ,fields ,condition = False ):
                     query += field + " = \'" + condition[field] + "\'" + " AND "
                 else:
                     query += field + " = \'" + condition[field] + "\'"
+        if(order != 0):
+            if(order == 1):
+                query += "Order By price ASC"
+            elif(order == 2):
+                query += "Order By price DESC"
         #With this the query is complete. We will now open a connection to the database and get the request from there. 
         conn = db_connection('data')
         cur = conn.cursor()    
