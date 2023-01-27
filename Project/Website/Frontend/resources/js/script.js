@@ -72,6 +72,9 @@ const urlParams = new URLSearchParams(queryString);
 if (urlParams.has('search')&urlParams.has('pageno')){
   var query = urlParams.get('search');
   var pageno = urlParams.get('pageno');
+  if(urlParams.has('sort')){
+    var sort = urlParams.get('sort');
+  }
   fill_products(query,pageno);
 }
 if (urlParams.has('cat1') && urlParams.has('cat2') && urlParams.has('pageno')){
@@ -110,6 +113,11 @@ function fill_products(query,pageno){
         product_element = document.getElementsByClassName("pro-container")[0];
         product_element.innerHTML = "";
 
+        // Get the filter dropdown menu to visible and set the href attribut of the dropdown list
+        document.getElementsByClassName("dropdown-3")[0].style.display = "block";
+        document.getElementsByClassName("asc")[0].setAttribute("href","#");
+        document.getElementsByClassName("asc")[0].setAttribute("href","#");
+
         //5. Iterate through the response data containing a list of products and append it to the html page under the product section
         for (let ind = 2; ind<data.length; ind++ ) {
 
@@ -146,7 +154,7 @@ function fill_products(query,pageno){
 
       }
       else{
-        document.getElementsByClassName("pro-container")[0].innerHTML = "<img src = './resources/images/404.jpeg' width = 100% height = auto>"
+        document.getElementsByClassName("pro-container")[0].innerHTML = "<h2>404 Not Found</h2>";
 
       }
     })   .catch((error) => {
@@ -247,7 +255,7 @@ function Category(cat1,cat2,pageno){
             }
           }
         else{
-          document.getElementsByClassName("pro-container")[0].innerHTML = "<h2>404 Not Found</h2>";
+          document.getElementsByClassName("pro-container")[0].innerHTML = "<h2> 404 Not Found</h2>";
         }
 
       })
