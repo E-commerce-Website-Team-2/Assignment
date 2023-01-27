@@ -130,11 +130,26 @@ body {
 #product1{
   text-align:center;
 }
+#product1 .dropdown-3{
+  position:absolute;
+  right: 60px;;
+  display: none;
+
+}
+.dropdown-3 button{
+  background-color: #E3E6F3;
+  color:#1a1a1a;
+}
+#product1 .notfound{
+  display:none;
+}
+
 #product1 .pro-container{
   display: flex;
   justify-content: space-between;
   align-items: center;
   flex-wrap: wrap;
+  padding-top:50px;
 }
 
 #product1 .pro{
@@ -149,6 +164,7 @@ body {
   transition: 0.2s ease;
   position: relative;
 }
+
 
 #product1 .pro:hover{
   box-shadow: 20px 20px 30px rgba(0,0,0,0.06);

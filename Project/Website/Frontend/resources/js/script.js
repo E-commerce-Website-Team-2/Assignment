@@ -72,20 +72,43 @@ const urlParams = new URLSearchParams(queryString);
 if (urlParams.has('search')&urlParams.has('pageno')){
   var query = urlParams.get('search');
   var pageno = urlParams.get('pageno');
-  fill_products(query,pageno);
+  var sort = "";
+  if(urlParams.has('sort')){
+    sort = urlParams.get('sort');
+  }
+  fill_products(query,pageno,sort);
 }
 if (urlParams.has('cat1') && urlParams.has('cat2') && urlParams.has('pageno')){
   var cat1 = urlParams.get('cat1');
   var cat2 = urlParams.get('cat2');
   var pageno = urlParams.get('pageno');
-  Category(cat1,cat2,pageno);
+  var sort = "";
+  if(urlParams.has('sort')){
+    sort = urlParams.get('sort');
+  }
+  Category(cat1,cat2,pageno,sort);
 }
 
 
+// Function to create url when a category is selected of a pageno with a sort filter applied
+function createURLforCategory(cat1,cat2,pageno,sort){
+  var params = {
+    "cat1": cat1,
+    "cat2": cat2,
+    "pageno":pageno,
+    "sort":sort
+    };
+  var query = Object.keys(params)
+         .map(k => encodeURIComponent(k) + '=' + encodeURIComponent(params[k]))
+         .join('&');
+  var url = `http://localhost:8000/index.html?` + query;
+  return url;
+}
+
 // Function to fill the home page with products sent from the backend for thhe particular search query and page number
-function fill_products(query,pageno){
+function fill_products(query,pageno,sort){
   // 1. Fetch the products with given query and page number from backend
-  fetch(`http://localhost:5000/products/search/${pageno}?query=${query}`,{
+  fetch(`http://localhost:5000/products/search/${pageno}?query=${query}&sort=${sort}`,{
       headers:{
         "Content-Type": "application/json",
         "Access-Control-Allow-Origin": "*",
@@ -98,6 +121,7 @@ function fill_products(query,pageno){
     .then((data) => {
       console.log(data);
       if (data[0] == 200){
+        console.log(data);
         // 2.  Get the number of products sent in the response from the backend and calculate the no of pages
         no_of_products = data[1];
         no_of_pages = Math.ceil(no_of_products/9);
@@ -109,6 +133,11 @@ function fill_products(query,pageno){
         //4. Get the product section where the products is going to be added
         product_element = document.getElementsByClassName("pro-container")[0];
         product_element.innerHTML = "";
+
+        // Get the filter dropdown menu to visible and set the href attribut of the dropdown list
+        document.getElementsByClassName("dropdown-3")[0].style.display = "block";
+        document.getElementsByClassName("asc")[0].setAttribute("href",`http://localhost:8000/index.html?search=${query}&pageno=${pageno}&sort=1`);
+        document.getElementsByClassName("desc")[0].setAttribute("href",`http://localhost:8000/index.html?search=${query}&pageno=${pageno}&sort=2`);
 
         //5. Iterate through the response data containing a list of products and append it to the html page under the product section
         for (let ind = 2; ind<data.length; ind++ ) {
@@ -140,13 +169,13 @@ function fill_products(query,pageno){
 
           //6. Add the pagination section with the particular pageno and query text
           if (!document.getElementsByClassName("pagination")[0].hasChildNodes()){
-            createPagination(query,no_of_pages,pageno);
+            createPagination(query,no_of_pages,pageno,sort);
           }
         }
 
       }
       else{
-        document.getElementsByClassName("pro-container")[0].innerHTML = "<img src = './resources/images/404.jpeg' width = 100% height = auto>"
+        document.getElementsByClassName("pro-container")[0].innerHTML = "<h2>404 Not Found</h2>";
 
       }
     })   .catch((error) => {
@@ -170,13 +199,14 @@ function search(ele){
   }
 
 // This function is used to return the products when a subcategory is selected. It asks backend for the products with subcategories.
-function Category(cat1,cat2,pageno){
+function Category(cat1,cat2,pageno,sort){
   
 
   // Genrate the url with thhe parameters cat1 and cat2 and call to backend with parameters to recieve the category tree.
   let params = {
     "cat1": cat1,
-    "cat2": cat2
+    "cat2": cat2,
+    "sort":sort
     };
   
   let query = Object.keys(params)
@@ -209,6 +239,11 @@ function Category(cat1,cat2,pageno){
           product_element = document.getElementsByClassName("pro-container")[0];
           product_element.innerHTML = "";
 
+        // Get the filter dropdown menu to visible and set the href attribut of the dropdown list
+        document.getElementsByClassName("dropdown-3")[0].style.display = "block";
+
+        document.getElementsByClassName("asc")[0].setAttribute("href",createURLforCategory(cat1,cat2,pageno,1));
+        document.getElementsByClassName("desc")[0].setAttribute("href",createURLforCategory(cat1,cat2,pageno,2));
 
           //Iterate through the response data containing a list of products and append it to the html page under the product section
           for ( let ind = 2; ind<data.length; ind++ ) {
@@ -243,11 +278,11 @@ function Category(cat1,cat2,pageno){
 
           // Add the pagination section with the particular pageno and query text
           if (!document.getElementsByClassName("pagination")[0].hasChildNodes()){
-              createPaginationCategory(cat1,cat2,no_of_pages,pageno);
+              createPaginationCategory(cat1,cat2,no_of_pages,pageno,sort);
             }
           }
         else{
-          document.getElementsByClassName("pro-container")[0].innerHTML = "<h2>404 Not Found</h2>";
+          document.getElementsByClassName("pro-container")[0].innerHTML = "<h2> 404 Not Found</h2>";
         }
 
       })
@@ -290,7 +325,7 @@ function SelectPage(el)
 } 
 
 // Function to create Pagination for searching.
-function createPagination(searchText,pages,pageno){
+function createPagination(searchText,pages,pageno,sort){
   // Acess the pagination section for thhe pages to be added
   ul_element = document.getElementsByClassName("pagination")[0];
   list_element = document.createElement("li");
@@ -301,7 +336,7 @@ function createPagination(searchText,pages,pageno){
   }
   else{
     list_element.setAttribute("class","page-item");
-    list_element.setAttribute("onclick",`window.location.href='http://localhost:8000/index.html?search=${searchText}&pageno=${pageno-1}'`);
+    list_element.setAttribute("onclick",`window.location.href='http://localhost:8000/index.html?search=${searchText}&pageno=${pageno-1}&sort=${sort}'`);
   }
   
 
@@ -340,7 +375,7 @@ function createPagination(searchText,pages,pageno){
 
     anchor_element = document.createElement("a");
     anchor_element.setAttribute("class","page-link");
-    anchor_element.setAttribute("href",`http://localhost:8000/index.html?search=${searchText}&pageno=${i}`);
+    anchor_element.setAttribute("href",`http://localhost:8000/index.html?search=${searchText}&pageno=${i}&sort=${sort}`);
     anchor_element.setAttribute("onclick",'SelectPage(this)');
 
     anchor_element.innerHTML = i;
@@ -357,7 +392,7 @@ function createPagination(searchText,pages,pageno){
   }
   else{
   list_element.setAttribute("class","page-item");
-  list_element.setAttribute("onclick",`window.location.href='http://localhost:8000/index.html?search=${searchText}&pageno=${pageno+1}'`);
+  list_element.setAttribute("onclick",`window.location.href='http://localhost:8000/index.html?search=${searchText}&pageno=${pageno+1}&sort=${sort}'`);
   }
 
   anchor_element = document.createElement("a");
@@ -370,21 +405,11 @@ function createPagination(searchText,pages,pageno){
 }
 
 // Function to create Pagination when a category button is selected.
-function createPaginationCategory(cat1,cat2,pages,pageno){
+function createPaginationCategory(cat1,cat2,pages,pageno,sort){
     // Acess the pagination section for thhe pages to be added
   ul_element = document.getElementsByClassName("pagination")[0];
 
-
-
-  let params = {
-    "cat1": cat1,
-    "cat2": cat2,
-    "pageno":pageno-1
-    };
-  let query = Object.keys(params)
-         .map(k => encodeURIComponent(k) + '=' + encodeURIComponent(params[k]))
-         .join('&');
-  let url = `http://localhost:8000/index.html?` + query;
+  
   list_element = document.createElement("li");
 
   // If current pageno is 1 then set thhe prev button to disabled else set the location to the previous page
@@ -393,6 +418,7 @@ function createPaginationCategory(cat1,cat2,pages,pageno){
   }
   else{
     list_element.setAttribute("class","page-item");
+    url = createURLforCategory(cat1,cat2,pageno-1,sort);
     list_element.setAttribute("onclick",`window.location.href='${url}'`);
   }
   
@@ -429,16 +455,7 @@ function createPaginationCategory(cat1,cat2,pages,pageno){
       list_element.setAttribute("class","page-item");
     }
 
-    params = {
-      "cat1": cat1,
-      "cat2": cat2,
-      "pageno":i
-      };
-    query = Object.keys(params)
-           .map(k => encodeURIComponent(k) + '=' + encodeURIComponent(params[k]))
-           .join('&');
-
-    url = `http://localhost:8000/index.html?` + query;
+    url = createURLforCategory(cat1,cat2,i,sort);
 
     anchor_element = document.createElement("a");
     anchor_element.setAttribute("class","page-link");
@@ -451,16 +468,7 @@ function createPaginationCategory(cat1,cat2,pages,pageno){
   }
 
 
-  params = {
-    "cat1": cat1,
-    "cat2": cat2,
-    "pageno":pageno+1
-    };
-  query = Object.keys(params)
-         .map(k => encodeURIComponent(k) + '=' + encodeURIComponent(params[k]))
-         .join('&');
 
-  url = `http://localhost:8000/index.html?` + query;
   list_element = document.createElement("li");
 
   // If current pageno is the max page then set thhe next button to disabled else set to the next page
@@ -469,6 +477,7 @@ function createPaginationCategory(cat1,cat2,pages,pageno){
   }
   else{
   list_element.setAttribute("class","page-item");
+  url = createURLforCategory(cat1,cat2,pageno+1,sort);
   list_element.setAttribute("onclick",`window.location.href='${url}'`);
   }
   anchor_element = document.createElement("a");
