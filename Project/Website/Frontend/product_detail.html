@@ -67,12 +67,10 @@
                 <img src="#" width="100%" id="MainImage" alt="">
             </div>
             <div class="single-pro-details">
-                <h2 id ="title">Title</h2>
-                <h4 id = "price">$139.00</h4>
+                <h2 id ="title"></h2>
+                <h4 id = "price"></h4>
                 <h4> Product Description</h4>
-                <span id = "description"> Lorem Ipsum is simply dummy text of the printing and typesetting industry. 
-                    Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,
-                    when an unknown  </span>
+                <span id = "description"></span>
             </div>
             <div class="d-flex align-items-center justify-content-center notfound"  id="notfound" >
                 <div class="text-center">
@@ -105,29 +103,24 @@
                 }
             }
             )
-            .then((response) => {
-                if (response.status == 500){
-                    console.log(response.statusText);
-                    }
-                else{
-                    response.json()
-                    }
-                }
-            )
-            .then((data_detail) => {
-                if(data_detail){
-                    document.getElementById("MainImage").src = data.image;
-                    document.getElementById("price").innerHTML = "Price: $ "+data.price;
-                    document.getElementById("title").innerHTML = data.name;
-                    document.getElementById("description").innerHTML = data_detail[0];
-                }
-                else{
+            .then(function(response){
+                console.log(response.status); // Will show you the status
+                if (!response.ok) {
                     document.getElementsByClassName("single-pro-details")[0].style.display = "none";
                     document.getElementsByClassName("notfound")[0].style.visibility = "visible";
+                    throw new Error("HTTP status " + response.status);
                 }
-
-
+                return response.json();
             }
+
+            )
+            .then((data_detail) => {
+                document.getElementsByClassName("single-pro-details")[0].style.display = "block";
+                document.getElementById("MainImage").src = data.image;
+                document.getElementById("price").innerHTML = "Price: $ "+data.price;
+                document.getElementById("title").innerHTML = data.name;
+                document.getElementById("description").innerHTML = data_detail[0];
+                }
             )
             .catch((error) => {
             console.log(error);
