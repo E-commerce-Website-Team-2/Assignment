@@ -175,7 +175,7 @@ function fill_products(query,pageno,sort){
 
       }
       else{
-        document.getElementsByClassName("pro-container")[0].innerHTML = "<h2>404 Not Found</h2>";
+        document.getElementsByClassName("notfound")[0].style.visibility = "visible";
 
       }
     })   .catch((error) => {
@@ -226,6 +226,7 @@ function Category(cat1,cat2,pageno,sort){
     )
       .then((response) => response.json())
       .then((data) => {
+        console.log(data);
         if(data[0] == 200){
           // Get the number of products sent in the response from the backend and calculate the no of pages
           no_of_products = data[1];
@@ -282,7 +283,7 @@ function Category(cat1,cat2,pageno,sort){
             }
           }
         else{
-          document.getElementsByClassName("pro-container")[0].innerHTML = "<h2> 404 Not Found</h2>";
+          document.getElementsByClassName("notfound")[0].style.visibility = "visible";
         }
 
       })

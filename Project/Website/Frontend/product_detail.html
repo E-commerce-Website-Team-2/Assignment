@@ -64,7 +64,7 @@
         <!-- Product details section deals with displaying overview of a single product -->
         <section id="proddetails" class="section-p1">
             <div class="single-pro-image">
-                <img src="img/products/f1.jpg" width="100%" id="MainImage" alt="">
+                <img src="#" width="100%" id="MainImage" alt="">
             </div>
             <div class="single-pro-details">
                 <h2 id ="title">Title</h2>
@@ -73,7 +73,16 @@
                 <span id = "description"> Lorem Ipsum is simply dummy text of the printing and typesetting industry. 
                     Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,
                     when an unknown  </span>
-
+            </div>
+            <div class="d-flex align-items-center justify-content-center notfound"  id="notfound" >
+                <div class="text-center">
+                    <h1 class="display-1 fw-bold">404</h1>
+                    <p class="fs-3"> <span class="text-danger">Opps!</span> Page not found.</p>
+                    <p class="lead">
+                        The page you’re looking for doesn’t exist.
+                      </p>
+                    <a href="index.html" class="btn btn-primary">Go Home</a>
+                </div>
             </div>
         </section>
 
@@ -96,13 +105,27 @@
                 }
             }
             )
-            .then((response) => response.json())
+            .then((response) => {
+                if (response.status == 500){
+                    console.log(response.statusText);
+                    }
+                else{
+                    response.json()
+                    }
+                }
+            )
             .then((data_detail) => {
-                console.log(data.uniqu);
-                document.getElementById("MainImage").src = data.image;
-                document.getElementById("price").innerHTML = "Price: $ "+data.price;
-                document.getElementById("title").innerHTML = data.name;
-                document.getElementById("description").innerHTML = data_detail[0];
+                if(data_detail){
+                    document.getElementById("MainImage").src = data.image;
+                    document.getElementById("price").innerHTML = "Price: $ "+data.price;
+                    document.getElementById("title").innerHTML = data.name;
+                    document.getElementById("description").innerHTML = data_detail[0];
+                }
+                else{
+                    document.getElementsByClassName("single-pro-details")[0].style.display = "none";
+                    document.getElementsByClassName("notfound")[0].style.visibility = "visible";
+                }
+
 
             }
             )
