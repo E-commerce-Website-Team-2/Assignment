@@ -140,9 +140,11 @@ body {
   background-color: #E3E6F3;
   color:#1a1a1a;
 }
-#product1 .notfound{
-  display:none;
+.notfound {
+  position: relative;
+  visibility:hidden;
 }
+
 
 #product1 .pro-container{
   display: flex;
