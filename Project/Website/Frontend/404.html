@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <!-- Preventing Caching -->
+        <meta http-equiv=”Pragma” content=”no-cache”>
+        <meta http-equiv=”Expires” content=”-1″>
+        <meta http-equiv=”CACHE-CONTROL” content=”NO-CACHE”>
+
+        <!-- Title of the Website -->
+        <title>Ecommerce Website</title>
+
+        <!-- Icon for the website -->
+        <link rel="apple-touch-icon" sizes="180x180" href="./resources/favicon/apple-touch-icon.png">
+        <link rel="icon" type="image/png" sizes="32x32" href="./resources/favicon/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="./resources/favicon/favicon-16x16.png">
+        <link rel="manifest" href="./resources/favicon/site.webmanifest">
+
+        <!-- Bootstrap, Fontawesome and external css  -->
+        <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" />
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="./resources/css/style-common.css">
+
+        <!-- Bootstrpa and external js -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="./resources/js/script.js"></script>
+
+    </head>
+
+    <body>
+
+        <!-- Header section deals with logo and search box -->
+        <section id = "header">
+            <a href="#"><img src="./resources/images/logo-removebg-preview.png" class="logo" height="80px" width="150px"></img></a>
+            <div class = "navbar">
+                <div class="form">
+                    <i class="fa fa-search"></i>
+                    <input id = "search" type="text" class="form-input" placeholder="Search Products" onkeydown="search(this)">
+                  </div>
+
+            </div>
+        </section>
+        <!-- Category section deals with category dropdown menu with subcategories -->
+        <section id ="notfound" class = "section-p1">
+            <div class="d-flex align-items-center justify-content-center"  id="notfound" >
+                <div class="text-center">
+                    <h1 class="display-1 fw-bold">404</h1>
+                    <p class="fs-3"> <span class="text-danger">Opps!</span> Page not found.</p>
+                    <p class="lead">
+                        The page you’re looking for doesn’t exist.
+                      </p>
+                    <a href="index.html" class="btn btn-primary">Go Home</a>
+                </div>
+            </div>
+        </section>
+
+
+    </body>
+    <script>
+
+    </script>
+</html> 
