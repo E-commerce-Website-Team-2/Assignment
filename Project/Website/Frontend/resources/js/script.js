@@ -175,7 +175,7 @@ function fill_products(query,pageno,sort){
 
       }
       else{
-        document.getElementsByClassName("notfound")[0].style.visibility = "visible";
+          window.location.href = 'http://localhost:8000/404.html';
 
       }
     })   .catch((error) => {
@@ -283,7 +283,8 @@ function Category(cat1,cat2,pageno,sort){
             }
           }
         else{
-          document.getElementsByClassName("notfound")[0].style.visibility = "visible";
+          window.location.href = 'http://localhost:8000/404.html';
+
         }
 
       })

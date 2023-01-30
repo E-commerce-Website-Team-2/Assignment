@@ -72,16 +72,6 @@
                 <h4> Product Description</h4>
                 <span id = "description"></span>
             </div>
-            <div class="d-flex align-items-center justify-content-center notfound"  id="notfound" >
-                <div class="text-center">
-                    <h1 class="display-1 fw-bold">404</h1>
-                    <p class="fs-3"> <span class="text-danger">Opps!</span> Page not found.</p>
-                    <p class="lead">
-                        The page you’re looking for doesn’t exist.
-                      </p>
-                    <a href="index.html" class="btn btn-primary">Go Home</a>
-                </div>
-            </div>
         </section>
 
         <!-- This script deals with handling the state from another page (index.html) -->
@@ -103,19 +93,10 @@
                 }
             }
             )
-            .then(function(response){
-                console.log(response.status); // Will show you the status
-                if (!response.ok) {
-                    document.getElementsByClassName("single-pro-details")[0].style.display = "none";
-                    document.getElementsByClassName("notfound")[0].style.visibility = "visible";
-                    throw new Error("HTTP status " + response.status);
-                }
-                return response.json();
-            }
-
+            .then((response)=>
+                response.json()
             )
             .then((data_detail) => {
-                document.getElementsByClassName("single-pro-details")[0].style.display = "block";
                 document.getElementById("MainImage").src = data.image;
                 document.getElementById("price").innerHTML = "Price: $ "+data.price;
                 document.getElementById("title").innerHTML = data.name;
