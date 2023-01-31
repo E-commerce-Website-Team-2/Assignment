@@ -13,6 +13,18 @@ def category(pagenumber):
         status = readDB("category",["categoryname"],{"catid":str(catid)})[1]
         if(status == []):
             return [400,[],{}]
+    order = request.args.get('sort')
+    if(order == None or order == ""):
+        print("I am making sure it can be passed as nothing")
+        pass
+    elif(order.isdigit()):
+        order = int(order)
+        if(order not in [1,2]):
+            print("Wrong integer passed")
+            return [400,0,{}]
+    else:
+        print("It is not an integer")
+        return [400,0,{}]
     start = (int(pagenumber) - 1)*9
     rows = 9 
     #Have to call a function to get back all the category ids. Then merge all the responses to into 1. 
@@ -22,7 +34,7 @@ def category(pagenumber):
         condition += str(id) +","
     condition = condition[:-1]
     condition += ")"
-    response = readDB("products",["uniqueID","name","price","productimage"],{"catid":condition},check = 1)
+    response = readDB("products",["uniqueID","name","price","productimage"],{"catid":condition},order = order,check = 1)
     finalresponse = checkResponse(response,start,rows)
     return finalresponse
  
