@@ -1,3 +1,4 @@
+
 #This will put the products that we have in the right format and also check if the page number given is valid or not 
 def checkResponse(response,start,rows):
     numberofProducts = len(response[1])
@@ -19,4 +20,3 @@ def checkResponse(response,start,rows):
         for product in response[1][start:start+rows]:
             finalresponse.append({"uniqueID":product[0],"name":product[1],"price":product[2],"productimage":product[3]})
         return finalresponse
-

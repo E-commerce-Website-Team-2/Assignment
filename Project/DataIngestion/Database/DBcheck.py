@@ -51,7 +51,7 @@ def CategoryPresent(category,table):
     Select Exists 
     ( Select * 
     From {table} 
-    Where catlevel1 = {category} """).format(table = sql.Identifier(table) , category = sql.Literal(category))
+    Where categoryname = {category} ) """).format(table = sql.Identifier(table) , category = sql.Literal(category))
     cur.execute(stmt)
     exists = cur.fetchall()
     cur.close()
@@ -68,7 +68,7 @@ def CategoryLevel2Present(category1,subCategory,table):
     Select Exists 
     ( Select * 
     From {table} 
-    Where catlevel1 = {category} AND catlevel2 = {subCategory}""").format(table = sql.Identifier(table) , category = sql.Literal(category1) , subCategory = sql.Literal(subCategory))
+    Where categoryname = {subCategory} AND parentname = {category} )""").format(table = sql.Identifier(table) , category = sql.Literal(category1) , subCategory = sql.Literal(subCategory))
     cur.execute(stmt)
     exists = cur.fetchall()
     cur.close()
