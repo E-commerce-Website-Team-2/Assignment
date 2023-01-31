@@ -7,44 +7,34 @@ from flask import request
 
 #This will be able perform category filtering and will return products with an exact match.
 def category(pagenumber):
-    catlevel1 = request.args.get('cat1')
-    catlevel2 = request.args.get('cat2')
+    catid = request.args.get('cat')
+    if(catid.isdigit()):
+        catid = int(catid)
+        status = readDB("category",["categoryname"],{"catid":str(catid)})[1]
+        if(status == []):
+            return [400,[],{}]
     start = (int(pagenumber) - 1)*9
-    rows = 9
-    if(catlevel1 == None):
-        if(catlevel2 == None):
-            return "There is no such filter possible"
-            #This means that both were null. There is no way for me to filter from the database. 
-        else:
-            #This means only catlevel2 was given
-            response = readDB("CategoryLevel2","*",{"catlevel2":catlevel2})
-            if(response[1] != []):
-                #This means that the category 2 is valid. Then we can query the products and return first 9. 
-                response = readDB("products",["uniqueID","name","price","productimage"],{"catlevel2name":catlevel2})
-                finalresponse = checkResponse(response,start,rows)
-                return finalresponse
-            else:
-                return {"Error":"The category chosen does not exist. "}
-    elif(catlevel2 == None):
-        #This means that only catlevel1 was given
-        response = readDB("CategoryLevel1","*",{"catlevel1":catlevel1})
-        if(response[1] != []):
-            #This means that the category 1 is valid. Then we can query the products and return first 9.
-            response = readDB("products",["uniqueID","name","price","productimage"],{"catlevel1name":catlevel1})
-            finalresponse = checkResponse(response,start,rows)
-            return finalresponse
-        else:
-            return {"Error":"The category chosen does not exist. "} 
-    else:
-        #This means that both were given
-        response = readDB("CategoryLevel2","*",{"catlevel1":catlevel1 , "catlevel2":catlevel2})
-        if(response[1] != [] ):
-            ##This means that both level of categories that have been given are correct. Therefore, we can query the products and return ther first 9. 
-            response = readDB("products",["uniqueID","name","price","productimage"],{"catlevel1name":catlevel1 , "catlevel2name":catlevel2})
-            finalresponse = checkResponse(response,start,rows)
-            return finalresponse
-        else:
-            return {"Error":"The categories that have been selected are invalid."}
-
-
-
+    rows = 9 
+    #Have to call a function to get back all the category ids. Then merge all the responses to into 1. 
+    categoryids = categoryIds(catid)
+    condition = "("
+    for id in categoryids:
+        condition += str(id) +","
+    condition = condition[:-1]
+    condition += ")"
+    response = readDB("products",["uniqueID","name","price","productimage"],{"catid":condition},check = 1)
+    finalresponse = checkResponse(response,start,rows)
+    return finalresponse
+ 
+#Will have to perform a DFS traversal of the tree to get all the catids   
+def categoryIds(catid):
+    final = set()
+    stack = [catid]
+    while(len(stack) > 0):
+        parentid = stack.pop()
+        final.add(int(parentid))
+        parentname = readDB("category",["categoryname"],{"catid":str(parentid)})[1][0][0]
+        children = readDB("category",["catid"],{"parentname":parentname})[1]
+        for child in children:
+            stack.append(child[0])    
+    return list(final)

@@ -31,8 +31,8 @@ def trendingcaller(pagenumber):
 
 
 #Will be able to load the entire category tree and send back a JSON to the front-end
-@app.route('/products/getcategory', methods = ["GET"])
-def getcategorycaller():
+@app.route('/products/categorytree/', methods = ["GET"])
+def categorytreecaller():
     return getcategory()
 
 
@@ -42,4 +42,4 @@ def detailscaller(productId):
     return details(productId)
 
 
-app.run()
+app.run(debug=True)
