@@ -22,14 +22,13 @@ window.onload = fetch("http://localhost:5000/products/categorytree",{
       button_element.setAttribute("data-bs-toggle", "dropdown");
       button_element.setAttribute("aria-expanded", "false");
       button_element.setAttribute("value",data[1][ind][0]);
-      // console.log(data[1][0]);
+
       button_element.innerHTML = data[1][ind][1];
       console.log(data[1][ind])
       button_element.addEventListener('click', function(){
         GetProduct(this)
       });
 
-      // button_element.setAttribute('onclick',`GetProduct(${this},${data[1][ind][0]}`);
       ulist_element = document.createElement("ul");
       ulist_element.setAttribute("class","dropdown-menu");
       ulist_element.setAttribute("aria-labelledby","dropdownMenuButton1");
@@ -43,6 +42,8 @@ window.onload = fetch("http://localhost:5000/products/categorytree",{
   console.log(error);
   });
 
+
+// This function is used to get the subcategory element of a given category and fill in the database
 function GetProduct(ele){
   parentElement = ele.parentNode;
   console.log(parentElement.childNodes[1].childNodes.length)
