@@ -29,6 +29,6 @@ def validate(product):
         return [307,"Category Level 1 is wrong"]
     if(str(type(product['catlevel2Name'])) != string):
         return [308,"Category Level 2 is wrong"]
-    # flag = checkID(product['uniqueId'],"products")
-    return [200,"Good for database"]   
+    flag = checkID(product['uniqueId'],"products")
+    return [flag,"Good for database"]   
 
