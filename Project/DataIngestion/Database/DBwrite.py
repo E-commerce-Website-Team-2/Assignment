@@ -45,12 +45,12 @@ def write(product,field,table,update):
 
 #This will be able to add a level 1 category to the database
 def writeCategoryLevel1(category,table,field):
-    tablepresent = check_table(table)
-    present = False
-    category = str(category)
-    if tablepresent:
-        present = CategoryPresent(category,table)
-    if present[0][0] == False:
+    # tablepresent = check_table(table)
+    # present = False
+    # category = str(category)
+    # if tablepresent:
+    #     present = CategoryPresent(category,table)
+    if True : #present[0][0] == False:
         conn = db_connection('data')
         cur = conn.cursor()
         cur.execute('CREATE TABLE IF NOT EXISTS ' + table + '(catid SERIAL  PRIMARY KEY,  '
@@ -69,8 +69,8 @@ def writeCategoryLevel1(category,table,field):
 
 #This will be able to add a level 2 category to the database
 def writeCategoryLevel2(category1,subCategory,table):
-    present = CategoryLevel2Present(category1,subCategory,table)
-    if present[0][0] == False:
+    # present = CategoryLevel2Present(category1,subCategory,table)
+    if True: #present[0][0] == False:
         conn = db_connection('data')
         cur = conn.cursor()
         cur.execute('CREATE TABLE IF NOT EXISTS ' + table + '(catid SERIAL PRIMARY KEY ,  '
