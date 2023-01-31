@@ -118,8 +118,7 @@ body {
   padding-right:20px;
   cursor: pointer;
 }
-.dropdown-1 button,
-.dropdown-2 button{
+#category>div>button{
   background-color: #E3E6F3;
   color:#1a1a1a;
 }

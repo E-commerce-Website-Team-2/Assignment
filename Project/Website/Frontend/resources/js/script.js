@@ -1,5 +1,5 @@
 // This is used fetch subcategories from the backend via database and update thhe dropdown menu in the forntend.
-window.onload = fetch("http://localhost:5000/products/getcategory",{
+window.onload = fetch("http://localhost:5000/products/categorytree",{
     headers:{
         "Content-Type": "application/json",
         "Access-Control-Allow-Origin": "*",
@@ -10,61 +10,80 @@ window.onload = fetch("http://localhost:5000/products/getcategory",{
   )
   .then((response) => response.json())
   .then((data) => {
-    for (var subcategory in data.men){
-      var list_element = document.createElement("li");
-      var subcategory1 = document.createElement("a");
-      var cat1 = 'men';
-      var cat2 = data.men[subcategory];
-
-      let params = {
-        "cat1": cat1,
-        "cat2": cat2,
-        "pageno":1
-        };
+    console.log(data);
+    for (ind in data[1]){
+      category_element = document.getElementById("category");
+      div_element = document.createElement("div");
       
-      let query = Object.keys(params)
-                .map(k => encodeURIComponent(k) + '=' + encodeURIComponent(params[k]))
-                .join('&');
-      let url = `http://localhost:8000/index.html?` + query;
+      button_element = document.createElement("button");
+      button_element.setAttribute("class", "btn btn-secondary dropdown-toggle");
+      button_element.setAttribute("type", "button");
+      button_element.setAttribute("id","dropdownMenuButton1");
+      button_element.setAttribute("data-bs-toggle", "dropdown");
+      button_element.setAttribute("aria-expanded", "false");
+      button_element.setAttribute("value",data[1][ind][0]);
+      // console.log(data[1][0]);
+      button_element.innerHTML = data[1][ind][1];
+      console.log(data[1][ind])
+      button_element.addEventListener('click', function(){
+        GetProduct(this)
+      });
 
-      subcategory1.setAttribute("class","dropdown-item");
-      subcategory1.setAttribute("href",url);
-      // console.log(subcategory1);
-      subcategory1.innerHTML = data.men[subcategory];
-      list_element.appendChild(subcategory1)
-      document.getElementsByClassName("cat1")[0].appendChild(list_element);
-    }
+      // button_element.setAttribute('onclick',`GetProduct(${this},${data[1][ind][0]}`);
+      ulist_element = document.createElement("ul");
+      ulist_element.setAttribute("class","dropdown-menu");
+      ulist_element.setAttribute("aria-labelledby","dropdownMenuButton1");
 
-
-    for (var subcategory in data.women){
-      var list_element = document.createElement("li");
-      var subcategory1 = document.createElement("a");
-      var cat1 = 'women';
-      var cat2 = data.women[subcategory];
-
-      let params = {
-        "cat1": cat1,
-        "cat2": cat2,
-        "pageno":1
-        };
-      
-      let query = Object.keys(params)
-                .map(k => encodeURIComponent(k) + '=' + encodeURIComponent(params[k]))
-                .join('&');
-      let url = `http://localhost:8000/index.html?` + query;
-
-      subcategory1.setAttribute("class","dropdown-item");
-      subcategory1.setAttribute("href",url);
-      // console.log(subcategory1);
-      subcategory1.innerHTML = data.women[subcategory];
-      list_element.appendChild(subcategory1)
-      document.getElementsByClassName("cat2")[0].appendChild(list_element);
+      div_element.appendChild(button_element);
+      div_element.appendChild(ulist_element);
+      category_element.appendChild(div_element);
     }
   })
   .catch((error) => {
   console.log(error);
   });
 
+function GetProduct(ele){
+  parentElement = ele.parentNode;
+  console.log(parentElement.childNodes[1].childNodes.length)
+  if(parentElement.childNodes[1].childNodes.length == 0){
+    fetch(`http://localhost:5000/products/categorytree?cat=${ele.value}`,{
+      headers:{
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+          "Acess-Control-Allow-Methods": "GET",
+  
+        }
+      }
+    )
+    .then((response) => response.json())
+    .then((data) => {
+      // console.log(data);
+      
+      for (ind in data[1]){
+        var list_element = document.createElement("li");
+        var subcategory1 = document.createElement("a");
+  
+  
+        let url = `http://localhost:8000/index.html?cat=${data[1][ind][0]}&pageno=1`;
+  
+        subcategory1.setAttribute("class","dropdown-item");
+        subcategory1.setAttribute("href",url);
+        // console.log(subcategory1);
+        subcategory1.innerHTML = data[1][ind][1];
+        list_element.appendChild(subcategory1)
+        parentElement.childNodes[1].appendChild(list_element);
+      }
+  
+  
+  
+    })
+    .catch((error) => {
+    console.log(error);
+    });
+  }
+
+}
 
 // Below code is used to redirect to home page on searching or selecting a category
 const queryString = window.location.search;
@@ -78,23 +97,21 @@ if (urlParams.has('search')&urlParams.has('pageno')){
   }
   fill_products(query,pageno,sort);
 }
-if (urlParams.has('cat1') && urlParams.has('cat2') && urlParams.has('pageno')){
-  var cat1 = urlParams.get('cat1');
-  var cat2 = urlParams.get('cat2');
+if (urlParams.has('cat') && urlParams.has('pageno')){
+  var cat = urlParams.get('cat');
   var pageno = urlParams.get('pageno');
   var sort = "";
   if(urlParams.has('sort')){
     sort = urlParams.get('sort');
   }
-  Category(cat1,cat2,pageno,sort);
+  Category(cat,pageno,sort);
 }
 
 
 // Function to create url when a category is selected of a pageno with a sort filter applied
-function createURLforCategory(cat1,cat2,pageno,sort){
+function createURLforCategory(cat,pageno,sort){
   var params = {
-    "cat1": cat1,
-    "cat2": cat2,
+    "cat": cat,
     "pageno":pageno,
     "sort":sort
     };
@@ -199,13 +216,12 @@ function search(ele){
   }
 
 // This function is used to return the products when a subcategory is selected. It asks backend for the products with subcategories.
-function Category(cat1,cat2,pageno,sort){
+function Category(cat,pageno,sort){
   
 
   // Genrate the url with thhe parameters cat1 and cat2 and call to backend with parameters to recieve the category tree.
   let params = {
-    "cat1": cat1,
-    "cat2": cat2,
+    "cat": cat,
     "sort":sort
     };
   
@@ -243,8 +259,8 @@ function Category(cat1,cat2,pageno,sort){
         // Get the filter dropdown menu to visible and set the href attribut of the dropdown list
         document.getElementsByClassName("dropdown-3")[0].style.display = "block";
 
-        document.getElementsByClassName("asc")[0].setAttribute("href",createURLforCategory(cat1,cat2,pageno,1));
-        document.getElementsByClassName("desc")[0].setAttribute("href",createURLforCategory(cat1,cat2,pageno,2));
+        document.getElementsByClassName("asc")[0].setAttribute("href",createURLforCategory(cat,pageno,1));
+        document.getElementsByClassName("desc")[0].setAttribute("href",createURLforCategory(cat,pageno,2));
 
           //Iterate through the response data containing a list of products and append it to the html page under the product section
           for ( let ind = 2; ind<data.length; ind++ ) {
@@ -279,7 +295,7 @@ function Category(cat1,cat2,pageno,sort){
 
           // Add the pagination section with the particular pageno and query text
           if (!document.getElementsByClassName("pagination")[0].hasChildNodes()){
-              createPaginationCategory(cat1,cat2,no_of_pages,pageno,sort);
+              createPaginationCategory(cat,no_of_pages,pageno,sort);
             }
           }
         else{
@@ -407,7 +423,7 @@ function createPagination(searchText,pages,pageno,sort){
 }
 
 // Function to create Pagination when a category button is selected.
-function createPaginationCategory(cat1,cat2,pages,pageno,sort){
+function createPaginationCategory(cat,pages,pageno,sort){
     // Acess the pagination section for thhe pages to be added
   ul_element = document.getElementsByClassName("pagination")[0];
 
@@ -420,7 +436,7 @@ function createPaginationCategory(cat1,cat2,pages,pageno,sort){
   }
   else{
     list_element.setAttribute("class","page-item");
-    url = createURLforCategory(cat1,cat2,pageno-1,sort);
+    url = createURLforCategory(cat,pageno-1,sort);
     list_element.setAttribute("onclick",`window.location.href='${url}'`);
   }
   
@@ -457,7 +473,7 @@ function createPaginationCategory(cat1,cat2,pages,pageno,sort){
       list_element.setAttribute("class","page-item");
     }
 
-    url = createURLforCategory(cat1,cat2,i,sort);
+    url = createURLforCategory(cat,i,sort);
 
     anchor_element = document.createElement("a");
     anchor_element.setAttribute("class","page-link");
@@ -479,7 +495,7 @@ function createPaginationCategory(cat1,cat2,pages,pageno,sort){
   }
   else{
   list_element.setAttribute("class","page-item");
-  url = createURLforCategory(cat1,cat2,pageno+1,sort);
+  url = createURLforCategory(cat,pageno+1,sort);
   list_element.setAttribute("onclick",`window.location.href='${url}'`);
   }
   anchor_element = document.createElement("a");
