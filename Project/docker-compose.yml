@@ -1,0 +1,38 @@
+version: '3'
+services:
+  api:
+    container_name: flask-container
+    build: ./Website/Backend
+    entrypoint: python app.py
+    env_file:
+      - .env
+    ports:
+      - '5000:5000'
+  redis:
+    image: redis
+    container_name: redis-container
+    ports:
+      - "6379:6379"
+  dataapi:
+    container_name: ingestion-container
+    build: ./DataIngestion
+    entrypoint: python app.py
+    ports:
+      - '6000:6000'
+  database:
+    image: postgres
+    ports:
+      - "5432:5432"
+    restart: always
+    environment:
+      POSTGRES_USER: gourav
+      POSTGRES_PASSWORD: gourav
+      POSTGRES_DB: data
+
+  adminer:
+    image: adminer
+    restart: always
+    depends_on:
+      - database
+    ports:
+      - 8080:8080
