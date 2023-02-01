@@ -33,7 +33,7 @@ def categorycaller(pagenumber):
 @app.route('/products/trending/<pagenumber>', methods=["GET"])
 @cache.cached(timeout=30, query_string=True)
 def trendingcaller(pagenumber):
-    trending(pagenumber)
+    return trending(pagenumber)
 
 
 #Will be able to load the entire category tree and send back a JSON to the front-end
