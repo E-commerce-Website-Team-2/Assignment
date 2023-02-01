@@ -2,23 +2,26 @@ version: '3'
 services:
   api:
     container_name: flask-container
-    build: ./Website/Backend
-    entrypoint: python app.py
+    build: ./Website/Backend/
+    entrypoint: python3 DataQuery/app.py
     env_file:
       - .env
     ports:
       - '5000:5000'
+
+  dataapi:
+    container_name: data-container
+    build: ./Website/Backend/
+    entrypoint: python3 DataIngestion/app.py
+    ports:
+      - '6000:6000'
+
   redis:
     image: redis
     container_name: redis-container
     ports:
       - "6379:6379"
-  dataapi:
-    container_name: ingestion-container
-    build: ./DataIngestion
-    entrypoint: python app.py
-    ports:
-      - '6000:6000'
+
   database:
     image: postgres
     ports:
@@ -37,8 +40,8 @@ services:
     ports:
       - 8080:8080
 
-  # frontend:
-  #   build: ./Website/Frontend
-  #   restart: always
-  #   ports:
-  #     - 8000:80
+  frontend:
+    build: ./Website/Frontend
+    restart: always
+    ports:
+      - 8000:80
