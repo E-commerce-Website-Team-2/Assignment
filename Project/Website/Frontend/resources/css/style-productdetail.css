@@ -1,8 +1,17 @@
 
 /* Single Product Section*/
 #proddetails{
+
+    background:#ebaf81;
     display: flex;
+    border: 1px solid black;
+    margin-top: 100px;
+    margin-bottom: 100px;
+    margin-right: 150px;
+    margin-left: 80px;
+    border-radius:20px;
   }
+
   
   #proddetails .single-pro-image{
     width: 30%;
@@ -12,6 +21,11 @@
   
   #proddetails .single-pro-image img{
     border-radius: 20px;
+  
+  }
+  #proddetails .single-pro-image img:hover{
+    transform: scale(1.1);
+    transition: all .5s ease-in-out;
   
   }
   
