@@ -35,7 +35,7 @@
 
         <!-- Header section deals with logo and search box -->
         <section id = "header">
-            <a href="#"><img src="./resources/images/logo-removebg-preview.png" class="logo" height="80px" width="150px"></img></a>
+            <a href="#"><img src="./resources/images/logo-removebg-preview.png" class="logo" height="80px" width="150px" onclick = "window.location.href = './index.html'"></img></a>
             <div class = "navbar">
                 <div class="form">
                     <i class="fa fa-search"></i>
@@ -46,30 +46,16 @@
         </section>
         <!-- Category section deals with category dropdown menu with subcategories -->
         <section id ="category">
-            <!-- <div class="dropdown-1">
-                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                  Men
-                </button>
-                <ul class="dropdown-menu cat1" aria-labelledby="dropdownMenuButton1">
-                </ul>
-              </div>
-            <div class="dropdown-2">
-                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                  Women
-                </button>
-                <ul class="dropdown-menu cat2" aria-labelledby="dropdownMenuButton1">
-                </ul>
-            </div> -->
         </section>
         <!-- Product Section deals with displaying various products fetched from backend -->
         <section id ="product1" class="section-p1">
             <div class="dropdown-3">
-                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                <button class="btn btn-secondary dropdown-toggle filter" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
                   Filter
                 </button>
                 <ul class="dropdown-menu cat3" aria-labelledby="dropdownMenuButton3">
                     <li><a class = "dropdown-item asc"> Sort by Asc</a></li>
-                    <li><a class = "dropdown-item desc">Sort by desc</a></li>
+                    <li><a class = "dropdown-item desc">Sort by Desc</a></li>
                 </ul>
             </div>
 

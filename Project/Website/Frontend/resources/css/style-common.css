@@ -110,7 +110,7 @@ body {
 #category{
   display: flex;
   align-items: center;
-  padding-top:20px;
+  padding-top:30px;
   
 }
 #category>div{
@@ -166,6 +166,7 @@ body {
 
 #product1 .pro:hover{
   box-shadow: 20px 20px 30px rgba(0,0,0,0.06);
+  transform: scale(1.1);
 }
 
 
