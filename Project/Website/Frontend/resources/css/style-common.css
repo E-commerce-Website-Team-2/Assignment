@@ -59,8 +59,8 @@ body {
   align-items: center;
   justify-content: space-between;
   padding: 20px 80px;
-  background: #E3E6F3;
-  box-shadow: 0 5px 25px rgba(0,0,0,0.6);
+  background: #f7ffba;
+  /* box-shadow: 0 5px 25px rgba(0,0,0,0.6); */
   z-index: 999;
   position: sticky;
   top:0;
@@ -111,6 +111,8 @@ body {
   display: flex;
   align-items: center;
   padding-top:30px;
+  padding-bottom:30px;
+  background: #f7e39c;
   
 }
 #category>div{
@@ -119,7 +121,7 @@ body {
   cursor: pointer;
 }
 #category>div>button{
-  background-color: #E3E6F3;
+  background-color: #f7e39c;
   color:#1a1a1a;
 }
 
@@ -128,6 +130,7 @@ body {
 /* Product Section */
 #product1{
   text-align:center;
+  background:#ebaf81;
 }
 #product1 .dropdown-3{
   position:absolute;
@@ -136,7 +139,7 @@ body {
 
 }
 .dropdown-3 button{
-  background-color: #E3E6F3;
+  background-color: #ebaf81;
   color:#1a1a1a;
 }
 
@@ -154,14 +157,16 @@ body {
   width: 23%;
   min-width: 250px;
   padding: 10px 12px;
-  border: 1px solid #cce7d0;
+  border: 1px solid #28133A;
   border-radius: 25px;
   cursor: pointer;
   box-shadow: 20px 20px 30px rgba(0,0,0,0.02);
   margin: 15px 0;
   transition: 0.2s ease;
   position: relative;
+  background:#f7e39c;
 }
+
 
 
 #product1 .pro:hover{
@@ -183,7 +188,7 @@ body {
 
 #product1 .pro .des h5{
   padding-top:  7px;
-  color: #1a1a1a;
+  color: black;
   font-size: 14px;
 }
 
@@ -192,12 +197,19 @@ body {
   padding-top: 7px;
   font-size: 15px;
   font-weight: 700;
-  color: #088178;
+  color: black;
 }
 
 /* Pagination Section */
-.pagination nav{ 
+#pagination{
+  background: #da8067;
+}
+#pagecontainer ul{
+  width:100%;
   text-align: center;
+  display:inline-block;
+  justify-content: center;
+  padding-left: 300px;
 }
 .page-item{
   cursor: pointer;

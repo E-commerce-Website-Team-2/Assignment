@@ -64,7 +64,9 @@ function GetProduct(ele){
     )
     .then((response) => response.json())
     .then((data) => {
-      // console.log(data);
+      if (data[1].length == 0){
+        window.location.href = `./index.html?cat=${ele.value}&pageno=1`
+      }
       
       for (ind in data[1]){
         var list_element = document.createElement("li");
@@ -134,7 +136,7 @@ function createURLforCategory(cat,pageno,sort){
   return url;
 }
 
-
+// Function to fill the products with the trending data acessed from database
 function fill_trending(pageno,sort){
     fetch(`http://localhost:5000/products/trending/${pageno}?sort=${sort}`,{
     headers:{

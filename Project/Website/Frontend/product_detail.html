@@ -33,33 +33,6 @@
     </head>
 
     <body>
-
-        <!-- Header section deals with logo and search box -->
-        <section id = "header">
-            <a href="#"><img src="./resources/images/logo-removebg-preview.png" class="logo" height="80px" width="150px"></img></a>
-            <div class = "navbar">
-                <div class="form">
-                    <i class="fa fa-search"></i>
-                    <input id = "search" type="text" class="form-input" placeholder="Search Products" onkeydown="search(this)">
-                </div>
-            </div>
-        </section>
-        <!-- Category section deals with category dropdown menu with subcategories -->       
-        <section id ="category">
-        </section>
-        <!-- Product details section deals with displaying overview of a single product -->
-        <section id="proddetails" class="section-p1">
-            <div class="single-pro-image">
-                <img src="#" width="100%" id="MainImage" alt="">
-            </div>
-            <div class="single-pro-details">
-                <h2 id ="title"></h2>
-                <h4 id = "price"></h4>
-                <h4> Product Description</h4>
-                <span id = "description"></span>
-            </div>
-        </section>
-
         <!-- This script deals with handling the state from another page (index.html) -->
         <script>
             window.onload = function () {
@@ -94,6 +67,33 @@
             });
                 }
         </script>
+        <!-- Header section deals with logo and search box -->
+        <section id = "header">
+            <a href="#"><img src="./resources/images/logo-removebg-preview.png" class="logo" height="80px" width="150px" onclick = "window.location.href = './index.html'"></img></a>
+            <div class = "navbar">
+                <div class="form">
+                    <i class="fa fa-search"></i>
+                    <input id = "search" type="text" class="form-input" placeholder="Search Products" onkeydown="search(this)">
+                </div>
+            </div>
+        </section>
+        <!-- Category section deals with category dropdown menu with subcategories -->       
+        <section id ="category">
+        </section>
+        <!-- Product details section deals with displaying overview of a single product -->
+        <section id="proddetails" class="section-p1">
+            <div class="single-pro-image">
+                <img src="#" width="100%" id="MainImage" alt="">
+            </div>
+            <div class="single-pro-details">
+                <h2 id ="title"></h2>
+                <h4 id = "price"></h4>
+                <h4> Product Description</h4>
+                <span id = "description"></span>
+            </div>
+        </section>
+
+
 
     </body>
 
