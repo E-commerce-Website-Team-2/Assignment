@@ -5,7 +5,7 @@ from Modules.Database.DBmain import *
 from Modules.Database.DBcheck import *
 
 # This function is able to perform a read request from the database. It will be able to do a Select From Where command
-def readDB(table ,fields ,condition = {} , order = 0 ,check = 0):
+def read(table ,fields ,condition = {} , order = 0 ,check = 0):
     checkTable = check_table(table)
     numberOfFields = len(fields)
     if(checkTable):

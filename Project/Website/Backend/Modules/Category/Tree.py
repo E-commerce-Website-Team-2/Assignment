@@ -8,13 +8,13 @@ def getcategory():
     category = request.args.get('cat')
     #To get a level 1 call we will use None. 
     if(category == None):
-        categories = readDB("category",["catid","categoryname"],{"parentname":"None"})
+        categories = read("category",["catid","categoryname"],{"parentname":"None"})
         for i in range(len(categories[1])):
             categories[1][i] = list(categories[1][i])
         return categories
-    catid = readDB("category",["categoryname"],{"catid":category})
+    catid = read("category",["categoryname"],{"catid":category})
     catid = catid[1][0][0]
-    categories = readDB("category",["catid","categoryname"],{"parentname":catid})
+    categories = read("category",["catid","categoryname"],{"parentname":catid})
     for i in range(len(categories[1])):
         categories[1][i] = list(categories[1][i])
     return categories

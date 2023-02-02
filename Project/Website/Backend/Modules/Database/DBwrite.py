@@ -9,7 +9,7 @@ from Modules.Database.DBread import *
 # This function will be capable of writing to the products table present in the database. 
 def write(product,field,table,update):
     #Have to write code to get the category ID
-    catid = readDB("category",["catid"],{"categoryname" : product["catlevel2Name"], "parentname": product["catlevel1Name"]})
+    catid = read("category",["catid"],{"categoryname" : product["catlevel2Name"], "parentname": product["catlevel1Name"]})
     catid = catid[1][0][0]
     conn = db_connection('data')
     cur = conn.cursor()
