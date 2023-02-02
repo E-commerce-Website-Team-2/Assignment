@@ -7,13 +7,8 @@ from Modules.Database.DBmain import *
 def check_table(table):
     conn = db_connection('data')
     cur = conn.cursor()
-    stmt = sql.SQL("""
-            Select Exists 
-            ( Select * 
-            From  
-            {table} ) """).format(table = sql.Identifier(table))
-    cur.execute(stmt)
-    exists = cur.fetchall()
+    cur.execute("select exists(select * from information_schema.tables where table_name=%s)", (table,))
+    exists = cur.fetchone()[0]
     cur.close()
     conn.close()
     return exists
@@ -39,7 +34,7 @@ def checkID(productId,table):
         else:
             return 200
     else:
-        return 400
+        return 200
 
 
 
