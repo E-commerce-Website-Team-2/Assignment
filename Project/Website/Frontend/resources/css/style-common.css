@@ -165,6 +165,10 @@ body {
   text-align:center;
   background:#4472ca;
 }
+/* #product1>img{
+  visibility: hidden;
+} */
+
 #product1 .dropdown-3{
   position:absolute;
   right: 60px;;

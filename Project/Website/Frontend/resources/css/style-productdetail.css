@@ -21,6 +21,9 @@
   
   #proddetails .single-pro-image img{
     border-radius: 20px;
+    animation-name: moveInLeft;
+    animation-duration: 2s;
+    transition: ease-in;
   
   }
   #proddetails .single-pro-image img:hover{
@@ -31,6 +34,9 @@
   
   #proddetails .single-pro-details{
     width: 50%;
+    animation-name: moveInRight;
+    animation-duration: 2s;
+    transition: ease-in;
   
   }
   
@@ -44,4 +50,42 @@
   
   #proddetails .single-pro-details span{
     line-height: 50px;
+  }
+
+  @keyframes moveInLeft {
+    0%{
+    opacity: 0;
+    transform: translateX(-100px);
+    }
+    80% {
+    transform: translateX(10px);
+    }
+    100% {
+    opacity: 1;
+    transform: translate(0);
+    }
+    }
+
+    @keyframes moveInRight {
+      0%{
+      opacity: 0;
+      transform: translateX(100px);
+      }
+      80% {
+      transform: translateX(-10px);
+      }
+      100% {
+      opacity: 1;
+      transform: translate(0);
+      }
+      }
+
+    @keyframes fade-in {
+      0% {
+          opacity: 50%;
+          transform: translateY(-10px);
+      }
+      100% {
+          opacity: 100%;
+      }
   }

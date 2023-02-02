@@ -183,7 +183,7 @@ function search(ele){
 function fill_products_section(index,params){
   var backendapi = getBackendAPI(index,params);
   // console.log(document.getElementsByClassName("dropdown-3")[0]);
-  // document.getElementsByClassName("loading")[0].style.visibility = "visible";
+  // document.getElementById("loading").style.visibility = "visible";
   fetch(backendapi,{
     headers:{
       "Content-Type": "application/json",
@@ -195,10 +195,10 @@ function fill_products_section(index,params){
   )
     .then((response) => response.json())
     .then((data) => {
-      console.log(data);
-      
-      // document.getElementsByClassName("dropdown-3")[0].style.visibility = "hidden";
-      // document.getElementsByClassName("pro-container")[0].style.visibility = "hidden";
+      console.log(document.getElementById("product1"));
+      document.getElementById("loading").innerHTML = "<img src = './resources/images/loading.gif' ></img>";
+      document.getElementsByClassName("dropdown-3")[0].style.visibility = "hidden";
+      document.getElementsByClassName("pro-container")[0].style.visibility = "hidden";
       if(data[0] == 200){
         // Get the number of products sent in the response from the backend and calculate the no of pages
         no_of_products = data[1];
@@ -277,9 +277,9 @@ function fill_products_section(index,params){
       else{
         window.location.href = './404.html';
       }
-      // document.getElementsByClassName("loading")[0].style.visibility = "hidden";
-      // document.getElementsByClassName("dropdown-3")[0].style.visibility = "visible";
-      // document.getElementsByClassName("pro-container")[0].style.visibility = "visible";
+      document.getElementById("loading").innerHTML = "";
+      document.getElementsByClassName("dropdown-3")[0].style.visibility = "visible";
+      document.getElementsByClassName("pro-container")[0].style.visibility = "visible";
 
     })
     .catch((error) => {
