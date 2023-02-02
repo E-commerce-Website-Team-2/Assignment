@@ -59,13 +59,44 @@ body {
   align-items: center;
   justify-content: space-between;
   padding: 20px 80px;
-  background: #f7ffba;
+  background: #0a369d;
   /* box-shadow: 0 5px 25px rgba(0,0,0,0.6); */
   z-index: 999;
   position: sticky;
   top:0;
   left:0;
 }
+
+#logo{
+  animation: fadeIn 5s;
+}
+
+#header h2{
+  color:white;
+  animation-name: moveInLeft;
+  animation-duration: 2s;
+  transition: ease-in;
+}
+
+@keyframes fadeIn {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+@keyframes moveInLeft {
+  0%{
+  opacity: 0;
+  transform: translateX(-100px);
+  }
+  80% {
+  transform: translateX(10px);
+  }
+  100% {
+  opacity: 1;
+  transform: translate(0);
+  }
+  }
+
 
 #navbar{
   display: inline-flex;
@@ -112,7 +143,7 @@ body {
   align-items: center;
   padding-top:30px;
   padding-bottom:30px;
-  background: #f7e39c;
+  background: #cfdee7;
   
 }
 #category>div{
@@ -121,8 +152,10 @@ body {
   cursor: pointer;
 }
 #category>div>button{
-  background-color: #f7e39c;
-  color:#1a1a1a;
+  background-color: #cfdee7;
+  font-size: 20px;
+  color:black;
+  border:none;
 }
 
 
@@ -130,7 +163,7 @@ body {
 /* Product Section */
 #product1{
   text-align:center;
-  background:#ebaf81;
+  background:#4472ca;
 }
 #product1 .dropdown-3{
   position:absolute;
@@ -139,8 +172,10 @@ body {
 
 }
 .dropdown-3 button{
-  background-color: #ebaf81;
-  color:#1a1a1a;
+  background-color: #4472ca;
+  color:white;
+  border:none;
+  font-size: 18px;
 }
 
 
@@ -164,7 +199,7 @@ body {
   margin: 15px 0;
   transition: 0.2s ease;
   position: relative;
-  background:#f7e39c;
+  background:#cfdee7;
 }
 
 
@@ -202,11 +237,11 @@ body {
 
 /* Pagination Section */
 #pagination{
-  background: #da8067;
+  background: #92b4f4;
 }
-#pagecontainer ul{
+#pagination>nav{
   width:100%;
-  text-align: center;
+  align-items: center;
   display:inline-block;
   justify-content: center;
   padding-left: 300px;
