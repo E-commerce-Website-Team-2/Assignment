@@ -182,6 +182,8 @@ function search(ele){
 // FUnction to fill the product section with products fetched from backend api for the particular query
 function fill_products_section(index,params){
   var backendapi = getBackendAPI(index,params);
+  // console.log(document.getElementsByClassName("dropdown-3")[0]);
+  // document.getElementsByClassName("loading")[0].style.visibility = "visible";
   fetch(backendapi,{
     headers:{
       "Content-Type": "application/json",
@@ -194,11 +196,15 @@ function fill_products_section(index,params){
     .then((response) => response.json())
     .then((data) => {
       console.log(data);
+      
+      // document.getElementsByClassName("dropdown-3")[0].style.visibility = "hidden";
+      // document.getElementsByClassName("pro-container")[0].style.visibility = "hidden";
       if(data[0] == 200){
         // Get the number of products sent in the response from the backend and calculate the no of pages
         no_of_products = data[1];
         no_of_pages = Math.ceil(no_of_products/9);
         sort = params["sort"];
+        
 
         // Get the pagination section where the pagination with given pages is created
         ul_element = document.getElementsByClassName("pagination")[0];
@@ -212,9 +218,9 @@ function fill_products_section(index,params){
         document.getElementsByClassName("dropdown-3")[0].style.display = "block";
 
         params.sort = 1;
-        filter_asc = createURL(index,params);
+        filter_asc = createURL(index,params,params["pageno"]);
         params.sort = 2;
-        filter_desc = createURL(index,params);
+        filter_desc = createURL(index,params,params["pageno"]);
         document.getElementsByClassName("asc")[0].setAttribute("href",filter_asc);
         document.getElementsByClassName("desc")[0].setAttribute("href",filter_desc);
 
@@ -270,8 +276,10 @@ function fill_products_section(index,params){
         }
       else{
         window.location.href = './404.html';
-
       }
+      // document.getElementsByClassName("loading")[0].style.visibility = "hidden";
+      // document.getElementsByClassName("dropdown-3")[0].style.visibility = "visible";
+      // document.getElementsByClassName("pro-container")[0].style.visibility = "visible";
 
     })
     .catch((error) => {
