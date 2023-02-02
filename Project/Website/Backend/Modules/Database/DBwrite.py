@@ -50,8 +50,8 @@ def writeCategoryLevel1(category,table,field):
     present = False
     category = str(category)
     if tablepresent:
-        present = CategoryPresent(category,table)
-    if present[0][0] == False:
+        present = CategoryPresent(category,table)[0][0]
+    if present == False:
         conn = db_connection('data')
         cur = conn.cursor()
         cur.execute('CREATE TABLE IF NOT EXISTS ' + table + '(catid SERIAL  PRIMARY KEY,  '

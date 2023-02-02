@@ -38,5 +38,5 @@ def categoryTree():
                     else:
                         final_response += "The category " + list(category.keys())[0] + " Sub-category " + categories + " Has been added.\n"
             else:
-                final_response += "The " + list(category.keys())[0] + " has failed due to database error. \n"
+                final_response += "The " + list(category.keys())[0] + " has failed due to database error. "+ str(level1status) + "\n"
         return final_response
