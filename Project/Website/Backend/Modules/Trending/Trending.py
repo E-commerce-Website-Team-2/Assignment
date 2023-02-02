@@ -22,7 +22,7 @@ def trending(pagenumber):
         return [400,0,{}]
     start = (int(pagenumber) - 1)*9
     rows = 9
-    response = readDB("products",["uniqueID","name","price","productimage"],order = order)
+    response = read("products",["uniqueID","name","price","productimage"],order = order)
     finalresponse = checkResponse(response,start,rows)
     return finalresponse
 

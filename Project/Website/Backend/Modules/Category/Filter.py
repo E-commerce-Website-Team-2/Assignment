@@ -11,7 +11,7 @@ def category(pagenumber):
     catid = request.args.get('cat')
     if(catid.isdigit()):
         catid = int(catid)
-        status = readDB("category",["categoryname"],{"catid":str(catid)})[1]
+        status = read("category",["categoryname"],{"catid":str(catid)})[1]
         if(status == []):
             return [400,[],{}]
     order = request.args.get('sort')
@@ -35,7 +35,7 @@ def category(pagenumber):
         condition += str(id) +","
     condition = condition[:-1]
     condition += ")"
-    response = readDB("products",["uniqueID","name","price","productimage"],{"catid":condition},order = order,check = 1)
+    response = read("products",["uniqueID","name","price","productimage"],{"catid":condition},order = order,check = 1)
     finalresponse = checkResponse(response,start,rows)
     return finalresponse
  
@@ -46,8 +46,8 @@ def categoryIds(catid):
     while(len(stack) > 0):
         parentid = stack.pop()
         final.add(int(parentid))
-        parentname = readDB("category",["categoryname"],{"catid":str(parentid)})[1][0][0]
-        children = readDB("category",["catid"],{"parentname":parentname})[1]
+        parentname = read("category",["categoryname"],{"catid":str(parentid)})[1][0][0]
+        children = read("category",["catid"],{"parentname":parentname})[1]
         for child in children:
             stack.append(child[0])    
     return list(final)
