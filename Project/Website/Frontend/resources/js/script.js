@@ -182,109 +182,110 @@ function search(ele){
 // FUnction to fill the product section with products fetched from backend api for the particular query
 function fill_products_section(index,params){
   var backendapi = getBackendAPI(index,params);
-  // console.log(document.getElementsByClassName("dropdown-3")[0]);
-  // document.getElementById("loading").style.visibility = "visible";
-  fetch(backendapi,{
-    headers:{
-      "Content-Type": "application/json",
-      "Access-Control-Allow-Origin": "*",
-      "Acess-Control-Allow-Methods": "GET",
-
-    }
-  }
-  )
-    .then((response) => response.json())
-    .then((data) => {
-      console.log(document.getElementById("product1"));
-      document.getElementById("loading").innerHTML = "<img src = './resources/images/loading.gif' ></img>";
-      document.getElementsByClassName("dropdown-3")[0].style.visibility = "hidden";
-      document.getElementsByClassName("pro-container")[0].style.visibility = "hidden";
-      if(data[0] == 200){
-        // Get the number of products sent in the response from the backend and calculate the no of pages
-        no_of_products = data[1];
-        no_of_pages = Math.ceil(no_of_products/9);
-        sort = params["sort"];
-        
-
-        // Get the pagination section where the pagination with given pages is created
-        ul_element = document.getElementsByClassName("pagination")[0];
-        ul_element.innerHTML = "";
-
-        // Get the product section where the products is going to be added
-        product_element = document.getElementsByClassName("pro-container")[0];
-        product_element.innerHTML = "";
-
-        // Get the filter dropdown menu to visible and set the href attribut of the dropdown list
-        document.getElementsByClassName("dropdown-3")[0].style.display = "block";
-
-        params.sort = 1;
-        filter_asc = createURL(index,params,params["pageno"]);
-        params.sort = 2;
-        filter_desc = createURL(index,params,params["pageno"]);
-        document.getElementsByClassName("asc")[0].setAttribute("href",filter_asc);
-        document.getElementsByClassName("desc")[0].setAttribute("href",filter_desc);
-
-        if (sort == 1){
-          document.getElementsByClassName("filter")[0].innerHTML = "Sort by Asc";
-        }
-        if (sort == 2){
-          document.getElementsByClassName("filter")[0].innerHTML = "Sort by Desc";
-        }
-      
-
-        //Iterate through the response data containing a list of products and append it to the html page under the product section
-        for ( let ind = 2; ind<data.length; ind++ ) {
-
-          div_element = document.createElement("div");
-          div_element.setAttribute("class", "pro");
-          console.log(typeof data[ind]["name"]);
-          div_element.addEventListener("click", function(){
-            DetailedProduct(data[ind]);
-          });
-
-
-
-          img_element = document.createElement("img");
-
-          img_element.setAttribute("src",data[ind].productimage === undefined? data[ind]["productImage"]:data[ind]["productimage"]);
-
-          div_element.appendChild(img_element);
-
-          div_name = document.createElement("div");
-          div_name.setAttribute("class","des");
-
-          h5_element = document.createElement("h5");
-          h5_element.innerHTML = data[ind]["name"];
-
-          h4_element = document.createElement("h4");
-          h4_element.innerHTML = data[ind]["price"];
-
-          div_name.appendChild(h5_element);
-          div_name.appendChild(h4_element);
-          div_element.appendChild(div_name);
-
-          
-          product_element.appendChild(div_element);
-        }
-
-        // Add the pagination section with the particular pageno and query text
-      if (!document.getElementsByClassName("pagination")[0].hasChildNodes()){
-            params["pages"] = no_of_pages
-            params["sort"] = sort
-            createPagination(index,params,params["pageno"]);
-          }
-        }
-      else{
-        window.location.href = './404.html';
+  document.getElementById("product1").style.display = "none";
+  document.getElementById("pagination").style.display = "none";
+  setTimeout(()=>{
+    fetch(backendapi,{
+      headers:{
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*",
+        "Acess-Control-Allow-Methods": "GET",
+  
       }
-      document.getElementById("loading").innerHTML = "";
-      document.getElementsByClassName("dropdown-3")[0].style.visibility = "visible";
-      document.getElementsByClassName("pro-container")[0].style.visibility = "visible";
+    }
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(document.getElementById("product1"));
+  
+        if(data[0] == 200){
+          // Get the number of products sent in the response from the backend and calculate the no of pages
+          no_of_products = data[1];
+          no_of_pages = Math.ceil(no_of_products/9);
+          sort = params["sort"];
+          
+  
+          // Get the pagination section where the pagination with given pages is created
+          ul_element = document.getElementsByClassName("pagination")[0];
+          ul_element.innerHTML = "";
+  
+          // Get the product section where the products is going to be added
+          product_element = document.getElementsByClassName("pro-container")[0];
+          product_element.innerHTML = "";
+  
+          // Get the filter dropdown menu to visible and set the href attribut of the dropdown list
+          document.getElementsByClassName("dropdown-3")[0].style.display = "block";
+  
+          params.sort = 1;
+          filter_asc = createURL(index,params,params["pageno"]);
+          params.sort = 2;
+          filter_desc = createURL(index,params,params["pageno"]);
+          document.getElementsByClassName("asc")[0].setAttribute("href",filter_asc);
+          document.getElementsByClassName("desc")[0].setAttribute("href",filter_desc);
+  
+          if (sort == 1){
+            document.getElementsByClassName("filter")[0].innerHTML = "Sort by Asc";
+          }
+          if (sort == 2){
+            document.getElementsByClassName("filter")[0].innerHTML = "Sort by Desc";
+          }
+        
+  
+          //Iterate through the response data containing a list of products and append it to the html page under the product section
+          for ( let ind = 2; ind<data.length; ind++ ) {
+  
+            div_element = document.createElement("div");
+            div_element.setAttribute("class", "pro");
+            console.log(typeof data[ind]["name"]);
+            div_element.addEventListener("click", function(){
+              DetailedProduct(data[ind]);
+            });
+  
+  
+  
+            img_element = document.createElement("img");
+  
+            img_element.setAttribute("src",data[ind].productimage === undefined? data[ind]["productImage"]:data[ind]["productimage"]);
+  
+            div_element.appendChild(img_element);
+  
+            div_name = document.createElement("div");
+            div_name.setAttribute("class","des");
+  
+            h5_element = document.createElement("h5");
+            h5_element.innerHTML = data[ind]["name"];
+  
+            h4_element = document.createElement("h4");
+            h4_element.innerHTML = data[ind]["price"];
+  
+            div_name.appendChild(h5_element);
+            div_name.appendChild(h4_element);
+            div_element.appendChild(div_name);
+  
+            
+            product_element.appendChild(div_element);
+          }
+  
+          // Add the pagination section with the particular pageno and query text
+        if (!document.getElementsByClassName("pagination")[0].hasChildNodes()){
+              params["pages"] = no_of_pages
+              params["sort"] = sort
+              createPagination(index,params,params["pageno"]);
+            }
+          }
+        else{
+          window.location.href = './404.html';
+        }
+        document.getElementById("loading").innerHTML = "";
+        document.getElementById("product1").style.display = "block";
+        document.getElementById("pagination").style.display = "block";
+  
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  },3000)
 
-    })
-    .catch((error) => {
-      console.log(error);
-    });
 }
 
 // This function is called when a user clicks on a product whhichh moves to another product_detail html element with some properties sent to it.
