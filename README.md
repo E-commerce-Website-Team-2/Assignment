@@ -6,7 +6,7 @@ database after it has been validated
 
 ## Overview of API Specification 
 We have designed api specification on two things
-- **Data Ingestion**<br>
+- **Data Ingestion** <br>
    This is used to populate the products and category to thhe database on the respective json file provided.<br>
    The various api specification is mentioned below
    - Api to load the products into database via a post request
@@ -25,7 +25,7 @@ We have designed api specification on two things
       Content Length: 
       { - - - -  JSON of Products - - - - }
       ```
-- **Data Query**<<br>
+- **Data Query** <<br>
    This is used to perform some operation to fetched data from databse via a get request.<br>
    The various api specification is mentioned below.
    - To answer a query that has been passed. This will then be routed to Unbxd Search API
