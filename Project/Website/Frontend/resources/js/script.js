@@ -46,12 +46,6 @@ window.onload = fetch("http://localhost:5000/products/categorytree",{
   });
 
 
-
-// params = {"pageno":1,"sort":""}
-// window.onload = fill_products_section(1,params);
-
-
-
 // This function is used to get the subcategory element of a given category and fill in the database
 function GetProduct(ele){
   parentElement = ele.parentNode;
@@ -175,6 +169,7 @@ function search(ele){
     // Recieve the value from the input tag and encode the value 
     const inputelement = document.getElementById("search");
     let query = inputelement.value;
+    if (query === ""){ query="*"}
     inputelement.value = "";
     query = encodeURIComponent(query);
     // Change the location with search and page parameter added to the current window.
@@ -288,7 +283,7 @@ function fill_products_section(index,params){
       .catch((error) => {
         console.log(error);
       });
-  },1000)
+  },500)
 
 }
 
