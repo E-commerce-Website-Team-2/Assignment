@@ -52,13 +52,13 @@ We have designed api specification on two things
        Host: localhost
        Parameters:id
        ```
-    -  To get the detailed product information
-      ```
-      GET /products/details/{productId}
-      Host: localhost
-      Parameters: id
-      ```
-Link to Postman collection 
+    - To get the detailed product information
+        ```
+        GET /products/details/{productId}
+        Host: localhost
+        Parameters: id
+        ```
+Link to Postman collection <br>
 (https://galactic-trinity-324064.postman.co/workspace/My-Workspace~6df70b9a-8926-4176-815a-c502ca40f285/collection/25320455-42651878-3c51-40a5-ab82-a52b28a98ba2?action=share&creator=25320455)
 
 ## How to run data ingestion API
@@ -88,4 +88,4 @@ This would be run on docker using `docker-compose up -d --build` while inside th
 ![HomePage - Displaying Products With Category Applied](Project/Documentation/ProductPageCategory.png)
 
 ### ProductDetailPage - Displaying details of products
-![ProductDetailPage - Displaying details of products](Project/Documetation/ProdductDetailPage.png)
+![ProductDetailPage - Displaying details of products](Project/Documetation/ProddductDetailPage.png)
