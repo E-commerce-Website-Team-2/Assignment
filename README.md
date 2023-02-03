@@ -17,8 +17,8 @@ This would be run on docker using **docker-compose up -d --build** while inside 
 
 ## Screenshots of Application
 
-![HomePage - Displaying Trending Products](Project/Documentation/ProductPageTrending.jpg)
-![HomePage - Displaying Searched Products](Project/Documentation/ProductPageSearch.jpg)
-![HomePage - Displaying Prducts With Filter Applied](Project/Documentation/ProductPageWithFilterApplied.jpg)
-![HomePage - Displaying Products With Category Applied](Project/Documentation/ProductPageCategory.jpg)
-![ProductDetailPage - Displaying details of products](Project/Documetation/ProductDetailPage.jpg)
+![HomePage - Displaying Trending Products](Project/Documentation/ProductPageTrending.png)
+![HomePage - Displaying Searched Products](Project/Documentation/ProductPageSearch.png)
+![HomePage - Displaying Prducts With Filter Applied](Project/Documentation/ProductPageWithFilterApplied.png)
+![HomePage - Displaying Products With Category Applied](Project/Documentation/ProductPageCategory.png)
+![ProductDetailPage - Displaying details of products](Project/Documetation/ProductDetailPage.png)
