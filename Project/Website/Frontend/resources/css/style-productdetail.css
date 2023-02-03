@@ -23,7 +23,7 @@
     border-radius: 20px;
     animation-name: moveInLeft;
     animation-duration: 2s;
-    transition: ease-in;
+    transition: ease-in-out;
   
   }
   #proddetails .single-pro-image img:hover{

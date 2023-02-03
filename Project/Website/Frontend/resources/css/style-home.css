@@ -1,0 +1,141 @@
+/* Product Section */
+#product1{
+    text-align:center;
+    background:#4472ca;
+  }
+  #product1 .dropdown-3{
+    position:absolute;
+    right: 60px;;
+    display: none;
+  
+  }
+  .dropdown-3 button{
+    background-color: #4472ca;
+    color:white;
+    border:none;
+    font-size: 20px;
+  }
+  #product1 .pro-container{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    padding-top:50px;
+  }
+  #product1 .pro{
+    width: 23%;
+    min-width: 250px;
+    padding: 10px 12px;
+    border: 1px solid #28133A;
+    border-radius: 25px;
+    cursor: pointer;
+    box-shadow: 20px 20px 30px rgba(0,0,0,0.02);
+    margin: 15px 0;
+    transition: 0.2s ease;
+    position: relative;
+    background:#cfdee7;
+  }
+  #product1 .pro:hover{
+    box-shadow: 20px 20px 30px rgba(0,0,0,0.06);
+    transform: scale(1.1);
+  }
+  #product1 .pro img{
+    width:100%;
+    border-radius:20px;
+  }
+  #product1 .pro .des{
+    text-align: start;
+    padding: 10px 0;
+  }
+  #product1 .pro .des h5{
+    padding-top:  7px;
+    color: black;
+    font-size: 14px;
+  }
+  #product1 .pro .des h4{
+    padding-top: 7px;
+    font-size: 15px;
+    font-weight: 700;
+    color: black;
+  }
+  
+  /* Pagination Section */
+  #pagination{
+    background: #92b4f4;
+  }
+  #pagination>nav{
+    width:100%;
+    display:flex;
+    justify-content: center;
+  }
+  .page-item{
+    cursor: pointer;
+  }
+  
+  
+  
+  /* Loading page css*/
+  .loader{
+      background-color: #4472ca;
+      padding: 0;
+      margin: 0;
+      height: 85vh;
+      width:100vw;
+      display:flex;
+      align-items: center;
+      justify-content: center;
+  }
+  
+  .loader{
+      -webkit-perspective:700px;
+      perspective: 700px;
+  }
+  
+  .loader>span{
+      font-size: 130px;
+      font-family: "franklin gothic medium",sans-serif;
+      display: inline-block;
+      animation:flip 2.6s infinite linear;
+      transform-origin:0 70%;
+      transform-style:preserve-3d;
+      -webkit-transform-style:preserve-3d;
+  }
+  
+  @keyframes flip{
+      35%{
+          transform: rotateX(360deg);
+      }
+      100%{
+          transform: rotatex(360deg);
+      }
+  }
+  
+  
+  .loader>span:nth-child(even){
+      color:white;
+  
+  }
+  
+  .loader>span:nth-child(2){
+      animation-delay: 0.3s;
+  }
+  
+  .loader>span:nth-child(3){
+      animation-delay: 0.6s;
+  }
+  
+  .loader>span:nth-child(4){
+      animation-delay: 0.9s;
+  }
+  
+  .loader>span:nth-child(5){
+      animation-delay: 1.2s;
+  }
+  
+  .loader>span:nth-child(6){
+      animation-delay: 1.5s
+  }
+  
+  .loader>span:nth-child(7){
+      animation-delay: 1.8s
+  }
