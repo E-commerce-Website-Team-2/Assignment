@@ -12,5 +12,5 @@ curl 127.0.0.1:6000/products -d @out.json -H 'Content-Type:application/json'
 
 
 ## How to run website
---This would be run on docker using **docker-compose up -d --build** while inside the project directory. The frontend will be running on port 6000. 
+This would be run on docker using **docker-compose up -d --build** while inside the project directory. The frontend will be running on port 6000. 
 
