@@ -62,7 +62,6 @@ Link to Postman collection <br>
 (https://galactic-trinity-324064.postman.co/workspace/My-Workspace~6df70b9a-8926-4176-815a-c502ca40f285/collection/25320455-42651878-3c51-40a5-ab82-a52b28a98ba2?action=share&creator=25320455)
 
 ## How to run data ingestion API
-
 DataIngestion folder consists of the data ingestion API, which will be run using curl commands. The below curl commamnds have to be run when inside DataIngestion folder. 
 
   ```curl 127.0.0.1:6000/category -d @category.json -H 'Content-Type:application/json```<br>
@@ -70,7 +69,11 @@ DataIngestion folder consists of the data ingestion API, which will be run using
 
 
 ## How to run website
-This would be run on docker using `docker-compose up -d --build` while inside the project directory. The frontend will be running on port 6000. 
+1. Fork the repository
+2. Make sure to run the data ingestion Api for the first time 
+3. Run the following docker command <br> `docker-compose up -d --build` in the Project directory.
+4. The Application will be up and running at `localhost:8000`
+
 
 
 ## Screenshots of Application
