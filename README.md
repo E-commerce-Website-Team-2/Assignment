@@ -15,6 +15,10 @@ curl 127.0.0.1:6000/products -d @out.json -H 'Content-Type:application/json'
 This would be run on docker using **docker-compose up -d --build** while inside the project directory. The frontend will be running on port 6000. 
 
 
-## Screenshots of Images
+## Screenshots of Application
 
-![Image1](Project/Documentation/LayeredDesign.jpg)
+![HomePage - Displaying Trending Products](Project/Documentation/ProductPageTrending.jpg)
+![HomePage - Displaying Searched Products](Project/Documentation/ProductPageSearch.jpg)
+![HomePage - Displaying Prducts With Filter Applied](Project/Documentation/ProductPageWithFilterApplied.jpg)
+![HomePage - Displaying Products With Category Applied](Project/Documentation/ProductPageCategory.jpg)
+![ProductDetailPage - Displaying details of products](Project/Documetation/ProductDetailPage.jpg)
