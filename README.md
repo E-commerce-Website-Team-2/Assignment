@@ -3,6 +3,21 @@ E-commerce website that can be deployed on Kubernetes with a HTML,Javascript,CSS
 The data ingestion API that is created will be capable of taking in data from the merchandiser and adding it to the 
 database after it has been validated
 
+
+## Overview of API Specification 
+We have designed api specification on two things
+- Data Ingestion
+   This is used to populate the products and category to thhe database on the respective json file provided.The various api specification is mentioned below
+  ```
+  POST   /products
+  Host: localhost
+  Content-Type :application/json
+  Content Length: 
+  { - - - -  JSON of Products - - - - }
+  ```
+3. Data Query
+
+
 ## How to run data ingestion API
 
 DataIngestion folder consists of the data ingestion API, which will be run using curl commands. The below curl commamnds have to be run when inside DataIngestion folder. 
