@@ -47,8 +47,8 @@ window.onload = fetch("http://localhost:5000/products/categorytree",{
 
 
 
-params = {"pageno":1,"sort":""}
-window.onload = fill_products_section(1,params);
+// params = {"pageno":1,"sort":""}
+// window.onload = fill_products_section(1,params);
 
 
 
@@ -160,6 +160,10 @@ else if (urlParams.has('pageno') && urlParams.has('sort')){
   var pageno = urlParams.get('pageno');
   var sort = urlParams.get('sort');
   params = {"pageno": pageno,"sort": sort}
+  fill_products_section(1,params);
+}
+else{
+  params = {"pageno":1,"sort":""};
   fill_products_section(1,params);
 }
 
@@ -284,7 +288,7 @@ function fill_products_section(index,params){
       .catch((error) => {
         console.log(error);
       });
-  },3000)
+  },1000)
 
 }
 
