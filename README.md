@@ -58,8 +58,10 @@ We have designed api specification on two things
         Host: localhost
         Parameters: id
         ```
-Link to Postman collection <br>
+**Link to Postman collection** <br>
 (https://galactic-trinity-324064.postman.co/workspace/My-Workspace~6df70b9a-8926-4176-815a-c502ca40f285/collection/25320455-42651878-3c51-40a5-ab82-a52b28a98ba2?action=share&creator=25320455)
+
+
 
 ## How to run data ingestion API
 DataIngestion folder consists of the data ingestion API, which will be run using curl commands. The below curl commamnds have to be run when inside DataIngestion folder. 
@@ -91,4 +93,4 @@ DataIngestion folder consists of the data ingestion API, which will be run using
 ![HomePage - Displaying Products With Category Applied](Project/Documentation/ProductPageCategory.png)
 
 ### ProductDetailPage - Displaying details of products
-![ProductDetailPage - Displaying details of products](Project/Documetation/ProddductDetailPage.png)
+![ProductDetailPage - Displaying details of products](Project/Documentation/ProductDetailPage.png)
