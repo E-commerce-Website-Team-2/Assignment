@@ -28,7 +28,7 @@ spec:
         - command:
             - python3
             - DataIngestion/app.py
-          image: kuntal0901/project:backend
+          image: kuntal0901/project:b1
           name: data-container
           ports:
             - containerPort: 6000
