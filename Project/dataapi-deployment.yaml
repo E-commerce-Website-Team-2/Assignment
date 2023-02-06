@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert
+    kompose.version: 1.28.0 (HEAD)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: dataapi
+  name: dataapi
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: dataapi
+  strategy: {}
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert
+        kompose.version: 1.28.0 (HEAD)
+      creationTimestamp: null
+      labels:
+        io.kompose.network/project-default: "true"
+        io.kompose.service: dataapi
+    spec:
+      containers:
+        - command:
+            - python3
+            - DataIngestion/app.py
+          image: kuntal0901/project:backend
+          name: data-container
+          ports:
+            - containerPort: 6000
+          resources: {}
+      restartPolicy: Always
+status: {}
