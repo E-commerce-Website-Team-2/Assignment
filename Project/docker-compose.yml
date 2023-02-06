@@ -2,7 +2,7 @@ version: '3'
 services:
   api:
     container_name: flask-container
-    image: kuntal0901/project:backend
+    image: kuntal0901/project:b1
     entrypoint: python3 DataQuery/app.py
     env_file:
       - .env
@@ -11,7 +11,7 @@ services:
 
   dataapi:
     container_name: data-container
-    image: kuntal0901/project:backend
+    image: kuntal0901/project:b1
     entrypoint: python3 DataIngestion/app.py
     ports:
       - '6000:6000'
@@ -24,6 +24,7 @@ services:
 
   database:
     image: postgres
+    container_name: project-database-1
     ports:
       - "5432:5432"
     restart: always

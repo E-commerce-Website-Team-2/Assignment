@@ -59,7 +59,7 @@ spec:
                 configMapKeyRef:
                   key: CACHE_TYPE
                   name: env
-          image: kuntal0901/project:backend
+          image: kuntal0901/project:b1
           name: flask-container
           ports:
             - containerPort: 5000
