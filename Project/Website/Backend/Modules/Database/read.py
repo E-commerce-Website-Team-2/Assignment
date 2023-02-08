@@ -1,8 +1,8 @@
 import psycopg2
 import sys
 sys.path.append("..")
-from Modules.Database.DBmain import *
-from Modules.Database.DBcheck import *
+from Modules.Database.main import *
+from Modules.Database.check import *
 
 # This function is able to perform a read request from the database. It will be able to do a Select From Where command
 def read(table ,fields ,condition = {} , order = 0 ,check = 0):
