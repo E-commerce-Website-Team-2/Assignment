@@ -1,7 +1,7 @@
 from psycopg2 import sql
 import sys
 sys.path.append("..")
-from Modules.Database.DBmain import *
+from Modules.Database.main import *
 
 #This will be able to check if a table that is meant to be in the database exists or not. 
 def check_table(table):

@@ -1,9 +1,9 @@
 from psycopg2 import sql
 import sys
 sys.path.append("..")
-from Modules.Database.DBmain import *
-from Modules.Database.DBcheck import *
-from Modules.Database.DBread import *
+from Modules.Database.main import *
+from Modules.Database.check import *
+from Modules.Database.read import *
 
 
 # This function will be capable of writing to the products table present in the database. 
