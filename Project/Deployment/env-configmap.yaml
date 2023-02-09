@@ -8,7 +8,4 @@ data:
   CACHE_TYPE: redis
 kind: ConfigMap
 metadata:
-  creationTimestamp: null
-  labels:
-    io.kompose.service: api-env
   name: env
