@@ -1,1 +1,1 @@
-from .Trending import *
+from .trending import *

@@ -1,2 +1,2 @@
-from .ValidateProduct import *
-from .ValidateResponse import *
+from .validate_product import *
+from .validate_response import *

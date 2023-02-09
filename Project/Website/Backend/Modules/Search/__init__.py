@@ -1,1 +1,1 @@
-from .Query import *
+from .query import *

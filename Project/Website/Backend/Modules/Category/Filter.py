@@ -1,7 +1,7 @@
 import sys
 sys.path.append("..")
-from Modules.Database import *
-from Modules.Validate import *
+from Modules.database import *
+from Modules.validate import *
 from flask import request
 
 
@@ -29,18 +29,18 @@ def category(pagenumber):
     start = (int(pagenumber) - 1)*9
     rows = 9 
     #Have to call a function to get back all the category ids. Then merge all the responses to into 1. 
-    categoryids = categoryIds(catid)
+    categoryids = category_ids(catid)
     condition = "("
     for id in categoryids:
         condition += str(id) +","
     condition = condition[:-1]
     condition += ")"
     response = read("products",["uniqueID","name","price","productimage"],{"catid":condition},order = order,check = 1)
-    finalresponse = checkResponse(response,start,rows)
+    finalresponse = check_response(response,start,rows)
     return finalresponse
  
 #Will have to perform a DFS traversal of the tree to get all the catids   
-def categoryIds(catid):
+def category_ids(catid):
     final = set()
     stack = [catid]
     while(len(stack) > 0):

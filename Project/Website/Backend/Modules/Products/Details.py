@@ -1,6 +1,6 @@
 import sys
 sys.path.append("..")
-from Modules.Database import *
+from Modules.database import *
 import requests,json
 
 

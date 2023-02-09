@@ -1,2 +1,2 @@
-from .Filter import *
-from .Tree import *
+from .filter import *
+from .tree import *

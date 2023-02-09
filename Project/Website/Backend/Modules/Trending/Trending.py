@@ -1,7 +1,7 @@
 import sys
 sys.path.append("..")
-from Modules.Database import *
-from Modules.Validate import *
+from Modules.database import *
+from Modules.validate import *
 from flask import request
 
 
@@ -23,13 +23,13 @@ def trending(pagenumber):
     start = (int(pagenumber) - 1)*9
     rows = 9
     response = read("products",["uniqueID","name","price","productimage"],order = order)
-    finalresponse = checkResponse(response,start,rows)
+    finalresponse = check_response(response,start,rows)
     return finalresponse
 
 
 
 # This will be part of the API that will be able to load the trending items that are meant to be shown when 
 # the user visits the website. Has not been implemeneted in either side. 
-def settrending():
+def set_trending():
     pass
 
