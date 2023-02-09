@@ -1,6 +1,6 @@
 import sys
 sys.path.append("..")
-from Modules.Database import checkID
+from Modules.database import check_id
 
 
 #This function will be able to validate any product that comes as input to the catalog. It will check if all the 
@@ -31,6 +31,6 @@ def validate(product):
         return [307,"Category Level 1 is wrong"]
     if(str(type(product['catlevel2Name'])) != string):
         return [308,"Category Level 2 is wrong"]
-    flag = checkID(product['uniqueId'],"products")
+    flag = check_id(product['uniqueId'],"products")
     return [flag,"Good for database"]   
 

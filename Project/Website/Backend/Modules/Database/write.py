@@ -1,9 +1,9 @@
 from psycopg2 import sql
 import sys
 sys.path.append("..")
-from Modules.Database.main import *
-from Modules.Database.check import *
-from Modules.Database.read import *
+from Modules.database.main import *
+from Modules.database.check import *
+from Modules.database.read import *
 
 
 # This function will be capable of writing to the products table present in the database. 
@@ -11,7 +11,7 @@ def write(product,field,table,update):
     #Have to write code to get the category ID
     catid = read("category",["catid"],{"categoryname" : product["catlevel2Name"], "parentname": product["catlevel1Name"]})
     catid = catid[1][0][0]
-    conn = db_connection('data')
+    conn = database_connection('data')
     cur = conn.cursor()
     cur.execute('CREATE TABLE IF NOT EXISTS ' + table + '(uniqueid varchar(10) PRIMARY KEY,'
                                  'name varchar (150) ,'
@@ -45,14 +45,14 @@ def write(product,field,table,update):
     
 
 #This will be able to add a level 1 category to the database
-def writeCategoryLevel1(category,table,field):
+def write_category_level_1(category,table,field):
     tablepresent = check_table(table)
     present = False
     category = str(category)
     if tablepresent:
-        present = CategoryPresent(category,table)[0][0]
+        present = category_present(category,table)[0][0]
     if present == False:
-        conn = db_connection('data')
+        conn = database_connection('data')
         cur = conn.cursor()
         cur.execute('CREATE TABLE IF NOT EXISTS ' + table + '(catid SERIAL  PRIMARY KEY,  '
                                                             'categoryname varchar(10485760) ,'
@@ -69,10 +69,10 @@ def writeCategoryLevel1(category,table,field):
 
 
 #This will be able to add a level 2 category to the database
-def writeCategoryLevel2(category1,subCategory,table):
-    present = CategoryLevel2Present(category1,subCategory,table)
+def write_category_level_2(category1,subCategory,table):
+    present = category_level_2_present(category1,subCategory,table)
     if present[0][0] == False:
-        conn = db_connection('data')
+        conn = database_connection('data')
         cur = conn.cursor()
         cur.execute('CREATE TABLE IF NOT EXISTS ' + table + '(catid SERIAL PRIMARY KEY ,  '
                                                             'categoryname varchar(10485760) ,'

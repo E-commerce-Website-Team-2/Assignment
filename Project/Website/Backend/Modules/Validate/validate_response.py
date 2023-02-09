@@ -1,7 +1,7 @@
 import sys
 sys.path.append("..")
 #This will put the products that we have in the right format and also check if the page number given is valid or not 
-def checkResponse(response,start,rows):
+def check_response(response,start,rows):
     numberofProducts = len(response[1])
     finalresponse = []
     #This means that the page number given is invalid

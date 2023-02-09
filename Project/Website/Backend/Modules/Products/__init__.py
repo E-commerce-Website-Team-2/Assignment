@@ -1,2 +1,2 @@
-from .ProductsIngest import *
-from .Details import *
+from .products_ingest import *
+from .details import *

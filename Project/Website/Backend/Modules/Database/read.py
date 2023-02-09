@@ -1,8 +1,8 @@
 import psycopg2
 import sys
 sys.path.append("..")
-from Modules.Database.main import *
-from Modules.Database.check import *
+from Modules.database.main import *
+from Modules.database.check import *
 
 # This function is able to perform a read request from the database. It will be able to do a Select From Where command
 def read(table ,fields ,condition = {} , order = 0 ,check = 0):
@@ -45,7 +45,7 @@ def read(table ,fields ,condition = {} , order = 0 ,check = 0):
             elif(order == 2):
                 query += "Order By price DESC"
         #With this the query is complete. We will now open a connection to the database and get the request from there. 
-        conn = db_connection('data')
+        conn = database_connection('data')
         cur = conn.cursor()    
         cur.execute(query)
         data = cur.fetchall()

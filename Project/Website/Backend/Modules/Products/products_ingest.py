@@ -1,7 +1,7 @@
 import sys
 sys.path.append("..")
-from Modules.Database import *
-from Modules.Validate import *
+from Modules.database import *
+from Modules.validate import *
 from flask import request
 
 

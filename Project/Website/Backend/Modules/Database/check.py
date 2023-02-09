@@ -1,11 +1,11 @@
 from psycopg2 import sql
 import sys
 sys.path.append("..")
-from Modules.Database.main import *
+from Modules.database.main import *
 
 #This will be able to check if a table that is meant to be in the database exists or not. 
 def check_table(table):
-    conn = db_connection('data')
+    conn = database_connection('data')
     cur = conn.cursor()
     cur.execute("select exists(select * from information_schema.tables where table_name=%s)", (table,))
     exists = cur.fetchone()[0]
@@ -17,9 +17,9 @@ def check_table(table):
 
 
 #This will be able to check if the particular productID is already existing in the database
-def checkID(productId,table):
+def check_id(productId,table):
     if check_table(table):
-        conn = db_connection('data')
+        conn = database_connection('data')
         cur = conn.cursor()
         query = sql.SQL(""" 
         Select * 
@@ -41,8 +41,8 @@ def checkID(productId,table):
 
 
 #This function will be able to check if the category level 1 is present in the table or not
-def CategoryPresent(category,table):
-    conn = db_connection('data')
+def category_present(category,table):
+    conn = database_connection('data')
     cur = conn.cursor()
     stmt = sql.SQL("""
     Select Exists 
@@ -58,8 +58,8 @@ def CategoryPresent(category,table):
 
 
 #This function will be able to check if the category level 2 is present in the table or not 
-def CategoryLevel2Present(category1,subCategory,table):
-    conn = db_connection('data')
+def category_level_2_present(category1,subCategory,table):
+    conn = database_connection('data')
     cur = conn.cursor()
     stmt = sql.SQL("""
     Select Exists 
