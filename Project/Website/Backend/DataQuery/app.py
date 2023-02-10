@@ -21,30 +21,34 @@ cache = Cache(app)
 
 
 #This will be able to search for products that have been passed as a query and will be re-routed to the Unbxd Search API. 
-@app.route('/products/search/<pagenumber>', methods=["GET"])
+@app.route('/products/search/<searchquery>/<pagenumber>/<sort>', methods=["GET"])
+@app.route('/products/search/<searchquery>/<pagenumber>/', methods=["GET"])
 @cache.cached(timeout=30, query_string=True)
-def query_caller(pagenumber:int):
-    return query(pagenumber)
+def query_caller(searchquery,pagenumber:int,sort=""):
+    return query(searchquery,sort,pagenumber)
 
 #This will be able perform category filtering and will return products with an exact match. 
-@app.route('/products/category/<pagenumber>', methods=["GET"])
+@app.route('/products/category/<categoryid>/<pagenumber>/<sort>', methods=["GET"])
+@app.route('/products/category/<categoryid>/<pagenumber>/', methods=["GET"])
 @cache.cached(timeout=30, query_string=True)
-def category_caller(pagenumber):
-    return category(pagenumber)
+def category_caller(pagenumber,categoryid,sort=""):
+    return category(pagenumber,categoryid,sort)
 
 
 #This would be what is shown on the start when the page is loaded. At the moment its a call to get all the products in the database. 
-@app.route('/products/trending/<pagenumber>', methods=["GET"])
+@app.route('/products/trending/<pagenumber>/<sort>', methods=["GET"])
+@app.route('/products/trending/<pagenumber>/', methods=["GET"])
 @cache.cached(timeout=30, query_string=True)
-def trending_caller(pagenumber):
-    return trending(pagenumber)
+def trending_caller(pagenumber,sort=""):
+    return trending(pagenumber,sort)
 
 
 #Will be able to load the entire category tree and send back a JSON to the front-end
-@app.route('/products/categorytree', methods = ["GET"])
+@app.route('/products/category/tree/<categoryid>', methods = ["GET"])
+@app.route('/products/category/tree', methods = ["GET"])
 @cache.cached(timeout=30, query_string=True)
-def category_tree_caller():
-    return get_category()
+def category_tree_caller(categoryid=None):
+    return get_category(categoryid)
 
 
 #Will be able to send the extra details that need to be sent when the product itself is clicked. 

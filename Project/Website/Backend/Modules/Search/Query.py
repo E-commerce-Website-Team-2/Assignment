@@ -6,10 +6,10 @@ sys.path.append("..")
 
 
 #This will be able to search for products that have been passed as a query and will be re-routed to the Unbxd Search API. 
-def query(pagenumber:int):
-    searchquery = request.args.get('query')
-    order = request.args.get('sort')
-    if(order == None or order == ""):
+def query(query,sort,pagenumber):
+    searchquery = query
+    order = sort
+    if(order == None or order == "" or order == " "):
         print("I am making sure it can be passed as nothing")
         pass
     elif(order.isdigit()):

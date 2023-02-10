@@ -7,9 +7,9 @@ from flask import request
 
 
 #This would be what is shown on the start when the page is loaded. At the moment its a call to get all the products in the database. 
-def trending(pagenumber):
-    order = request.args.get('sort')
-    if(order == None or order == ""):
+def trending(pagenumber,sort):
+    order = sort
+    if(order == None or order == "" or order== " "):
         #print("I am making sure it can be passed as nothing")
         pass
     elif(order.isdigit()):

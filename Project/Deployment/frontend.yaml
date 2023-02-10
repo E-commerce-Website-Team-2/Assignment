@@ -47,7 +47,6 @@ spec:
   selector:
     app:  frontend
   type:  LoadBalancer
-  externalIPs: [172.29.0.1]
   ports:
   - name:  frontend
     port:  5678
@@ -57,9 +56,11 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: frontend-ingress
+  namespace: default
 spec:
   rules:
-  - http:
+  - host: kaleidescopegear.com
+    http:
       paths:
       - path: /
         pathType: Prefix
@@ -67,5 +68,4 @@ spec:
           service:
             name: frontend-service
             port:
-              number: 5678
-    host: kaliedoscopegear.com
+              number: 80

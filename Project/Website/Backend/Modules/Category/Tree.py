@@ -4,8 +4,8 @@ from Modules.database import *
 from flask import  request
 
 #Will be able to load the category tree based on the category id passed to it and send back a JSON to the front-end
-def get_category():
-    category = request.args.get('cat')
+def get_category(categoryid):
+    category = categoryid
     #To get a level 1 call we will use None. 
     if(category == None):
         categories = read("category",["catid","categoryname"],{"parentname":"None"})

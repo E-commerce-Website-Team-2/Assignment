@@ -1,5 +1,5 @@
 // This is used fetch subcategories from the backend via database and update thhe dropdown menu in the forntend.
-window.onload = fetch("http://localhost:5000/products/categorytree",{
+window.onload = fetch("http://localhost:5000/products/category/tree",{
     headers:{
         "Content-Type": "application/json",
         "Access-Control-Allow-Origin": "*",
@@ -51,7 +51,7 @@ function GetProduct(ele){
   parentElement = ele.parentNode;
   console.log(parentElement.childNodes[1].childNodes.length)
   if(parentElement.childNodes[1].childNodes.length == 0){
-    fetch(`http://localhost:5000/products/categorytree?cat=${ele.value}`,{
+    fetch(`http://localhost:5000/products/category/tree/${ele.value}`,{
       headers:{
           "Content-Type": "application/json",
           "Access-Control-Allow-Origin": "*",
@@ -111,13 +111,13 @@ function createURL(index,params,pageno){
 // THis function is to get the backend api url for the particular query mentioned by index as a parameter
 function getBackendAPI(index,params){
   if (index === 1){
-    url = `http://localhost:5000/products/trending/${params["pageno"]}?sort=${params["sort"]}`
+    url = `http://localhost:5000/products/trending/${params["pageno"]}/${params["sort"]}`
   }
   else if (index === 2){
-    url = `http://localhost:5000/products/search/${params["pageno"]}?query=${params["query"]}&sort=${params["sort"]}`
+    url = `http://localhost:5000/products/search/${params["query"]}/${params["pageno"]}/${params["sort"]}`
   }
   else if (index === 3){
-    url = `http://localhost:5000/products/category/${params["pageno"]}?cat=${params["cat"]}&sort=${params["sort"]}`
+    url = `http://localhost:5000/products/category/${params["cat"]}/${params["pageno"]}/${params["sort"]}`
   }
   else{
     url = ""
