@@ -7,15 +7,16 @@ from flask import request
 
 
 #This will be able perform category filtering and will return products with an exact match.
-def category(pagenumber):
-    catid = request.args.get('cat')
+def category(pagenumber,categoryid,sort):
+    catid = categoryid
     if(catid.isdigit()):
         catid = int(catid)
         status = read("category",["categoryname"],{"catid":str(catid)})[1]
         if(status == []):
             return [400,[],{}]
-    order = request.args.get('sort')
-    if(order == None or order == ""):
+    print(catid,sort)
+    order = sort
+    if(order == None or order == "" or order == " "):
         print("I am making sure it can be passed as nothing")
         pass
     elif(order.isdigit()):
