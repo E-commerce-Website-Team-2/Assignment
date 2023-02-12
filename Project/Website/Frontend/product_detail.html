@@ -1,101 +1,98 @@
 <!DOCTYPE html>
 <html lang="en">
 
-    <head>
-        <meta charset="UTF-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        <!-- Preventing Caching -->
-        <meta http-equiv=”Pragma” content=”no-cache”>
-        <meta http-equiv=”Expires” content=”-1″>
-        <meta http-equiv=”CACHE-CONTROL” content=”NO-CACHE”>
+    <!-- Preventing Caching -->
+    <meta http-equiv=”Pragma” content=”no-cache”>
+    <meta http-equiv=”Expires” content=”-1″>
+    <meta http-equiv=”CACHE-CONTROL” content=”NO-CACHE”>
 
-        <!-- Title of the Website -->
-        <title>Ecommerce Website</title>
+    <!-- Title of the Website -->
+    <title>Ecommerce Website</title>
 
-        <!-- Icon for the website -->
-        <link rel="apple-touch-icon" sizes="180x180" href="./resources/favicon/apple-touch-icon.png">
-        <link rel="icon" type="image/png" sizes="32x32" href="./resources/favicon/favicon-32x32.png">
-        <link rel="icon" type="image/png" sizes="16x16" href="./resources/favicon/favicon-16x16.png">
-        <link rel="manifest" href="./resources/favicon/site.webmanifest">
+    <!-- Icon for the website -->
+    <link rel="apple-touch-icon" sizes="180x180" href="./resources/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="./resources/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="./resources/favicon/favicon-16x16.png">
+    <link rel="manifest" href="./resources/favicon/site.webmanifest">
 
-        <!-- Bootstrap, Fontawesome and external css  -->
-        <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" />
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
-        <link rel="stylesheet" href="./resources/css/style-common.css">
-        <link rel="stylesheet" href="./resources/css/style-productdetail.css">
+    <!-- Bootstrap, Fontawesome and external css  -->
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="./resources/css/style-common.css">
+    <link rel="stylesheet" href="./resources/css/style-productdetail.css">
 
-        <!-- Bootstrpa and external js -->
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
-        <script src="./resources/js/script.js"></script>
+    <!-- Bootstrpa and external js -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/wretch"></script>
 
-    </head>
+</head>
 
-    <body>
+<body>
         <!-- This script deals with handling the state from another page (index.html) -->
         <script>
+            window.wretch;
             window.onload = function () {
                 var url = document.location.href,
-                params = url.split('?')[1].split('&'),
-                data = {}, tmp;
+                    params = url.split('?')[1].split('&'),
+                    data = {}, tmp;
                 for (var i = 0, l = params.length; i < l; i++) {
                     tmp = params[i].split('=');
                     data[tmp[0]] = decodeURIComponent(tmp[1]);
                 }
-            console.log(data);
-            fetch(`http://localhost:5000/products/details/${data.uniqueId}`,{
-                headers:{
-                    "Content-Type": "application/json",
-                    "Access-Control-Allow-Origin": "*",
-                    "Acess-Control-Allow-Methods": "GET",
-                }
+                wretch(`http://localhost:5000/products/details/${data.uniqueId}`)
+                .get()
+                .notFound(err => { window.location.href = './index.html/404.html' })
+                .internalError(err => { window.location.href = './index.html/500.html' })
+                .fetchError(err => { alert(err) })
+                .res(response => response.json())
+                .then((data_detail) => {
+                        document.getElementById("MainImage").src = data.image;
+                        document.getElementById("price").innerHTML = "Price: $ " + data.price;
+                        document.getElementById("title").innerHTML = data.name;
+                        document.getElementById("description").innerHTML = data_detail[0];
+                })
+                .catch((error) => {
+                console.log(error);
+                });
             }
-            )
-            .then((response)=>
-                response.json()
-            )
-            .then((data_detail) => {
-                document.getElementById("MainImage").src = data.image;
-                document.getElementById("price").innerHTML = "Price: $ "+data.price;
-                document.getElementById("title").innerHTML = data.name;
-                document.getElementById("description").innerHTML = data_detail[0];
-                }
-            )
-            .catch((error) => {
-            console.log(error);
-            });
-                }
         </script>
-        <!-- Header section deals with logo and search box -->
-        <section id = "header">
-            <a href="#"><img src="./resources/images/logo1.png" class="logo" height="90px" width="90px" onclick = "window.location.href = './index.html'"></img></a>
-            <h2>Kαleΐd𐍉𝕤c𐍉קeǤear</h2>
-            <div class = "navbar">
-                <div class="form">
-                    <i class="fa fa-search"></i>
-                    <input id = "search" type="text" class="form-input" placeholder="Search Products" onkeydown="search(this)">
-                </div>
+        <script src="./resources/js/script.js"></script>
+    <!-- Header section deals with logo and search box -->
+    <section id="header">
+        <a href="#"><img src="./resources/images/logo1.png" class="logo" height="90px" width="90px"
+                onclick="window.location.href = './index.html'"></img></a>
+        <h2>Kαleΐd𐍉𝕤c𐍉קeǤear</h2>
+        <div class="navbar">
+            <div class="form">
+                <i class="fa fa-search"></i>
+                <input id="search" type="text" class="form-input" placeholder="Search Products"
+                    onkeydown="search(this)">
             </div>
-        </section>
-        <!-- Category section deals with category dropdown menu with subcategories -->       
-        <section id ="category">
-        </section>
-        <!-- Product details section deals with displaying overview of a single product -->
-        <section id="proddetails" class="section-p1">
-            <div class="single-pro-image">
-                <img src="#" width="100%" id="MainImage" alt="">
-            </div>
-            <div class="single-pro-details">
-                <h2 id ="title"></h2>
-                <h4 id = "price"></h4>
-                <h4> Product Description</h4>
-                <span id = "description"></span>
-            </div>
-        </section>
+        </div>
+    </section>
+    <!-- Category section deals with category dropdown menu with subcategories -->
+    <section id="category">
+    </section>
+    <!-- Product details section deals with displaying overview of a single product -->
+    <section id="proddetails" class="section-p1">
+        <div class="single-pro-image">
+            <img src="#" width="100%" id="MainImage" alt="">
+        </div>
+        <div class="single-pro-details">
+            <h2 id="title"></h2>
+            <h4 id="price"></h4>
+            <h4> Product Description</h4>
+            <span id="description"></span>
+        </div>
+    </section>
 
 
 
-    </body>
+</body>
 
 </html>
