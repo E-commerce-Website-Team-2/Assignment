@@ -43,10 +43,11 @@ services:
     ports:
       - 8080:8080
 
-  # frontend:
-  #   image: kuntal0901/project:latest
-  #   restart: always
-  #   ports:
-  #     - 8000:80
-  #   labels:
-  #     kompose.service.type: LoadBalancer
+  frontend:
+    # image: kuntal0901/project:latest
+    build: ./Website/Frontend
+    restart: always
+    ports:
+      - 8000:80
+    labels:
+      kompose.service.type: LoadBalancer
