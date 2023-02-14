@@ -3,6 +3,9 @@ E-commerce website that can be deployed on Kubernetes with a HTML,Javascript,CSS
 The data ingestion API that is created will be capable of taking in data from the merchandiser and adding it to the 
 database after it has been validated
 
+## Design Document
+Link to Design Document:<br>
+https://docs.google.com/document/d/1RywhKonp1iKxGXmWKmwi7_Gw80758X-sdcvoyJN6cyQ/edit?usp=sharing
 
 ## Overview of API Specification 
 We have designed api specification on two things
@@ -58,8 +61,9 @@ We have designed api specification on two things
         Host: localhost
         Parameters: id
         ```
-**Link to Postman collection** <br>
-(https://galactic-trinity-324064.postman.co/workspace/My-Workspace~6df70b9a-8926-4176-815a-c502ca40f285/collection/25320455-42651878-3c51-40a5-ab82-a52b28a98ba2?action=share&creator=25320455)
+## Postman collection 
+Link to Postman Collection : <br>
+https://galactic-trinity-324064.postman.co/workspace/My-Workspace~6df70b9a-8926-4176-815a-c502ca40f285/collection/25320455-42651878-3c51-40a5-ab82-a52b28a98ba2?action=share&creator=25320455
 
 
 
@@ -120,6 +124,9 @@ There are two ways to run Kubernetes.
    v. Save it and search for `kalidescopegear.com` in web browser.<br>
 
 
+## Trello Board 
+Link to Trello Board: <br>
+https://trello.com/invite/b/QXwC7B6j/ATTI607d34e14611e7b39104ef586b8bd192D3FBFF3A/project-planner
 
 
 ## Screenshots of Application
