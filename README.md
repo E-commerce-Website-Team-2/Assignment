@@ -3,6 +3,9 @@ E-commerce website that can be deployed on Kubernetes with a HTML,Javascript,CSS
 The data ingestion API that is created will be capable of taking in data from the merchandiser and adding it to the 
 database after it has been validated
 
+## Design Document
+Link to Design Document:<br>
+https://docs.google.com/document/d/1RywhKonp1iKxGXmWKmwi7_Gw80758X-sdcvoyJN6cyQ/edit?usp=sharing
 
 ## Overview of API Specification 
 We have designed api specification on two things
@@ -25,30 +28,30 @@ We have designed api specification on two things
       Content Length: 
       { - - - -  JSON of Products - - - - }
       ```
-- **Data Query** <<br>
+- **Data Query** <br>
    This is used to perform some operation to fetched data from databse via a get request.<br>
    The various api specification is mentioned below.
    - To answer a query that has been passed. This will then be routed to Unbxd Search API
       ```
-      GET     /products/search/<pagenumber>?query=”<query_name>”&sort=”1or2”
+      GET     /products/search/<query_name>/<pagenumber>/<sort>
       Host: localhost
       Parameters: query,pagenumber
       ```
    - To perform category filtering
       ```
-      GET   products/category/<pagenumber>?catid=”<catid>”&sort”1or2”
+      GET   /products/category/<catid>/<pagenumber>/<sort>
       Host: localhost
       Parameters: catid,sort,pagenumber
       ```
     - To get items that we want to load when site is first opened
       ```
-      GET     /products/trending/<pagenumber>
+      GET     /products/trending/<pagenumber>/<sort>
       Host: localhost
       Parameters: pagenumber
       ```
     - To load the category tree on the basis of the level passed to it 
        ```
-       GET /products/categorytree/?catid=”<catid>”
+       GET /products/category/tree/<catid>
        Host: localhost
        Parameters:id
        ```
@@ -58,8 +61,9 @@ We have designed api specification on two things
         Host: localhost
         Parameters: id
         ```
-**Link to Postman collection** <br>
-(https://galactic-trinity-324064.postman.co/workspace/My-Workspace~6df70b9a-8926-4176-815a-c502ca40f285/collection/25320455-42651878-3c51-40a5-ab82-a52b28a98ba2?action=share&creator=25320455)
+## Postman collection 
+Link to Postman Collection : <br>
+https://galactic-trinity-324064.postman.co/workspace/My-Workspace~6df70b9a-8926-4176-815a-c502ca40f285/collection/25320455-42651878-3c51-40a5-ab82-a52b28a98ba2?action=share&creator=25320455
 
 
 
@@ -75,12 +79,54 @@ DataIngestion folder consists of the data ingestion API, which will be run using
   ```
 
 
-## How to run website
+## How to run website via Docker
 1. Fork the repository
 2. Make sure to run the data ingestion Api for the first time 
 3. Run the following docker command <br> `docker-compose up -d --build` in the Project directory.
 4. The Application will be up and running at `localhost:8000`
 
+## How to Run Website via Kubernetes
+There are two ways to run Kubernetes.
+1. **MiniKube using MacOS**
+   <br>
+   i. Install the following commands
+      ```
+      brew install minikube
+      ```
+      ```
+      brew install hyyperkit
+      ```
+   ii. Once installed start the minikube with hyperkit as the driver
+      ```
+      minikube start --driver=hyperkit
+      ```
+   iii. Make the hyperkit as the default driver
+
+      ```
+      minikube config set driver hyperkit
+      ```
+   iv. Open a two terminals and run the following commands
+      ```
+      kubectl port-forward deployment/dataapi 6000:6000
+      ```
+      ```
+      kubectl port-forward deployment/api-backend 5000:5000
+      ```
+   v. Make sure to run the data ingestion Api for the first time. <br>
+   vi. Run `minikube service frontend-service`.<br>
+
+   To make the service running on a domain name we need to enable ingress.<br>
+
+   i. Run `minikube add-ons enable ingress`.<br>
+   ii. Keep track of the ip-address where the service is running. E.g. 192.168.49.2 <br>
+   iii. Run `sudo nano ~/etc/hosts`<br>
+   iv. Add `kalidescopegear.com <ip-address>` to the file.<br>
+   v. Save it and search for `kalidescopegear.com` in web browser.<br>
+
+
+## Trello Board 
+Link to Trello Board: <br>
+https://trello.com/invite/b/QXwC7B6j/ATTI607d34e14611e7b39104ef586b8bd192D3FBFF3A/project-planner
 
 
 ## Screenshots of Application

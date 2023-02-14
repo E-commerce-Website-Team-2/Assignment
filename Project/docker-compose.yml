@@ -2,7 +2,7 @@ version: '3'
 services:
   api:
     container_name: flask-container
-    #image: kuntal0901/project:b1
+    #image: kuntal0901/project:backend
     build: ./Website/Backend
     entrypoint: python3 DataQuery/app.py
     env_file:
@@ -12,7 +12,7 @@ services:
 
   dataapi:
     container_name: data-container
-    #image: kuntal0901/project:b1
+    #image: kuntal0901/project:backend
     build: ./Website/Backend
     entrypoint: python3 DataIngestion/app.py
     ports:
@@ -44,7 +44,7 @@ services:
       - 8080:8080
 
   frontend:
-    # image: kuntal0901/project:latest
+    # image: kuntal0901/project:frontend
     build: ./Website/Frontend
     restart: always
     ports:

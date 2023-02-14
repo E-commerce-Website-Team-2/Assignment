@@ -48,7 +48,7 @@ spec:
                 configMapKeyRef:
                   key: CACHE_TYPE
                   name: env
-        image: kuntal0901/project:b1
+        image: kuntal0901/project:backend
         ports:
         - name: api-backend
           containerPort: 5000
