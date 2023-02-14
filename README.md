@@ -30,25 +30,25 @@ We have designed api specification on two things
    The various api specification is mentioned below.
    - To answer a query that has been passed. This will then be routed to Unbxd Search API
       ```
-      GET     /products/search/<pagenumber>?query=”<query_name>”&sort=”1or2”
+      GET     /products/search/<query_name>/<pagenumber>/<sort>
       Host: localhost
       Parameters: query,pagenumber
       ```
    - To perform category filtering
       ```
-      GET   products/category/<pagenumber>?catid=”<catid>”&sort”1or2”
+      GET   /products/category/<catid>/<pagenumber>/<sort>
       Host: localhost
       Parameters: catid,sort,pagenumber
       ```
     - To get items that we want to load when site is first opened
       ```
-      GET     /products/trending/<pagenumber>
+      GET     /products/trending/<pagenumber>/<sort>
       Host: localhost
       Parameters: pagenumber
       ```
     - To load the category tree on the basis of the level passed to it 
        ```
-       GET /products/categorytree/?catid=”<catid>”
+       GET /products/category/tree/<catid>
        Host: localhost
        Parameters:id
        ```
@@ -75,11 +75,50 @@ DataIngestion folder consists of the data ingestion API, which will be run using
   ```
 
 
-## How to run website
+## How to run website via Docker
 1. Fork the repository
 2. Make sure to run the data ingestion Api for the first time 
 3. Run the following docker command <br> `docker-compose up -d --build` in the Project directory.
 4. The Application will be up and running at `localhost:8000`
+
+## How to Run Website via Kubernetes
+There are two ways to run Kubernetes.
+1. **MiniKube using MacOS**
+   <br>
+   a. Install the following commands
+      ```
+      brew install minikube
+      ```
+      ```
+      brew install hyyperkit
+      ```
+   b. Once installed start the minikube with hyperkit as the    driver
+      ```
+      minikube start --driver=hyperkit
+      ```
+      Make the hyperkit as the default driver
+
+      ```
+      minikube config set driver hyperkit
+      ```
+   c. Open a two terminals and run the following commands
+      ```
+      kubectl port-forward deployment/dataapi 6000:6000
+      ```
+      ```
+      kubectl port-forward deployment/api-backend 5000:5000
+      ```
+   d. Make sure to run the data ingestion Api for the first time. <br>
+   d. Run `minikube service frontend-service`.<br>
+
+   To make the service running on a domain name we need tioenable ingress.<br>
+
+   a. Run `minikube add-ons enable ingress`.<br>
+   b. Keep track of the ip-address where the service is running.<br>
+   c. Run `sudo nano ~/etc/hosts`<br>
+   d. Add `kalidescopegear.com <ip-address>` to the file.<br>
+   e. Save it and search for `kalidescopegear.com` in web browser.<br>
+
 
 
 
