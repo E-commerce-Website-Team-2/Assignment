@@ -94,36 +94,37 @@ There are two ways to run Kubernetes.
       kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.13.7/config/manifests/metallb-native.yaml
       ```
    ii. Wait until the MetalLB pods (controller and speakers) are ready:<br>
-       ```
+      ```
        kubectl wait --namespace metallb-system \
                 --for=condition=ready pod \
                 --selector=app=metallb \
                 --timeout=90s
-       ```
+      ```
     iii. Setup address pool used by lodbalancers<br>
-         ```
-         docker network inspect -f '{{.IPAM.Config}}' kind
-         ```
-    iv. Apply the contents<br>
-        ```
+      ```
+       docker network inspect -f '{{.IPAM.Config}}' kind
+      ```
+      
+      iv. Apply the contents<br>
+      ```
         kubectl apply -f https://kind.sigs.k8s.io/examples/loadbalancer/metallb-config.yaml
-        ```
+      ```
     v.  Open a two terminals and run the following commands<br>
-         ```
+      ```
          kubectl port-forward deployment/dataapi 6000:6000
-         ```
-         ```
+      ```
+      ```
          kubectl port-forward deployment/api-backend 5000:5000
-         ```
+      ```
     vi. Make sure to run the data ingestion Api for the first time. <br>
     vii. Frontend Service will be up and running at http://localhost:5678.<br>
 
-   To make the service running on a domain name we need to enable ingress.<br>
-   
-   i. Run `sudo nano ~/etc/hosts`<br>
-   ii. Add `kalidescopegear.com localhost` to the file.<br>
-   iii. Save it and search for `kalidescopegear.com` in web browser.<br>     
-     
+   To make the service running on a domain name.<br>
+   <ul>
+   <li>Run `sudo nano ~/etc/hosts`</li>
+   <li>Add `kalidescopegear.com localhost` to the file.</li>
+   <li>Save it and search for `kalidescopegear.com` in web browser.</li>     
+   </ul> 
 2. **MiniKube using MacOS**
    <br>
    i. Install the following commands
@@ -152,14 +153,14 @@ There are two ways to run Kubernetes.
    v. Make sure to run the data ingestion Api for the first time. <br>
    vi. Run `minikube service frontend-service`.<br>
 
-   To make the service running on a domain name we need to enable ingress.<br>
-
-   i. Run `minikube add-ons enable ingress`.<br>
-   ii. Keep track of the ip-address where the service is running. E.g. 192.168.49.2 <br>
-   iii. Run `sudo nano ~/etc/hosts`<br>
-   iv. Add `kalidescopegear.com <ip-address>` to the file.<br>
-   v. Save it and search for `kalidescopegear.com` in web browser.<br>
-
+   To make the service running on a domain name we need to enable ingress.
+   <ul>
+   <li>Run `minikube add-ons enable ingress`.</li>
+   <li> Keep track of the ip-address where the service is running. E.g. 192.168.49.2 </li>
+   <li>Run `sudo nano ~/etc/hosts`</li>
+   <li>Add `kalidescopegear.com {ip-address}` to the file.</li>
+   <li>Save it and search for `kalidescopegear.com` in web browser.</li>
+   </ul>
 
 ## Trello Board 
 Link to Trello Board: <br>
