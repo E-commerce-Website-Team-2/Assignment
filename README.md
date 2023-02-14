@@ -87,7 +87,44 @@ DataIngestion folder consists of the data ingestion API, which will be run using
 
 ## How to Run Website via Kubernetes
 There are two ways to run Kubernetes.
-1. **MiniKube using MacOS**
+1. **Kind using MacOS**
+   <br>
+   i. Apply metallb Manifest
+      ```
+      kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.13.7/config/manifests/metallb-native.yaml
+      ```
+   ii. Wait until the MetalLB pods (controller and speakers) are ready:
+       ```
+       kubectl wait --namespace metallb-system \
+                --for=condition=ready pod \
+                --selector=app=metallb \
+                --timeout=90s
+       ```
+    iii. Setup address pool used by lodbalancers
+         ```
+         docker network inspect -f '{{.IPAM.Config}}' kind
+         ```
+    iv. Apply the contents
+        ```
+        kubectl apply -f https://kind.sigs.k8s.io/examples/loadbalancer/metallb-config.yaml
+        ```
+    v.  Open a two terminals and run the following commands
+         ```
+         kubectl port-forward deployment/dataapi 6000:6000
+         ```
+         ```
+         kubectl port-forward deployment/api-backend 5000:5000
+         ```
+    vi. Make sure to run the data ingestion Api for the first time. <br>
+    vii. Frontend Service will be up and running at http://localhost:5678.<br>
+
+   To make the service running on a domain name we need to enable ingress.<br>
+   
+   i. Run `sudo nano ~/etc/hosts`<br>
+   ii. Add `kalidescopegear.com localhost` to the file.<br>
+   iii. Save it and search for `kalidescopegear.com` in web browser.<br>     
+     
+2. **MiniKube using MacOS**
    <br>
    i. Install the following commands
       ```
