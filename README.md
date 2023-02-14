@@ -85,39 +85,39 @@ DataIngestion folder consists of the data ingestion API, which will be run using
 There are two ways to run Kubernetes.
 1. **MiniKube using MacOS**
    <br>
-   a. Install the following commands
+   i. Install the following commands
       ```
       brew install minikube
       ```
       ```
       brew install hyyperkit
       ```
-   b. Once installed start the minikube with hyperkit as the driver
+   ii. Once installed start the minikube with hyperkit as the driver
       ```
       minikube start --driver=hyperkit
       ```
-      Make the hyperkit as the default driver
+   iii. Make the hyperkit as the default driver
 
       ```
       minikube config set driver hyperkit
       ```
-   c. Open a two terminals and run the following commands
+   iv. Open a two terminals and run the following commands
       ```
       kubectl port-forward deployment/dataapi 6000:6000
       ```
       ```
       kubectl port-forward deployment/api-backend 5000:5000
       ```
-   d. Make sure to run the data ingestion Api for the first time. <br>
-   e. Run `minikube service frontend-service`.<br>
+   v. Make sure to run the data ingestion Api for the first time. <br>
+   vi. Run `minikube service frontend-service`.<br>
 
    To make the service running on a domain name we need to enable ingress.<br>
 
-   a. Run `minikube add-ons enable ingress`.<br>
-   b. Keep track of the ip-address where the service is running. E.g. 192.168.49.2 <br>
-   c. Run `sudo nano ~/etc/hosts`<br>
-   d. Add `kalidescopegear.com <ip-address>` to the file.<br>
-   e. Save it and search for `kalidescopegear.com` in web browser.<br>
+   i. Run `minikube add-ons enable ingress`.<br>
+   ii. Keep track of the ip-address where the service is running. E.g. 192.168.49.2 <br>
+   iii. Run `sudo nano ~/etc/hosts`<br>
+   iv. Add `kalidescopegear.com <ip-address>` to the file.<br>
+   v. Save it and search for `kalidescopegear.com` in web browser.<br>
 
 
 
