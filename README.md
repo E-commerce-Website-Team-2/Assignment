@@ -89,26 +89,26 @@ DataIngestion folder consists of the data ingestion API, which will be run using
 There are two ways to run Kubernetes.
 1. **Kind using MacOS**
    <br>
-   i. Apply metallb Manifest
+   i. Apply metallb Manifest<br>
       ```
       kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.13.7/config/manifests/metallb-native.yaml
       ```
-   ii. Wait until the MetalLB pods (controller and speakers) are ready:
+   ii. Wait until the MetalLB pods (controller and speakers) are ready:<br>
        ```
        kubectl wait --namespace metallb-system \
                 --for=condition=ready pod \
                 --selector=app=metallb \
                 --timeout=90s
        ```
-    iii. Setup address pool used by lodbalancers
+    iii. Setup address pool used by lodbalancers<br>
          ```
          docker network inspect -f '{{.IPAM.Config}}' kind
          ```
-    iv. Apply the contents
+    iv. Apply the contents<br>
         ```
         kubectl apply -f https://kind.sigs.k8s.io/examples/loadbalancer/metallb-config.yaml
         ```
-    v.  Open a two terminals and run the following commands
+    v.  Open a two terminals and run the following commands<br>
          ```
          kubectl port-forward deployment/dataapi 6000:6000
          ```
