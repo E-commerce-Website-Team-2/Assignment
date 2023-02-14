@@ -67,12 +67,17 @@ https://galactic-trinity-324064.postman.co/workspace/My-Workspace~6df70b9a-8926-
 
 
 
-## How to run data ingestion API
-DataIngestion folder consists of the data ingestion API, which will be run using curl commands. The below curl commamnds have to be run when inside DataIngestion folder. 
+<h2 id="data-ingestion-api">How to run data ingestion API</h2>
+DataIngestion folder consists of the data ingestion API, which will run by curl commands. These are used to ingest the data into the postgresql databse. <br>
+The below curl commamnds have to be run when inside DataIngestion folder:  
+  
+<br>
 
+ This ingests the category table with the data present in category.json. 
   ```
   curl 127.0.0.1:6000/category -d @category.json -H Content-Type:application/json
   ```
+  This ingests the prroducts table with the data present in product.json.
   
   ```
   curl 127.0.0.1:6000/products -d @out.json -H Content-Type:application/json
@@ -81,7 +86,7 @@ DataIngestion folder consists of the data ingestion API, which will be run using
 
 ## How to run website via Docker
 1. Fork the repository
-2. Make sure to run the data ingestion Api for the first time 
+2. Make sure to run the [data ingestion Api](#data-ingestion-api) for the first time 
 3. Run the following docker command <br> `docker-compose up -d --build` in the Project directory.
 4. The Application will be up and running at `localhost:8000`
 
