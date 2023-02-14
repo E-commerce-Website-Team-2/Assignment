@@ -1,4 +1,28 @@
-
+function setCookie(cname, cvalue, exmins) {
+  const d = new Date();
+  d.setTime(d.getTime() + (exmins*60*1000));
+  let expires = "expires="+ d.toUTCString();
+  document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+}
+function getCookie(cname) {
+  let name = cname + "=";
+  let ca = document.cookie.split(';');
+  for(let i = 0; i < ca.length; i++) {
+    let c = ca[i];
+    while (c.charAt(0) == ' ') {
+      c = c.substring(1);
+    }
+    if (c.indexOf(name) == 0) {
+      return c.substring(name.length, c.length);
+    }
+  }
+  return "";
+}
+if (getCookie("sessionId") == ""){
+  setCookie("sessionId",Math.floor((Math.random() * 100) + 1),30);
+  console.log(1);
+}
+console.log(2,getCookie("sessionId"));
 // Global variable (script tag)
 window.wretch
 // This is used fetch subcategories from the backend via database and update thhe dropdown menu in the forntend.
@@ -7,15 +31,15 @@ window.addEventListener('load',function(){
 });
 
 // Function to perform a request to backend and perform actions based on response.
-function wretchData(url, dataFunction, index = '', params = '') {
+function wretchData(url, dataFunction, params = '') {
   wretch(url)
     .get()
-    .notFound(err => { window.location.href = './index.html/404.html' })
-    .internalError(err => { window.location.href = './index.html/500.html' })
-    .fetchError(err => { alert(err) })
+    .notFound(err => { window.location.href = './404.html' })
+    .internalError(err => { window.location.href = './500.html' })
+    .fetchError(err => { window.location.href = './500.html' })
     .res(response => response.json())
     .then((data) => {
-      (index === '') ? dataFunction(data) : dataFunction(data, index, params);
+      (params === '') ? dataFunction(data) : dataFunction(data,params);
     })
     .catch((error) => {
       console.log(error);
@@ -65,7 +89,7 @@ function DataSection_Category(data) {
 }
 
 // Function to load the product section
-function DataSection_Product(data, index, params) {
+function DataSection_Product(data,params) {
   if (data[0] == 200) {
     // Get the number of products sent in the response from the backend and calculate the no of pages
     no_of_products = data[1];
@@ -85,9 +109,9 @@ function DataSection_Product(data, index, params) {
     document.getElementsByClassName("dropdown-3")[0].style.display = "block";
 
     params.sort = 1;
-    filter_asc = createURL(index, params, params["pageno"]);
+    filter_asc = createURL(params, params["pageno"]);
     params.sort = 2;
-    filter_desc = createURL(index, params, params["pageno"]);
+    filter_desc = createURL(params, params["pageno"]);
     document.getElementsByClassName("asc")[0].setAttribute("href", filter_asc);
     document.getElementsByClassName("desc")[0].setAttribute("href", filter_desc);
 
@@ -135,7 +159,7 @@ function DataSection_Product(data, index, params) {
       if (!document.getElementsByClassName("pagination")[0].hasChildNodes()) {
         params["pages"] = no_of_pages
         params["sort"] = sort
-        createPagination(index, params, params["pageno"]);
+        createPagination(params, params["pageno"]);
       }
     }
 
@@ -159,7 +183,7 @@ function setMultipleAttributesonElement(elem, elemAttributes) {
 function GetProduct(ele) {
   parentElement = ele.parentNode;
   if (parentElement.childNodes[1].childNodes.length == 0) {
-    var BackendAPI = getBackendAPI(4, { "cat": ele.value });
+    var BackendAPI = getBackendAPI({"index":4, "cat": ele.value });
     fetch(BackendAPI, {
       headers: {
         "Content-Type": "application/json",
@@ -205,14 +229,15 @@ function Link(ele) {
 }
 
 // This function is used to create a url based on the index passed.
-function createURL(index, params, pageno) {
-  if (index === 1) {
+function createURL(params, pageno) {
+  
+  if (params["index"] === 1) {
     url = `./index.html?pageno=${pageno}&sort=${params["sort"]}`
   }
-  else if (index === 2) {
+  else if (params["index"] === 2) {
     url = `./index.html?search=${params["query"]}&pageno=${pageno}&sort=${params["sort"]}`
   }
-  else if (index === 3) {
+  else if (params["index"] === 3) {
     url = `./index.html?cat=${params["cat"]}&pageno=${pageno}&sort=${params["sort"]}`
   }
   else {
@@ -222,17 +247,17 @@ function createURL(index, params, pageno) {
 }
 
 // This function is to get the backend api url for the particular query mentioned by index as a parameter
-function getBackendAPI(index, params) {
-  if (index === 1) {
+function getBackendAPI(params) {
+  if (params["index"]=== 1) {
     url = `http://localhost:5000/products/trending/${params["pageno"]}/${params["sort"]}`
   }
-  else if (index === 2) {
+  else if (params["index"] === 2) {
     url = `http://localhost:5000/products/search/${params["query"]}/${params["pageno"]}/${params["sort"]}`
   }
-  else if (index === 3) {
+  else if (params["index"] === 3) {
     url = `http://localhost:5000/products/category/${params["cat"]}/${params["pageno"]}/${params["sort"]}`
   }
-  else if (index === 4) {
+  else if (params["index"] === 4) {
     url = `http://localhost:5000/products/category/tree/${params["cat"]}`
   }
   else {
@@ -253,8 +278,8 @@ if (urlParams.has('search') & urlParams.has('pageno')) {
   if (urlParams.has('sort')) {
     sort = urlParams.get('sort');
   }
-  params = { "query": query, "pageno": pageno, "sort": sort }
-  fill_products_section(2, params);
+  params = {"index":2, "query": query, "pageno": pageno, "sort": sort }
+  fill_products_section(params);
 }
 else if (urlParams.has('cat') && urlParams.has('pageno')) {
   var cat = urlParams.get('cat');
@@ -263,18 +288,18 @@ else if (urlParams.has('cat') && urlParams.has('pageno')) {
   if (urlParams.has('sort')) {
     sort = urlParams.get('sort');
   }
-  params = { "cat": cat, "pageno": pageno, "sort": sort }
-  fill_products_section(3, params);
+  params = { "index":3,"cat": cat, "pageno": pageno, "sort": sort }
+  fill_products_section(params);
 }
 else if (urlParams.has('pageno') && urlParams.has('sort')) {
   var pageno = urlParams.get('pageno');
   var sort = urlParams.get('sort');
-  params = { "pageno": pageno, "sort": sort }
-  fill_products_section(1, params);
+  params = { "index":1,"pageno": pageno, "sort": sort }
+  fill_products_section(params);
 }
 else {
-  params = { "pageno": 1, "sort": "" };
-  fill_products_section(1, params);
+  params = {"index":1, "pageno": 1, "sort": "" };
+  fill_products_section(params);
 }
 
 
@@ -295,14 +320,14 @@ function search(ele) {
 }
 
 // Function to fill the product section with products fetched from backend api for the particular query
-function fill_products_section(index, params) {
-  var backendapi = getBackendAPI(index, params);
+function fill_products_section(params) {
+  var backendapi = getBackendAPI(params);
   if (document.getElementById("product1"))
   {
     document.getElementById("product1").style.display = "none";
     document.getElementById("pagination").style.display = "none";
     setTimeout(() => {
-      wretchData(backendapi, DataSection_Product, index, params);
+      wretchData(backendapi, DataSection_Product, params);
     }, 500)
   }
 }
@@ -334,17 +359,18 @@ function SelectPage(el) {
 }
 
 // Function to creation pagination 
-function createPagination(index, params, pageno) {
+function createPagination(params, pageno) {
 
   var pages = params["pages"];
   var pageno = Number(pageno);
+  var index = params["index"];
 
   // Acess the pagination section for thhe pages to be added
   ul_element = document.getElementsByClassName("pagination")[0];
   list_element = document.createElement("li");
 
 
-  (pageno === 1) ? list_element.setAttribute("class", "page-item disabled") : setMultipleAttributesonElement(list_element, { "class": "page-item", "onclick": `window.location.href='${createURL(index, params, pageno - 1)}'` });
+  (pageno === 1) ? list_element.setAttribute("class", "page-item disabled") : setMultipleAttributesonElement(list_element, { "class": "page-item", "onclick": `window.location.href='${createURL(params, pageno - 1)}'` });
 
 
   anchor_element = document.createElement("a");
@@ -367,7 +393,7 @@ function createPagination(index, params, pageno) {
     anchor_element = document.createElement("a");
     const elem_attributes = {
       "class": "page-link",
-      "href": createURL(index, params, i),
+      "href": createURL(params, i),
       "onclick": 'SelectPage(this)',
     }
     setMultipleAttributesonElement(anchor_element, elem_attributes);
@@ -380,7 +406,7 @@ function createPagination(index, params, pageno) {
 
   list_element = document.createElement("li");
 
-  (pageno === pages) ? list_element.setAttribute("class", "page-item disabled") : setMultipleAttributesonElement(list_element, { "class": "page-item", "onclick": `window.location.href='${createURL(index, params, pageno + 1)}'` });
+  (pageno === pages) ? list_element.setAttribute("class", "page-item disabled") : setMultipleAttributesonElement(list_element, { "class": "page-item", "onclick": `window.location.href='${createURL(params, pageno + 1)}'` });
 
   anchor_element = document.createElement("a");
   anchor_element.setAttribute("class", "page-link");
