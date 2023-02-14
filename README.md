@@ -121,7 +121,7 @@ There are two ways to run Kubernetes.
       ```
          kubectl port-forward deployment/api-backend 5000:5000
       ```
-    vi. Make sure to run the data ingestion Api for the first time. <br>
+    vi. Make sure to run the [data ingestion Api](#data-ingestion-api) for the first time. <br>
     vii. Frontend Service will be up and running at http://localhost:5678.<br>
 
    To make the service running on a domain name.<br>
@@ -130,6 +130,7 @@ There are two ways to run Kubernetes.
    <li>Add `kalidescopegear.com localhost` to the file.</li>
    <li>Save it and search for `kalidescopegear.com` in web browser.</li>     
    </ul> 
+   <br>
 2. **MiniKube using MacOS**
    <br>
    i. Install the following commands
@@ -155,7 +156,7 @@ There are two ways to run Kubernetes.
       ```
       kubectl port-forward deployment/api-backend 5000:5000
       ```
-   v. Make sure to run the data ingestion Api for the first time. <br>
+   v. Make sure to run the [data ingestion Api](#data-ingestion-api) for the first time. <br>
    vi. Run `minikube service frontend-service`.<br>
 
    To make the service running on a domain name we need to enable ingress.
