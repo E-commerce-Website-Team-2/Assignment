@@ -68,7 +68,7 @@ https://galactic-trinity-324064.postman.co/workspace/My-Workspace~6df70b9a-8926-
 
 
 <h2 id="data-ingestion-api">How to run data ingestion API</h2>
-DataIngestion folder consists of the data ingestion API, which will run by curl commands. These are used to ingest the data into the postgresql databse. <br>
+DataIngestion folder consists of the data ingestion API. These are used to ingest the data into the postgresql databse. <br>
 The below curl commamnds have to be run when inside DataIngestion folder:  
   
 <br>
