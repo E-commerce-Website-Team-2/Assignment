@@ -56,7 +56,10 @@ def write_category_level_1(category,table,field):
         cur = conn.cursor()
         cur.execute('CREATE TABLE IF NOT EXISTS ' + table + '(catid SERIAL  PRIMARY KEY,  '
                                                             'categoryname varchar(10485760) ,'
-                                                            'parentname varchar(10485760) )' 
+                                                            'parentname varchar(10485760),'
+                                                            'CONSTRAINT category '
+                                                            'FOREIGN KEY(catid) ' 
+	                                                        'REFERENCES category(catid) )' 
                                                               )
         cur.execute('INSERT INTO ' + table + ' (categoryname,parentname) VALUES (\'{0}\',\'{1}\'); '.format(str(category),"None"))
         conn.commit()
@@ -85,4 +88,21 @@ def write_category_level_2(category1,subCategory,table):
     return 200
 
 
+def writeEncoding(encoding,table):
+    conn = database_connection('data')
+    cur = conn.cursor()
+    cur.execute('CREATE TABLE IF NOT EXISTS ' + table + '(uniqueid varchar(10) PRIMARY KEY ,  '
+                                                            'name_encoding DECIMAL(11,10) ARRAY ,'
+                                                            'product_encoding DECIMAL(11,10) ARRAY, '
+                                                            'CONSTRAINT product '
+                                                            'FOREIGN KEY(uniqueid) ' 
+	                                                        'REFERENCES products(uniqueid) )'
+                                                               )
+    stmt = sql.SQL('INSERT INTO ' + table + ' (uniqueid,name_encoding,product_encoding) '
+                   'VALUES ({uniqueId},{name_encoding},{product_encoding}); ').format(uniqueId=sql.Literal(str(encoding["uniqueID"])),name_encoding=sql.Literal(encoding["name_encoding"].tolist()),product_encoding=sql.Literal(encoding["product_encoding"].tolist()))
+    cur.execute(stmt)    
+    conn.commit()
+    cur.close()
+    conn.close()
+    return 200
 

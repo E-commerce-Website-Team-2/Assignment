@@ -26,7 +26,7 @@ spec:
           # - Each init container must complete successfully before the next one starts.
       containers:
       - name: frontend
-        image:  kuntal0901/project:latest
+        image:  kuntal0901/project:frontend
         resources:
           requests:
             cpu: 100m

@@ -2,6 +2,7 @@ import sys
 sys.path.append("..")
 from Modules.database import *
 from Modules.validate import *
+from Modules.products.product_encode import * 
 from flask import request
 
 
@@ -26,6 +27,7 @@ def products():
                     failure += 1
                 else:
                     #final_response += product['uniqueId'] + "added successfully \n"
+                    encoding_status = product_encoding(product)
                     new += 1
             elif(status == 201):
                 databasestatus = write(product,['uniqueId','name','price','productDescription','catlevel1Name','catlevel2Name','productImage'],"products",True)
@@ -34,6 +36,7 @@ def products():
                     failure += 1
                 else:
                     #final_response += product['uniqueId'] + "updated successfully \n"
+                    encoding_status = product_encoding(product)
                     updates += 1
             elif(status > 300 and status < 400):
                 final_response += product['uniqueId'] + " " + message + "\n"
