@@ -25,7 +25,7 @@ We have designed api specification on two things
       Content Length: 
       { - - - -  JSON of Products - - - - }
       ```
-- **Data Query** <<br>
+- **Data Query** <br>
    This is used to perform some operation to fetched data from databse via a get request.<br>
    The various api specification is mentioned below.
    - To answer a query that has been passed. This will then be routed to Unbxd Search API
@@ -92,7 +92,7 @@ There are two ways to run Kubernetes.
       ```
       brew install hyyperkit
       ```
-   b. Once installed start the minikube with hyperkit as the    driver
+   b. Once installed start the minikube with hyperkit as the driver
       ```
       minikube start --driver=hyperkit
       ```
@@ -109,12 +109,12 @@ There are two ways to run Kubernetes.
       kubectl port-forward deployment/api-backend 5000:5000
       ```
    d. Make sure to run the data ingestion Api for the first time. <br>
-   d. Run `minikube service frontend-service`.<br>
+   e. Run `minikube service frontend-service`.<br>
 
-   To make the service running on a domain name we need tioenable ingress.<br>
+   To make the service running on a domain name we need to enable ingress.<br>
 
    a. Run `minikube add-ons enable ingress`.<br>
-   b. Keep track of the ip-address where the service is running.<br>
+   b. Keep track of the ip-address where the service is running. E.g. 192.168.49.2 <br>
    c. Run `sudo nano ~/etc/hosts`<br>
    d. Add `kalidescopegear.com <ip-address>` to the file.<br>
    e. Save it and search for `kalidescopegear.com` in web browser.<br>
