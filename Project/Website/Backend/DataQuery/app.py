@@ -12,6 +12,7 @@ from Modules.products import *
 from Modules.search import *
 from Modules.trending import *
 from Modules.validate import *
+from Modules.recommender.recommendation import recommend
 
 
 app = Flask(__name__)
@@ -57,7 +58,9 @@ def category_tree_caller(categoryid=None):
 def details_caller(productId):
     return details(productId)
 
-
+@app.route('/products/recommendation/<productId>',  methods=["GET"])
+def recommended(productId):
+    return recommend(productId)
 
 
 
