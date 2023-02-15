@@ -34,33 +34,7 @@
 
 <body>
     <!-- This script deals with handling the state from another page (index.html) -->
-    <script>
-        window.wretch;
-        window.onload = function () {
-            var url = document.location.href,
-                params = url.split('?')[1].split('&'),
-                data = {}, tmp;
-            for (var i = 0, l = params.length; i < l; i++) {
-                tmp = params[i].split('=');
-                data[tmp[0]] = decodeURIComponent(tmp[1]);
-            }
-            wretch(`http://localhost:5000/products/details/${data.uniqueId}`)
-                .get()
-                .notFound(err => { window.location.href = './index.html/404.html' })
-                .internalError(err => { window.location.href = './index.html/500.html' })
-                .fetchError(err => { alert(err) })
-                .res(response => response.json())
-                .then((data_detail) => {
-                    document.getElementById("MainImage").src = data.image;
-                    document.getElementById("price").innerHTML = "Price: $ " + data.price;
-                    document.getElementById("title").innerHTML = data.name;
-                    document.getElementById("description").innerHTML = data_detail[0];
-                })
-                .catch((error) => {
-                    console.log(error);
-                });
-        }
-    </script>
+    <script src = "./resources/js/script_product_detail.js"></script>
     <script src="./resources/js/script.js"></script>
     <!-- Header section deals with logo and search box -->
     <section id="header">
@@ -91,36 +65,8 @@
         </div>
     </section>
     <section id = "product1" class="section-p1">
-        <h2>Featured Products</h2>
+        <h2>Recommended Products</h2>
         <div class="pro-container">
-            <div class="pro">
-                <img src="./resources/images/f1.jpg" alt="">
-                <div class="des">
-                    <h5>Cartoon Astronaut T-shirts</h5>
-                    <h4>$78</h4>
-                </div>
-            </div>
-            <div class="pro">
-                <img src="./resources/images/f1.jpg" alt="">
-                <div class="des">
-                    <h5>Cartoon Astronaut T-shirts</h5>
-                    <h4>$78</h4>
-                </div>
-            </div>
-            <div class="pro">
-                <img src="./resources/images/f1.jpg" alt="">
-                <div class="des">
-                    <h5>Cartoon Astronaut T-shirts</h5>
-                    <h4>$78</h4>
-                </div>
-            </div>
-            <div class="pro">
-                <img src="./resources/images/f1.jpg" alt="">
-                <div class="des">
-                    <h5>Cartoon Astronaut T-shirts</h5>
-                    <h4>$78</h4>
-                </div>
-            </div>
         </div>
     </section>
 
