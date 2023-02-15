@@ -36,7 +36,7 @@ def products():
                     failure += 1
                 else:
                     #final_response += product['uniqueId'] + "updated successfully \n"
-                    encoding_status = product_encoding(product)
+                    #encoding_status = product_encoding(product)
                     updates += 1
             elif(status > 300 and status < 400):
                 final_response += product['uniqueId'] + " " + message + "\n"
