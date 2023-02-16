@@ -12,7 +12,7 @@ from Modules.products import *
 from Modules.search import *
 from Modules.trending import *
 from Modules.validate import *
-from Modules.recommender.recommendation import recommend
+from Modules.recommender import *
 
 
 app = Flask(__name__)
@@ -59,9 +59,10 @@ def details_caller(productId):
     return details(productId)
 
 @app.route('/products/recommendation/<productId>',  methods=["GET"])
+@cache.cached(timeout=30, query_string=True)
 def recommended(productId):
-    return recommend(productId)
-
+    #return recommend(productId)
+    return recommend_ANN(productId)
 
 
 

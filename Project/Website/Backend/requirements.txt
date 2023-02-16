@@ -19,3 +19,9 @@ Werkzeug==2.2.2
 sentence_transformers 
 numpy
 torch
+scikit-learn
+transformers
+pandas
+tensorflow
+datasets
+faiss-cpu

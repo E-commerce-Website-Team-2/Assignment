@@ -3,6 +3,7 @@ sys.path.append("..")
 from Modules.database import *
 from Modules.validate import *
 from Modules.products.product_encode import * 
+from Modules.recommender import *
 from flask import request
 
 
@@ -27,7 +28,8 @@ def products():
                     failure += 1
                 else:
                     #final_response += product['uniqueId'] + "added successfully \n"
-                    encoding_status = product_encoding(product)
+                    #The below line has to be enable to allow for the bert encoding to take place. 
+                    #encoding_status = product_encoding(product)
                     new += 1
             elif(status == 201):
                 databasestatus = write(product,['uniqueId','name','price','productDescription','catlevel1Name','catlevel2Name','productImage'],"products",True)
@@ -36,6 +38,7 @@ def products():
                     failure += 1
                 else:
                     #final_response += product['uniqueId'] + "updated successfully \n"
+                    #The below line has to be enable to allow for the bert encoding to take place.
                     #encoding_status = product_encoding(product)
                     updates += 1
             elif(status > 300 and status < 400):
@@ -46,4 +49,6 @@ def products():
                 failure += 1
             else:
                 final_response += product['uniqueId'] + " had an unknown error \n"
+        #encoding_status = product_encoding_count_vectorizer()
+        encode_bert()
         return final_response + "New Products added: " + str(new) + "\n Products Updated: " + str(updates) + "\n Missing Features: " + str(missing_features) + "\n Failures due to database:" + str(failure)

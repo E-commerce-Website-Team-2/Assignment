@@ -1,9 +1,18 @@
 from Modules.database import *
 from Modules.validate import *
 from sentence_transformers import SentenceTransformer, util
+from sklearn.metrics.pairwise import cosine_similarity
+from transformers import AutoTokenizer,TFAutoModel
 import numpy as np
 import torch 
 import heapq
+import pandas as pd
+import sys
+from datasets import Dataset
+sys.path.append("..")
+
+
+
 
 #This function is responsible for running a similarity check between the given productID and return the top 5 products
 def recommend(productId):
@@ -47,4 +56,45 @@ def recommend(productId):
     return finalresponse
 
     
-    
+
+
+
+
+#This function will be responsibile for implementing Approximate Nearest Neighbours to the BERT encodings
+def recommend_ANN(productId):
+    embeddings_dataset = pd.read_pickle("Modules/recommender/encoding.pkl")
+    for product in range(len(embeddings_dataset)):
+        if(embeddings_dataset[product]["uniqueid"] == productId):
+            question_embedding = np.array(embeddings_dataset[product]["embeddings"])
+    scores, samples = embeddings_dataset.get_nearest_examples("embeddings",question_embedding, k=5)
+    samples_df = pd.DataFrame.from_dict(samples)
+    samples_df["scores"] = scores
+    samples_df.sort_values("scores", ascending=False, inplace=True)
+    recommended_products = "("
+    for id in samples_df["uniqueid"].tolist():
+        if(id != productId):
+            recommended_products += "'" + id + "'" + ","
+    recommended_products = recommended_products[:-1]
+    recommended_products += ")"
+    response = read("products",["uniqueID","name","price","productimage"],{"uniqueid":recommended_products},check = 1)
+    finalresponse = check_response(response,0,4)
+    return finalresponse
+
+
+
+
+
+
+def cls_pooling(model_output):
+    return model_output.last_hidden_state[:, 0]
+
+
+def get_embeddings(text_list,tokenizer,model):
+    encoded_input = tokenizer(
+        text_list, padding=True, truncation=True, return_tensors="tf"
+    )
+    encoded_input = {k: v for k, v in encoded_input.items()}
+    model_output = model(**encoded_input)
+    return cls_pooling(model_output)
+
+
