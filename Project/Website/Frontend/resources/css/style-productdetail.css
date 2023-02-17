@@ -94,6 +94,7 @@
 #product1{
   text-align:center;
   background:#4472ca;
+  display:none;
 }
 #product1 .dropdown-3{
   position:absolute;
