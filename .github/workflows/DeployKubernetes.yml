@@ -2,6 +2,7 @@ name: CI
 on:
   - push
   - pull_request
+  - create
 jobs:
   job1:
     runs-on: ubuntu-latest
