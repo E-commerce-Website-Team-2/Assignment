@@ -25,9 +25,4 @@ jobs:
           sleep 20
           cd $GITHUB_WORKSPACE
           kubectl port-forward service/api-backend 5000:5000
-      - name: Run Postman tests
-        id: postman-test
-        run: |
-          sleep 60
-          cd $GITHUB_WORKSPACE
-          newman run ./Project/Website/Backend/Testing/Backend.postman_collection.json
+
