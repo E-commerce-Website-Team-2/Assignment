@@ -22,7 +22,7 @@ jobs:
           minikube service frontend-service --url
       - name: Port Forward api-backend
         run: |
-          sleep 20
+          sleep 60
           cd $GITHUB_WORKSPACE
           kubectl port-forward service/api-backend 5000:5000
 
