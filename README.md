@@ -189,3 +189,6 @@ https://trello.com/invite/b/QXwC7B6j/ATTI607d34e14611e7b39104ef586b8bd192D3FBFF3
 
 ### ProductDetailPage - Displaying details of products 🛍️📝
 ![ProductDetailPage - Displaying details of products](Project/Documentation/ProductDetailPage.png)
+
+### ProductRecommendationPage - Displaying recommedation of product 🛍️💡
+![ProductRecommendationPage - Displaying recommedation of product](Project/Documentation/ProductDetailPageWithRecommendation.png)
