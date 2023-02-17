@@ -37,7 +37,7 @@ jobs:
         uses: helm/kind-action@v1.0.0
         with:
 
-          config: Assignment/Project/Deployment/config.yaml
+          config: ./Project/Deployment/config.yaml
 
 
       - name: Setup Ingress
@@ -88,4 +88,4 @@ jobs:
           sleep 60
           cd $GITHUB_WORKSPACE
 
-          newman run .Assignment/Project/Website/Testing/Backend.postman_collection.json
+          newman run ./Project/Website/Testing/Backend.postman_collection.json
