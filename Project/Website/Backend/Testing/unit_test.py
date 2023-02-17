@@ -49,10 +49,15 @@ class Test(unittest.TestCase):
         """
         Any method which starts with ``test_`` will considered as a test case.
         """
-        products = read("products","*",{"uniqueid":"03252055"})
+        products = read("products","*",{"catid":"3"})
         if(products[0] == 200):
-            if(len(products[1][0]) > 1):
-                print("The table is reading based on the condition that we want as well.")
+            if(len(products[1]) > 1):
+                if(len(products[1][0]) > 1):
+                    print("The table is reading based on the condition that we want as well.")
+                else:
+                    print("There has been an error")
+            else:
+                print("This error is with reading the table ")
         print("\nFinish reading test-4\n")
 
 
