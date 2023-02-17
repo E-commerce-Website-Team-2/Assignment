@@ -85,16 +85,6 @@ def recommend_ANN(productId):
 
 
 
-def cls_pooling(model_output):
-    return model_output.last_hidden_state[:, 0]
 
-
-def get_embeddings(text_list,tokenizer,model):
-    encoded_input = tokenizer(
-        text_list, padding=True, truncation=True, return_tensors="tf"
-    )
-    encoded_input = {k: v for k, v in encoded_input.items()}
-    model_output = model(**encoded_input)
-    return cls_pooling(model_output)
 
 
