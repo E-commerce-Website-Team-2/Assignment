@@ -18,7 +18,4 @@ jobs:
           kubectl apply -f Project/Deployment/adminer.yaml,Project/Deployment/database-deployment.yaml,Project/Deployment/api.yaml,Project/Deployment/dataapi.yaml,Project/Deployment/database-service.yaml,Project/Deployment/env-configmap.yaml,Project/Deployment/frontend.yaml,Project/Deployment/redis-deployment.yaml,Project/Deployment/redis-service.yaml
       - name: Test service URLs
         run: |
-          minikube service list
-          minikube service discover --url
-          echo -n "------------------opening the service------------------"
-          curl $(minikube service discover --url)/version
+          minikube service forntend-service
