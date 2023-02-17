@@ -1,0 +1,24 @@
+name: CI
+on:
+  - push
+  - pull_request
+jobs:
+  job1:
+    runs-on: ubuntu-latest
+    name: build discover and deploy
+    steps:
+      - uses: actions/checkout@v2
+      - name: Start minikube
+        uses: medyagh/setup-minikube@latest
+      # now you can run kubectl to see the pods in the cluster
+      - name: Try the cluster!
+        run: kubectl get pods -A
+      - name: Deploy to minikube
+        run: |
+          kubectl apply -f Project/Deployment/adminer.yaml,Project/Deployment/database-deployment.yaml,Project/Deployment/api.yaml,Project/Deployment/dataapi.yaml,Project/Deployment/database-service.yaml,Project/Deployment/env-configmap.yaml,Project/Deployment/frontend.yaml,Project/Deployment/redis-deployment.yaml,Project/Deployment/redis-service.yaml
+      - name: Test service URLs
+        run: |
+          minikube service list
+          minikube service discover --url
+          echo -n "------------------opening the service------------------"
+          curl $(minikube service discover --url)/version
