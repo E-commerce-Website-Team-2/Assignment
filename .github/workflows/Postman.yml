@@ -12,6 +12,6 @@ jobs:
       - name: Run Postman tests
         id: postman-test
         run: |
-          sleep 180
+          sleep 300
           cd $GITHUB_WORKSPACE
           newman run ./Project/Website/Backend/Testing/Backend.postman_collection.json
