@@ -1,0 +1,15 @@
+name: CI
+on:
+  - push
+  - pull_request
+  - create
+jobs:
+  job1:
+    runs-on: ubuntu-latest
+    name: build discover and deploy
+     - name: Run Postman tests
+        id: postman-test
+        run: |
+          sleep 180
+          cd $GITHUB_WORKSPACE
+          newman run ./Project/Website/Backend/Testing/Backend.postman_collection.json
