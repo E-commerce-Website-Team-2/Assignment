@@ -179,7 +179,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:5000/products/search/Pants/12/",
+							"raw": "http://[::1]:5000/products/search/Pants/12/",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -202,7 +202,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://127.0.0.1:5000/products/search/Shiorts/1",
+							"raw": "http://[::1]:5000/products/search/Shiorts/1",
 							"protocol": "http",
 							"host": [
 								"127",
