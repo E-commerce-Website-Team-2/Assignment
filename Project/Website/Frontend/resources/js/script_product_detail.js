@@ -27,10 +27,11 @@ window.onload = function () {
         .get()
         .notFound(err => { window.location.href = './index.html/404.html' })
         .internalError(err => { window.location.href = './index.html/500.html' })
-        .fetchError(err => { alert(err) })
+        .fetchError(err => { console.log(err) })
         .res(response => response.json())
         .then((data) => {
             if (data[0] == 200) {
+                document.getElementById("product1").style.display = "block";
                 // Get the number of products sent in the response from the backend and calculate the no of pages
                 no_of_products = data[1];
                 // Get the product section where the products is going to be added
