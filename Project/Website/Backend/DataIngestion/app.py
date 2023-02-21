@@ -9,6 +9,7 @@ from Modules.products import *
 from Modules.search import *
 from Modules.trending import *
 from Modules.validate import *
+from Modules.recommender import *
 
 
 app = Flask(__name__)
@@ -34,6 +35,11 @@ def set_trending_caller():
     return set_trending()
 
 
+#This would be created using a random implementation at first. Then the function would be altered to add records based on a JSON that will be passed to it.
+@app.route('/ratings',methods = (['POST']))
+def user_ratings_caller():
+    return user_rating_generation() 
+    
 
 app.run(debug=True, host="0.0.0.0", port=6000)
 

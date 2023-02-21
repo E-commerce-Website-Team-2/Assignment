@@ -1,5 +1,6 @@
 from Modules.database import *
 from Modules.validate import *
+from Modules.recommender.encode import *
 from sentence_transformers import SentenceTransformer, util
 from sklearn.metrics.pairwise import cosine_similarity
 from transformers import AutoTokenizer,TFAutoModel
@@ -9,6 +10,8 @@ import heapq
 import pandas as pd
 import sys
 from datasets import Dataset
+import random 
+from flask import request
 sys.path.append("..")
 
 
@@ -82,8 +85,54 @@ def recommend_ANN(productId):
 
 
 
+#This function will be able to load the matrix stored in the 
+def user_specific_recommendation(productId):
+    pass
+    #Now based on the CSR matrix have to learn how to give a recommendation. 
+    
 
 
+#This function is only called once and then will be commented. This would generate random data and populate the database with ratings. 
+def user_rating_generation():
+    productIds = read("products",["uniqueid"])
+    if(productIds[0] == 200):
+        productIds = productIds[1]
+        productIds = sum(productIds,())
+        number_of_products = len(productIds)
+        #Now I have to generate a random product that the user will rate. I have to also randomize the number of products that are being ordered. 
+        for user in range(10000):
+            #This would be the number of products that the user will rate
+            rating_products_count = random.randint(4,8)
+            all_products = []
+            for product in range(rating_products_count):
+                #This would be the index of the productId that the user is going to rate. 
+                index = random.randint(0,number_of_products-1)
+                while(index in all_products):
+                    index = random.randint(0,number_of_products-1)
+                all_products.append(index)
+                product_id = productIds[index]
+                #This would be the rating that the product is being given. 
+                rating = random.randint(1,5)
+                #Now we should create a dictionary of this rating so that we can load it into the database
+                product_rating = {"userid":user,"productid":product_id,"rating":rating}
+                status = write_product_rating(product_rating,"ratings")
+                if(status != 200):
+                    print("Could not add record. Error in write function.")
+        return "Successfully added random ratings into the database"
+    else:
+        return "Couldnt read the database. Please retry after some time"
+
+
+#This function will be able to add ratings that are passed in a json to the database and will encode the similarity matrix with the records in the database 
+# def user_rating_generation():
+#     #First add a record into the database.
+#     data = request.get_json()
+#     for rating in data:
+#         status = write_product_rating(rating,"ratings")
+#         if(status != 200):
+#             return "Could not add encoding due to database error"
+#     #Then call the encoding function to re-encode and store a pickle file so that we can recommend products
+#     return encode_rating_matrix()
 
 
 
