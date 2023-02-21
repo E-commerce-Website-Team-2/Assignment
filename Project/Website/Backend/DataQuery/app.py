@@ -45,30 +45,30 @@ def trending_caller(pagenumber,sort=""):
 
 
 #Will be able to load the entire category tree and send back a JSON to the front-end
-@app.route('/products/category/tree/<categoryid>', methods = ["GET"])
-@app.route('/products/category/tree', methods = ["GET"])
+@app.route('/category/<categoryid>/tree', methods = ["GET"])
+@app.route('/category/tree', methods = ["GET"])
 @cache.cached(timeout=30, query_string=True)
 def category_tree_caller(categoryid=None):
     return get_category(categoryid)
 
 
 #Will be able to send the extra details that need to be sent when the product itself is clicked. 
-@app.route('/products/details/<productId>', methods=["GET"])
+@app.route('/products/<productId>/details', methods=["GET"])
 @cache.cached(timeout=30, query_string=True)
 def details_caller(productId):
     return details(productId)
 
-@app.route('/products/recommendation/<productId>',  methods=["GET"])
+@app.route('/products/<productId>/recommendation',  methods=["GET"])
 @cache.cached(timeout=30, query_string=True)
 def recommended_similar(productId):
     #return recommend(productId)
     return recommend_ANN(productId)
 
-@app.route('/products/recommendation/<productId>/liked',  methods=["GET"])
-@cache.cached(timeout=30, query_string=True)
-def recommended_user(productId):
-    #return recommend(productId)
-    return user_specific_recommendation(productId)
+# @app.route('/products/recommendation/<productId>/liked',  methods=["GET"])
+# @cache.cached(timeout=30, query_string=True)
+# def recommended_user(productId):
+#     #return recommend(productId)
+#     return user_specific_recommendation(productId)
 
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0", port=5000)
