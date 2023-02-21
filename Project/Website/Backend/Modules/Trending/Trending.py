@@ -22,7 +22,10 @@ def trending(pagenumber,sort):
         return [400,0,{}]
     start = (int(pagenumber) - 1)*9
     rows = 9
-    response = read("products",["uniqueID","name","price","productimage"],order = order)
+    if(order == None or order == "" or order == " "):
+        response = read(["ratings","products"],["uniqueid","name","price","productimage"],condition = {"products.uniqueid":"ratings.productid"},order = 3,average = "rating",groupby = "products.uniqueid")
+    else:
+        response = read("products",["uniqueID","name","price","productimage"],order = order)
     finalresponse = check_response(response,start,rows)
     return finalresponse
 

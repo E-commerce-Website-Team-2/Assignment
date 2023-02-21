@@ -25,3 +25,4 @@ pandas
 tensorflow
 datasets
 faiss-cpu
+scipy

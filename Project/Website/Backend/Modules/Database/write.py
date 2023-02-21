@@ -112,21 +112,22 @@ def writeEncoding(encoding,table):
     return 200
 
 
-def writeEncoding_vectorizer(encoding,table):
+
+def write_product_rating(product_rating,table):
     conn = database_connection('data')
     cur = conn.cursor()
-    cur.execute('CREATE TABLE IF NOT EXISTS ' + table + '(uniqueid varchar(10) PRIMARY KEY ,  '
-                                                            'name_encoding DECIMAL(11,10) ARRAY ,'
-                                                            'product_encoding DECIMAL(11,10) ARRAY, '
-                                                            'CONSTRAINT product '
-                                                            'FOREIGN KEY(uniqueid) ' 
-	                                                        'REFERENCES products(uniqueid) )'
+    cur.execute('CREATE TABLE IF NOT EXISTS ' + table + '(userid varchar(10)  ,  '
+                                                            'productid varchar(10) ,'
+                                                            'rating int, '
+                                                            'CONSTRAINT product_id '
+                                                            'FOREIGN KEY(productid) ' 
+	                                                        'REFERENCES products(uniqueid) ,'
+                                                            'PRIMARY KEY (productid,userid) )'
                                                                )
-    stmt = sql.SQL('INSERT INTO ' + table + ' (uniqueid,name_encoding,product_encoding) '
-                   'VALUES ({uniqueId},{name_encoding},{product_encoding}); ').format(uniqueId=sql.Literal(str(encoding["uniqueID"])),name_encoding=sql.Literal(encoding["name_encoding"]),product_encoding=sql.Literal(encoding["product_encoding"]))
+    stmt = sql.SQL('INSERT INTO ' + table + ' (userid,productid,rating) '
+                   'VALUES ({userid},{productid},{rating}); ').format(userid=sql.Literal(str(product_rating["userid"])),productid=sql.Literal(product_rating["productid"]),rating=sql.Literal(product_rating["rating"]))
     cur.execute(stmt)    
     conn.commit()
     cur.close()
     conn.close()
     return 200
-

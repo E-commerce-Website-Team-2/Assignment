@@ -60,11 +60,15 @@ def details_caller(productId):
 
 @app.route('/products/recommendation/<productId>',  methods=["GET"])
 @cache.cached(timeout=30, query_string=True)
-def recommended(productId):
+def recommended_similar(productId):
     #return recommend(productId)
     return recommend_ANN(productId)
 
-
+@app.route('/products/recommendation/<productId>/liked',  methods=["GET"])
+@cache.cached(timeout=30, query_string=True)
+def recommended_user(productId):
+    #return recommend(productId)
+    return user_specific_recommendation(productId)
 
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0", port=5000)

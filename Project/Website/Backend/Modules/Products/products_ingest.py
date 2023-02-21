@@ -49,6 +49,5 @@ def products():
                 failure += 1
             else:
                 final_response += product['uniqueId'] + " had an unknown error \n"
-        #encoding_status = product_encoding_count_vectorizer()
         encode_bert()
         return final_response + "New Products added: " + str(new) + "\n Products Updated: " + str(updates) + "\n Missing Features: " + str(missing_features) + "\n Failures due to database:" + str(failure)
