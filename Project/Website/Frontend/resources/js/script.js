@@ -27,7 +27,7 @@ console.log(2,getCookie("sessionId"));
 window.wretch
 // This is used fetch subcategories from the backend via database and update thhe dropdown menu in the forntend.
 window.addEventListener('load',function(){
-  wretchData('http://localhost:5000/products/category/tree', DataSection_Category)
+  wretchData('http://localhost:5000/category/tree', DataSection_Category)
 });
 
 // Function to perform a request to backend and perform actions based on response.
@@ -36,7 +36,7 @@ function wretchData(url, dataFunction, params = '') {
     .get()
     .notFound(err => { window.location.href = './404.html' })
     .internalError(err => { window.location.href = './500.html' })
-    .fetchError(err => { window.location.href = './500.html' })
+    .fetchError(err => { console.log(err) })
     .res(response => response.json())
     .then((data) => {
       (params === '') ? dataFunction(data) : dataFunction(data,params);
@@ -258,7 +258,7 @@ function getBackendAPI(params) {
     url = `http://localhost:5000/products/category/${params["cat"]}/${params["pageno"]}/${params["sort"]}`
   }
   else if (params["index"] === 4) {
-    url = `http://localhost:5000/products/category/tree/${params["cat"]}`
+    url = `http://localhost:5000/category/${params["cat"]}/tree`
   }
   else {
     url = ''

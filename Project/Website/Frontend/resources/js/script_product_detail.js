@@ -7,7 +7,7 @@ window.onload = function () {
         tmp = params[i].split('=');
         data[tmp[0]] = decodeURIComponent(tmp[1]);
     }
-    wretch(`http://localhost:5000/products/details/${data.uniqueId}`)
+    wretch(`http://localhost:5000/products/${data.uniqueId}/details`)
         .get()
         .notFound(err => { window.location.href = './index.html/404.html' })
         .internalError(err => { window.location.href = './index.html/500.html' })
@@ -23,7 +23,7 @@ window.onload = function () {
             console.log(error);
         });
 
-    wretch(`http://localhost:5000/products/recommendation/${data.uniqueId}`)
+    wretch(`http://localhost:5000/products/${data.uniqueId}/recommendation/liked`)
         .get()
         .notFound(err => { window.location.href = './index.html/404.html' })
         .internalError(err => { window.location.href = './index.html/500.html' })
@@ -36,6 +36,53 @@ window.onload = function () {
                 no_of_products = data[1];
                 // Get the product section where the products is going to be added
                 product_element = document.getElementsByClassName("pro-container")[0];
+                product_element.innerHTML = "";
+                //Iterate through the response data containing a list of products and append it to the html page under the product section
+                for (let ind = 2; ind < data.length; ind++) {
+                    div_element = document.createElement("div");
+                    div_element.setAttribute("class", "pro");
+                    div_element.addEventListener("click", function () {
+                        DetailedProduct(data[ind]);
+                    });
+                    img_element = document.createElement("img");
+                    img_element.setAttribute("src", data[ind].productimage === undefined ? data[ind]["productImage"] : data[ind]["productimage"]);
+                    div_element.appendChild(img_element);
+                    div_name = document.createElement("div");
+                    div_name.setAttribute("class", "des");
+
+                    h5_element = document.createElement("h5");
+                    h5_element.innerHTML = data[ind]["name"];
+                    
+                    h4_element = document.createElement("h4");
+                    h4_element.innerHTML = data[ind]["price"];
+
+                    div_name.appendChild(h5_element);
+                    div_name.appendChild(h4_element);
+                    div_element.appendChild(div_name);
+
+
+                    product_element.appendChild(div_element);
+                }
+
+
+            }
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+    wretch(`http://localhost:5000/products/${data.uniqueId}/recommendation/similar`)
+        .get()
+        .notFound(err => { window.location.href = './index.html/404.html' })
+        .internalError(err => { window.location.href = './index.html/500.html' })
+        .fetchError(err => { console.log(err) })
+        .res(response => response.json())
+        .then((data) => {
+            if (data[0] == 200) {
+                document.getElementById("product1").style.display = "block";
+                // Get the number of products sent in the response from the backend and calculate the no of pages
+                no_of_products = data[1];
+                // Get the product section where the products is going to be added
+                product_element = document.getElementsByClassName("pro-container")[1];
                 product_element.innerHTML = "";
                 //Iterate through the response data containing a list of products and append it to the html page under the product section
                 for (let ind = 2; ind < data.length; ind++) {
