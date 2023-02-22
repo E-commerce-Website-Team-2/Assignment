@@ -96,17 +96,9 @@
   background:#4472ca;
   display:none;
 }
-#product1 .dropdown-3{
-  position:absolute;
-  right: 60px;;
-  display: none;
 
-}
-.dropdown-3 button{
-  background-color: #4472ca;
-  color:white;
-  border:none;
-  font-size: 20px;
+#prodduct1 h2{
+  padding-top:20px;
 }
 #product1 .pro-container{
   display: flex;
