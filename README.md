@@ -7,6 +7,9 @@ database after it has been validated
 Link to Design Document:<br>
 https://docs.google.com/document/d/1RywhKonp1iKxGXmWKmwi7_Gw80758X-sdcvoyJN6cyQ/edit?usp=sharing
 
+## Functional Documentation
+Please refer to the wiki tab for detailed documentation of functions written in backend.
+
 ## Overview of API Specification 🤖💬
 We have designed api specification on two things
 - **Data Ingestion ⬇️🔄💾** <br>
