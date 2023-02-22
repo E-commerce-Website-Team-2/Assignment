@@ -4,6 +4,7 @@ import pickle
 import sys
 import numpy as np
 from scipy.sparse import csr_matrix
+from scipy.sparse import save_npz
 sys.path.append("..")
 from Modules.database import *
 
@@ -41,8 +42,8 @@ def encode_rating_matrix():
     n_ratings = len(ratings)
     n_products = len(ratings['productid'].unique())
     n_users = len(ratings['userid'].unique())
-    X, user_mapper, movie_mapper, user_inv_mapper, movie_inv_mapper = create_matrix(ratings)
-    scipy.sparse.save_npz("/Modules/recommender/encoding_matrix.npz",X)
+    X, user_mapper, product_mapper, user_inv_mapper, product_inv_mapper = create_matrix(ratings)
+    save_npz("/Modules/recommender/encoding_matrix.npz",X)
     return "Succesfully encoded ratings and added them to database."
 
 
@@ -51,11 +52,11 @@ def create_matrix(df):
     M = len(df['productid'].unique())
     # Map Ids to indices
     user_mapper = dict(zip(np.unique(df["userid"]), list(range(N))))
-    movie_mapper = dict(zip(np.unique(df["productid"]), list(range(M)))) 
+    product_mapper = dict(zip(np.unique(df["productid"]), list(range(M)))) 
     # Map indices to IDs
     user_inv_mapper = dict(zip(list(range(N)), np.unique(df["userid"])))
-    movie_inv_mapper = dict(zip(list(range(M)), np.unique(df["productid"])))
+    product_inv_mapper = dict(zip(list(range(M)), np.unique(df["productid"])))
     user_index = [user_mapper[i] for i in df['userid']]
-    movie_index = [movie_mapper[i] for i in df['productid']]
-    X = csr_matrix((df["rating"], (movie_index, user_index)), shape=(M, N))
-    return X, user_mapper, movie_mapper, user_inv_mapper, movie_inv_mapper
+    product_index = [product_mapper[i] for i in df['productid']]
+    X = csr_matrix((df["rating"], (product_index, user_index)), shape=(M, N))
+    return X, user_mapper, product_mapper, user_inv_mapper, product_inv_mapper

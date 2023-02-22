@@ -58,17 +58,17 @@ def category_tree_caller(categoryid=None):
 def details_caller(productId):
     return details(productId)
 
-@app.route('/products/<productId>/recommendation',  methods=["GET"])
+@app.route('/products/<productId>/recommendation/similar',  methods=["GET"])
 @cache.cached(timeout=30, query_string=True)
 def recommended_similar(productId):
     #return recommend(productId)
     return recommend_ANN(productId)
 
-# @app.route('/products/recommendation/<productId>/liked',  methods=["GET"])
-# @cache.cached(timeout=30, query_string=True)
-# def recommended_user(productId):
-#     #return recommend(productId)
-#     return user_specific_recommendation(productId)
+@app.route('/products/<productId>/recommendation/liked',  methods=["GET"])
+@cache.cached(timeout=30, query_string=True)
+def recommended_user(productId):
+    #return recommend(productId)
+    return user_specific_recommendation(productId)
 
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0", port=5000)
